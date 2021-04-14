@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "365711747365",
+    "project_id": "motogo-dc",
+    "storage_bucket": "motogo-dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365711747365:android:0270ba6e0ab02f57bb92cc",
+        "android_client_info": {
+          "package_name": "com.dcascos.motogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365711747365-dju84r2g7v98jjgugsv60br3gf1ciguk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dcascos.motogo",
+            "certificate_hash": "7413c8b1d1cf09e876a9970eb36b954bca850a72"
+          }
+        },
+        {
+          "client_id": "365711747365-44j990rjhf9cs0a97btp979k8egl5e6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk0VvJ5_4MK7fqarZ_Z5x0bz7K6hBF5gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365711747365-44j990rjhf9cs0a97btp979k8egl5e6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
