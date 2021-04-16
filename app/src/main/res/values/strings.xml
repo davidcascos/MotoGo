@@ -17,4 +17,8 @@
 	<string name="email">Email</string>
 	<string name="alreadyHaveAccount">Already have an account? Login</string>
 
+	<string name="fieldCanNotEmpty">Field can not be empty</string>
+	<string name="usernameToLarge">Username is too large!</string>
+	<string name="invalidFormat">Invalid %1s format!</string>
+
 </resources>

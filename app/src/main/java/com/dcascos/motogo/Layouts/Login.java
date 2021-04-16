@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.Utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class Login extends AppCompatActivity {
@@ -36,6 +37,17 @@ public class Login extends AppCompatActivity {
 
 		btGo = findViewById(R.id.bt_go);
 		btSignUp = findViewById(R.id.bt_signUp);
+
+		btGo.setOnClickListener(v -> {
+			if (!Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
+					| !Validations.validatePasswordFormat(getApplicationContext(), tiPassword)) {
+				return;
+			} else {
+				Intent intent = new Intent(Login.this, EmptyActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
 
 		btSignUp.setOnClickListener(v -> {
 			Intent intent = new Intent(Login.this, SignUp.class);
