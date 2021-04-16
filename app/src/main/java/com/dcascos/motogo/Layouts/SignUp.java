@@ -1,33 +1,48 @@
 package com.dcascos.motogo.Layouts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.Utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUp extends AppCompatActivity {
 
-	TextInputLayout ti_fullname, tiUsername, ti_email, tiPassword;
+	TextInputLayout tiFullname, tiUsername, tiEmail, tiPassword;
 
-	Button btGo, bt_backLogin;
+	Button btGo, btBackLogin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_sign_up);
 
-		ti_fullname = findViewById(R.id.ti_fullname);
+		tiFullname = findViewById(R.id.ti_fullname);
 		tiUsername = findViewById(R.id.ti_username);
-		ti_email = findViewById(R.id.ti_email);
+		tiEmail = findViewById(R.id.ti_email);
 		tiPassword = findViewById(R.id.ti_password);
 
 		btGo = findViewById(R.id.bt_go);
-		bt_backLogin = findViewById(R.id.bt_backLogin);
+		btBackLogin = findViewById(R.id.bt_backLogin);
 
-		bt_backLogin.setOnClickListener(v -> {
+		btGo.setOnClickListener(v -> {
+			if (!Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
+					| !Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
+					| !Validations.validateEmailFormat(getApplicationContext(), tiEmail)
+					| !Validations.validatePasswordFormat(getApplicationContext(), tiPassword)) {
+				return;
+			} else {
+				Intent intent = new Intent(SignUp.this, EmptyActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+
+		btBackLogin.setOnClickListener(v -> {
 			this.onBackPressed();
 		});
 	}
