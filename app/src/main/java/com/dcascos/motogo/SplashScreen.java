@@ -1,10 +1,13 @@
 package com.dcascos.motogo;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Pair;
+import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
@@ -60,7 +63,14 @@ public class SplashScreen extends AppCompatActivity {
 	private void timerSplashScreen() {
 		new Handler(Looper.getMainLooper()).postDelayed(() -> {
 			Intent intent = new Intent(SplashScreen.this, Login.class);
-			startActivity(intent);
+
+			Pair[] pairs = new Pair[2];
+			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
+			pairs[1] = new Pair<View, String>(tvTitle, "tran_title");
+
+			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this, pairs);
+
+			startActivity(intent, options.toBundle());
 			finish();
 		}, SPLASH_SCREEN_TIME);
 	}

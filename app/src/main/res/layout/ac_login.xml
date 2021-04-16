@@ -13,7 +13,8 @@
 		android:id="@+id/iv_logo"
 		android:layout_width="150dp"
 		android:layout_height="150dp"
-		android:src="@drawable/motogologo" />
+		android:src="@drawable/motogologo"
+		android:transitionName="tran_logo" />
 
 	<TextView
 		android:id="@+id/tv_welcome"
@@ -22,7 +23,8 @@
 		android:fontFamily="@font/bungee"
 		android:text="@string/tv_welcome"
 		android:textColor="@color/black"
-		android:textSize="40sp" />
+		android:textSize="40sp"
+		android:transitionName="tran_title" />
 
 	<TextView
 		android:id="@+id/tv_signin"
