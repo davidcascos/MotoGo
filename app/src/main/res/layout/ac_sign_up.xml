@@ -7,7 +7,7 @@
 	android:background="@color/white"
 	android:orientation="vertical"
 	android:padding="20dp"
-	tools:context=".Layouts.Login">
+	tools:context=".Layouts.SignUp">
 
 	<ImageView
 		android:id="@+id/iv_logo"
@@ -20,8 +20,9 @@
 		android:id="@+id/tv_welcome"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="-20dp"
 		android:fontFamily="@font/bungee"
-		android:text="@string/welcomeBack"
+		android:text="@string/welcome"
 		android:textColor="@color/black"
 		android:textSize="40sp"
 		android:transitionName="tran_title" />
@@ -31,7 +32,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:fontFamily="@font/antic"
-		android:text="@string/signInContinue"
+		android:text="@string/singUpToStart"
 		android:textSize="18sp"
 		android:transitionName="tran_signInContinue" />
 
@@ -43,18 +44,49 @@
 		android:orientation="vertical">
 
 		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/ti_username"
+			android:id="@+id/ti_fullname"
 			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/username"
-			android:transitionName="tran_username"
+			android:hint="@string/fullName"
 			app:hintTextColor="@color/black">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/ti_username"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/username"
+			android:transitionName="tran_username"
+			app:counterEnabled="true"
+			app:counterMaxLength="15"
+			app:hintTextColor="@color/black">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/ti_email"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/email"
+			app:hintTextColor="@color/black">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textEmailAddress" />
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<com.google.android.material.textfield.TextInputLayout
@@ -74,17 +106,6 @@
 		</com.google.android.material.textfield.TextInputLayout>
 
 		<Button
-			android:id="@+id/bt_forgetPass"
-			android:layout_width="200dp"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end"
-			android:layout_margin="5dp"
-			android:background="@color/transparent"
-			android:elevation="0dp"
-			android:text="@string/forgetPassword"
-			android:textColor="@color/black" />
-
-		<Button
 			android:id="@+id/bt_go"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -96,14 +117,14 @@
 			android:transitionName="tran_go" />
 
 		<Button
-			android:id="@+id/bt_signUp"
+			android:id="@+id/bt_backLogin"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_margin="5dp"
 			android:background="@color/transparent"
 			android:elevation="0dp"
 			android:fontFamily="@font/antic"
-			android:text="@string/newUser"
+			android:text="@string/alreadyHaveAccount"
 			android:textColor="@color/black"
 			android:transitionName="tran_newUser" />
 	</LinearLayout>
