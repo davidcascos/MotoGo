@@ -1,4 +1,13 @@
 <resources>
 	<string name="app_name">MotoGo</string>
 	<string name="tv_title">MOTO GO</string>
+	<!--Login-->
+	<string name="tv_welcome">Hello There, Welcome Back</string>
+	<string name="tv_signInContinue">Sign In to continue</string>
+	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="forgetPassword">FORGET PASSWORD?</string>
+	<string name="go">GO</string>
+	<string name="newUser">New User? SIGN UP</string>
+
 </resources>
