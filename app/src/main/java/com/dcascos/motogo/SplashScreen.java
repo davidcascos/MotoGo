@@ -59,7 +59,7 @@ public class SplashScreen extends AppCompatActivity {
 
 	private void timerSplashScreen() {
 		new Handler(Looper.getMainLooper()).postDelayed(() -> {
-			Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+			Intent intent = new Intent(SplashScreen.this, Login.class);
 			startActivity(intent);
 			finish();
 		}, SPLASH_SCREEN_TIME);
