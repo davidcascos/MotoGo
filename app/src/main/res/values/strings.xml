@@ -1,13 +1,20 @@
 <resources>
 	<string name="app_name">MotoGo</string>
-	<string name="tv_title">MOTO GO</string>
-	<!--Login-->
-	<string name="tv_welcome">Hello There, Welcome Back</string>
-	<string name="tv_signInContinue">Sign In to continue</string>
+	<string name="title">MOTO GO</string>
+	<!--SignIn/SignUp-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
-	<string name="forgetPassword">FORGET PASSWORD?</string>
 	<string name="go">GO</string>
+	<!--SignUp-->
+	<string name="welcomeBack">Hello There, Welcome Back</string>
+	<string name="signInContinue">Sign In to continue</string>
+	<string name="forgetPassword">FORGET PASSWORD?</string>
 	<string name="newUser">New User? SIGN UP</string>
+	<!--SignUp-->
+	<string name="welcome">Welcome,</string>
+	<string name="singUpToStart">SingUp to start your new journey</string>
+	<string name="fullName">Full Name</string>
+	<string name="email">Email</string>
+	<string name="alreadyHaveAccount">Already have an account? Login</string>
 
 </resources>
