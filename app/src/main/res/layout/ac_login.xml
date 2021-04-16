@@ -49,7 +49,11 @@
 			android:layout_height="wrap_content"
 			android:hint="@string/username"
 			android:transitionName="tran_username"
-			app:hintTextColor="@color/black">
+			app:endIconMode="clear_text"
+			app:endIconTint="@color/black"
+			app:hintTextColor="@color/black"
+			app:startIconDrawable="@drawable/ic_username"
+			app:startIconTint="@color/black">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:layout_width="match_parent"
@@ -65,7 +69,9 @@
 			android:hint="@string/password"
 			android:transitionName="tran_password"
 			app:hintTextColor="@color/black"
-			app:passwordToggleEnabled="true">
+			app:passwordToggleEnabled="true"
+			app:startIconDrawable="@drawable/ic_password"
+			app:startIconTint="@color/black">
 
 			<com.google.android.material.textfield.TextInputEditText
 				android:layout_width="match_parent"
