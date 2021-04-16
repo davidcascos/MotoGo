@@ -116,7 +116,6 @@
 			android:textColor="@color/black"
 			android:transitionName="tran_go" />
 
-
 		<Button
 			android:id="@+id/bt_backLogin"
 			android:layout_width="match_parent"
