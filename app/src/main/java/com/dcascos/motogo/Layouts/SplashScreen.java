@@ -1,4 +1,4 @@
-package com.dcascos.motogo;
+package com.dcascos.motogo.Layouts;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dcascos.motogo.R;
 
 public class SplashScreen extends AppCompatActivity {
 

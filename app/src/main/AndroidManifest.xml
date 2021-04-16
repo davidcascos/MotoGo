@@ -9,13 +9,14 @@
 		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
-		<activity android:name=".SplashScreen">
+		<activity android:name=".Layouts.SplashScreen">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".Login"></activity>
+		<activity android:name=".Layouts.Login"></activity>
+		<activity android:name=".Layouts.SignUp"></activity>
 
 		<meta-data
 			android:name="preloaded_fonts"
