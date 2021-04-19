@@ -24,10 +24,8 @@ public class SplashScreen extends AppCompatActivity {
 
 	private static final int SPLASH_SCREEN_TIME = 5000;
 
-	//Variables
-	Animation topAnim, bottomAnim;
-	ImageView ivLogo;
-	TextView tvTitle;
+	private ImageView ivLogo;
+	private TextView tvTitle;
 
 	@Override
 	@SuppressWarnings("DEPRECATION")
@@ -52,8 +50,9 @@ public class SplashScreen extends AppCompatActivity {
 	}
 
 	private void doAnimations() {
-		topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
-		bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
+		//Variables
+		Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+		Animation bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
 		ivLogo = findViewById(R.id.iv_logo);
 		tvTitle = findViewById(R.id.tv_title);
@@ -64,7 +63,6 @@ public class SplashScreen extends AppCompatActivity {
 
 	private void timerSplashScreen() {
 		new Handler(Looper.getMainLooper()).postDelayed(() -> {
-			Intent intent = new Intent(SplashScreen.this, Login.class);
 
 			Pair[] pairs = new Pair[2];
 			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
@@ -72,7 +70,7 @@ public class SplashScreen extends AppCompatActivity {
 
 			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this, pairs);
 
-			startActivity(intent, options.toBundle());
+			startActivity(new Intent(SplashScreen.this, Login.class), options.toBundle());
 			finish();
 		}, SPLASH_SCREEN_TIME);
 	}

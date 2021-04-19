@@ -8,6 +8,19 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class Validations {
 
+	public static boolean validateIsEmpty(Context context, TextInputLayout textInputLayout) {
+		String value = textInputLayout.getEditText().getText().toString().trim();
+
+		if (value.isEmpty()) {
+			textInputLayout.setError(context.getString(R.string.fieldCanNotEmpty));
+			return false;
+		} else {
+			textInputLayout.setError(null);
+			textInputLayout.setErrorEnabled(false);
+			return true;
+		}
+	}
+
 	public static boolean validateFullNameFormat(Context context, TextInputLayout textInputLayout) {
 		String value = textInputLayout.getEditText().getText().toString().trim();
 
