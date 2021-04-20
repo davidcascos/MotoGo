@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Constants;
+package com.dcascos.motogo.constants;
 
 public class Constants {
 

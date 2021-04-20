@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Layouts;
+package com.dcascos.motogo.layouts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dcascos.motogo.layouts.loginSignup.Login;
 import com.dcascos.motogo.R;
 import com.google.firebase.auth.FirebaseAuth;
 

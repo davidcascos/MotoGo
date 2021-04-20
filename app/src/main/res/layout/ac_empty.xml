@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".Layouts.EmptyActivity">
+	tools:context=".layouts.EmptyActivity">
 
 	<Button
 		android:id="@+id/bt_signOut"
@@ -14,7 +14,7 @@
 		android:layout_marginTop="354dp"
 		android:layout_marginEnd="150dp"
 		android:layout_marginBottom="354dp"
-		android:text="Sign Out"
+		android:text="@string/signOut"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"

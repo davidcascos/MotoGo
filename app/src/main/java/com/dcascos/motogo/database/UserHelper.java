@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Database;
+package com.dcascos.motogo.database;
 
 public class UserHelper {
 
