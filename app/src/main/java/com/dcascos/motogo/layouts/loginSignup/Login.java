@@ -5,15 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dcascos.motogo.layouts.EmptyActivity;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.layouts.EmptyActivity;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,15 +24,19 @@ import java.util.Objects;
 
 public class Login extends AppCompatActivity {
 
-	//Variables
 	private ImageView ivLogo;
+
 	private TextView tvWelcome;
 	private TextView tvSignIn;
+
 	private TextInputLayout tiEmail;
 	private TextInputLayout tiPassword;
+
 	private Button btGo;
 	private Button btSignUp;
 	private Button btForgetPassword;
+
+	private RelativeLayout progressBar;
 
 	private FirebaseAuth mAuth;
 
@@ -49,6 +55,8 @@ public class Login extends AppCompatActivity {
 		btGo = findViewById(R.id.bt_go);
 		btSignUp = findViewById(R.id.bt_signUp);
 		btForgetPassword = findViewById(R.id.bt_forgetPassword);
+
+		progressBar = findViewById(R.id.rl_progress);
 
 		mAuth = FirebaseAuth.getInstance();
 
@@ -75,6 +83,9 @@ public class Login extends AppCompatActivity {
 		if (Validations.validateEmailFormat(getApplicationContext(), tiEmail)
 				& Validations.validateIsEmpty(getApplicationContext(), tiPassword)) {
 
+			progressBar.setVisibility(View.VISIBLE);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
@@ -83,6 +94,8 @@ public class Login extends AppCompatActivity {
 					startActivity(new Intent(Login.this, EmptyActivity.class));
 					finish();
 				} else {
+					progressBar.setVisibility(View.GONE);
+					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 					Toast.makeText(Login.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_SHORT).show();
 				}
 			});

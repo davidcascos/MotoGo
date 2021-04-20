@@ -7,10 +7,9 @@
 	android:background="@color/white"
 	tools:context=".layouts.loginSignup.Login">
 
-	<LinearLayout
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
 		android:padding="20dp">
 
 		<ImageView
@@ -24,6 +23,7 @@
 			android:id="@+id/tv_welcome"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/iv_logo"
 			android:fontFamily="@font/bungee"
 			android:text="@string/welcomeBack"
 			android:textColor="@color/black"
@@ -34,6 +34,7 @@
 			android:id="@+id/tv_signin"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/tv_welcome"
 			android:fontFamily="@font/antic"
 			android:text="@string/signInContinue"
 			android:textSize="18sp"
@@ -42,6 +43,7 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/tv_signin"
 			android:layout_marginTop="20dp"
 			android:layout_marginBottom="20dp"
 			android:orientation="vertical">
@@ -118,5 +120,24 @@
 				android:textColor="@color/black"
 				android:transitionName="tran_newUser" />
 		</LinearLayout>
-	</LinearLayout>
+
+		<RelativeLayout
+			android:id="@+id/rl_progress"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:background="@drawable/shape_loading"
+			android:elevation="8dp"
+			android:padding="20dp"
+			android:visibility="gone">
+
+			<ProgressBar
+				android:id="@+id/progress_circular"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:layout_centerInParent="true"
+				android:indeterminateTint="@color/black" />
+		</RelativeLayout>
+
+	</RelativeLayout>
 </ScrollView>

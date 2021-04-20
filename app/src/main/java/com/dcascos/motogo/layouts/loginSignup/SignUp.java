@@ -3,7 +3,9 @@ package com.dcascos.motogo.layouts.loginSignup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ public class SignUp extends AppCompatActivity {
 
 	private Button btBackLogin;
 
+	private RelativeLayout progressBar;
+
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase database;
 
@@ -43,6 +47,8 @@ public class SignUp extends AppCompatActivity {
 
 		btBackLogin = findViewById(R.id.bt_backLogin);
 
+		progressBar = findViewById(R.id.rl_progress);
+
 		mAuth = FirebaseAuth.getInstance();
 		database = FirebaseDatabase.getInstance();
 
@@ -55,6 +61,9 @@ public class SignUp extends AppCompatActivity {
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
 				& Validations.validateEmailFormat(getApplicationContext(), tiEmail)
 				& Validations.validatePasswordFormat(getApplicationContext(), tiPassword)) {
+
+			progressBar.setVisibility(View.VISIBLE);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
 			String fullname = Objects.requireNonNull(tiFullname.getEditText()).getText().toString().trim();
 			String username = Objects.requireNonNull(tiUsername.getEditText()).getText().toString().trim();
@@ -74,10 +83,14 @@ public class SignUp extends AppCompatActivity {
 							startActivity(new Intent(SignUp.this, EmptyActivity.class));
 							finish();
 						} else {
+							progressBar.setVisibility(View.GONE);
+							getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 							Toast.makeText(SignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
 						}
 					});
 				} else {
+					progressBar.setVisibility(View.GONE);
+					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 					Toast.makeText(SignUp.this, getText(R.string.alreadyUserWithMail), Toast.LENGTH_SHORT).show();
 				}
 			});
