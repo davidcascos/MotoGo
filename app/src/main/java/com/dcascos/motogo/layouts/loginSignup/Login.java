@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Layouts;
+package com.dcascos.motogo.layouts.loginSignup;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dcascos.motogo.layouts.EmptyActivity;
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.Utils.Validations;
+import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,6 +30,7 @@ public class Login extends AppCompatActivity {
 	private TextInputLayout tiPassword;
 	private Button btGo;
 	private Button btSignUp;
+	private Button btForgetPassword;
 
 	private FirebaseAuth mAuth;
 
@@ -46,8 +48,11 @@ public class Login extends AppCompatActivity {
 
 		btGo = findViewById(R.id.bt_go);
 		btSignUp = findViewById(R.id.bt_signUp);
+		btForgetPassword = findViewById(R.id.bt_forgetPassword);
 
 		mAuth = FirebaseAuth.getInstance();
+
+		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(Login.this, ResetPassword.class)));
 
 		btSignUp.setOnClickListener(v -> {
 
@@ -67,10 +72,9 @@ public class Login extends AppCompatActivity {
 	}
 
 	public void doLogin(View view) {
-		if (!Validations.validateIsEmpty(getApplicationContext(), tiEmail)
-				| !Validations.validateIsEmpty(getApplicationContext(), tiPassword)) {
-			return;
-		} else {
+		if (Validations.validateEmailFormat(getApplicationContext(), tiEmail)
+				& Validations.validateIsEmpty(getApplicationContext(), tiPassword)) {
+
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
@@ -79,7 +83,7 @@ public class Login extends AppCompatActivity {
 					startActivity(new Intent(Login.this, EmptyActivity.class));
 					finish();
 				} else {
-					Toast.makeText(Login.this, "No se puede entrar, revisa datos", Toast.LENGTH_SHORT).show();
+					Toast.makeText(Login.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}

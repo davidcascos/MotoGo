@@ -19,6 +19,7 @@
 		<activity android:name=".layouts.loginSignup.Login" />
 		<activity android:name=".layouts.loginSignup.SignUp" />
 		<activity android:name=".layouts.loginSignup.ResetPassword" />
+		<activity android:name=".layouts.loginSignup.ResetPasswordSent"/>
 		<activity android:name=".layouts.EmptyActivity" />
 
 		<meta-data

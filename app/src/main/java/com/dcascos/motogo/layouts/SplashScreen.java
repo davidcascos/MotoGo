@@ -23,7 +23,7 @@ import com.dcascos.motogo.R;
 
 public class SplashScreen extends AppCompatActivity {
 
-	private static final int SPLASH_SCREEN_TIME = 5000;
+	private static final int SPLASH_SCREEN_TIME = 3000;
 
 	private ImageView ivLogo;
 	private TextView tvTitle;

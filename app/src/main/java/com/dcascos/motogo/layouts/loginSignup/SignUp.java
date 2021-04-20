@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Layouts;
+package com.dcascos.motogo.layouts.loginSignup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dcascos.motogo.Database.UserHelper;
+import com.dcascos.motogo.database.UserHelper;
+import com.dcascos.motogo.layouts.EmptyActivity;
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.Utils.Validations;
+import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -45,19 +46,16 @@ public class SignUp extends AppCompatActivity {
 		mAuth = FirebaseAuth.getInstance();
 		database = FirebaseDatabase.getInstance();
 
-		btBackLogin.setOnClickListener(v -> {
-			this.onBackPressed();
-		});
+		btBackLogin.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	public void doSignUp(View view) {
 
-		if (!Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
-				| !Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
-				| !Validations.validateEmailFormat(getApplicationContext(), tiEmail)
-				| !Validations.validatePasswordFormat(getApplicationContext(), tiPassword)) {
-			return;
-		} else {
+		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
+				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
+				& Validations.validateEmailFormat(getApplicationContext(), tiEmail)
+				& Validations.validatePasswordFormat(getApplicationContext(), tiPassword)) {
+
 			String fullname = Objects.requireNonNull(tiFullname.getEditText()).getText().toString().trim();
 			String username = Objects.requireNonNull(tiUsername.getEditText()).getText().toString().trim();
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
@@ -76,11 +74,11 @@ public class SignUp extends AppCompatActivity {
 							startActivity(new Intent(SignUp.this, EmptyActivity.class));
 							finish();
 						} else {
-							Toast.makeText(SignUp.this, "Todo mas mal", Toast.LENGTH_SHORT).show();
+							Toast.makeText(SignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
 						}
 					});
 				} else {
-					Toast.makeText(SignUp.this, "Todo mal", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SignUp.this, getText(R.string.alreadyUserWithMail), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
