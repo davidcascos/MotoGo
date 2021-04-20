@@ -1,4 +1,4 @@
-package com.dcascos.motogo.Constants;
+package com.dcascos.motogo.constants;
 
 public class Constants {
 
@@ -13,12 +13,9 @@ public class Constants {
 
 	public static final String EMAILFORMAT = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
-/*	Password must contain at least one digit [0-9].
-	Password must contain at least one lowercase Latin character [a-z].
-	Password must contain at least one uppercase Latin character [A-Z].
-	Password must contain at least one special character like ! @ # & ( ).
-	Password must contain a length of at least 8 characters and a maximum of 20 characters.
-	*/
-	public static final String PASSWORDFORMAT = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
-
+	/*	Password must contain at least one digit [0-9].
+		Password must contain at least one lowercase Latin character [a-z].
+		Password must contain at least one uppercase Latin character [A-Z].
+		Password must contain a length of at least 6 characters.*/
+	public static final String PASSWORDFORMAT = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
 }

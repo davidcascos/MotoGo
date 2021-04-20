@@ -5,7 +5,7 @@
 	<string name="username">Username</string>
 	<string name="password">Password</string>
 	<string name="go">GO</string>
-	<!--SignUp-->
+	<!--SignIn-->
 	<string name="welcomeBack">Hello There, Welcome Back</string>
 	<string name="signInContinue">Sign In to continue</string>
 	<string name="forgetPassword">FORGET PASSWORD?</string>
@@ -15,10 +15,22 @@
 	<string name="singUpToStart">SingUp to start your new journey</string>
 	<string name="fullName">Full Name</string>
 	<string name="email">Email</string>
+	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
 	<string name="alreadyHaveAccount">Already have an account? Login</string>
 
 	<string name="fieldCanNotEmpty">Field can not be empty</string>
 	<string name="usernameToLarge">Username is too large!</string>
 	<string name="invalidFormat">Invalid %1s format!</string>
+	<!--ForgetPassword-->
+	<string name="forgetPasswordTitle">Forget Password</string>
+	<string name="forgetPasswordDetail">Provide your account\'s email for which you want to reset your password!</string>
+	<string name="resetPassword">Reset Password</string>
+	<string name="signOut">Sign Out</string>
+	<string name="passwordResetSent">Password reset sent</string>
+	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
+	<string name="incorrectUsernameOrPassword">Incorrect username or password</string>
+	<string name="noUserWithThisMail">There is no user with this email</string>
+	<string name="alreadyUserWithMail">There is already a user with this email</string>
+	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
 
 </resources>
