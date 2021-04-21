@@ -10,14 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dcascos.motogo.R;
 import com.dcascos.motogo.database.UserHelper;
 import com.dcascos.motogo.layouts.EmptyActivity;
-import com.dcascos.motogo.R;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class SignUp extends AppCompatActivity {
 	private RelativeLayout progressBar;
 
 	private FirebaseAuth mAuth;
-	private FirebaseDatabase database;
+	private FirebaseFirestore mFirestore;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class SignUp extends AppCompatActivity {
 		progressBar = findViewById(R.id.rl_progress);
 
 		mAuth = FirebaseAuth.getInstance();
-		database = FirebaseDatabase.getInstance();
+		mFirestore = FirebaseFirestore.getInstance();
 
 		btBackLogin.setOnClickListener(v -> this.onBackPressed());
 	}
@@ -72,14 +71,11 @@ public class SignUp extends AppCompatActivity {
 
 			mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-
-					DatabaseReference reference = database.getReference("Users");
-
 					String idUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 					UserHelper userHelper = new UserHelper(fullname, username, email);
 
-					reference.child(idUser).setValue(userHelper).addOnCompleteListener(task2 -> {
-						if (task2.isSuccessful()) {
+					mFirestore.collection("Users").document(idUser).set(userHelper).addOnCompleteListener(task1 -> {
+						if (task1.isSuccessful()) {
 							startActivity(new Intent(SignUp.this, EmptyActivity.class));
 							finish();
 						} else {

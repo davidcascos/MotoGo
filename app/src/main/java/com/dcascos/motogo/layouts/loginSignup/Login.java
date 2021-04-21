@@ -96,7 +96,7 @@ public class Login extends AppCompatActivity {
 				} else {
 					progressBar.setVisibility(View.GONE);
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-					Toast.makeText(Login.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_SHORT).show();
+					Toast.makeText(Login.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
 				}
 			});
 		}
