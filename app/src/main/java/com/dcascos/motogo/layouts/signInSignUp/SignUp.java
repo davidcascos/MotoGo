@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.loginSignup;
+package com.dcascos.motogo.layouts.signInSignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ public class SignUp extends AppCompatActivity {
 	private TextInputLayout tiEmail;
 	private TextInputLayout tiPassword;
 
-	private Button btBackLogin;
+	private Button btBackSignIn;
 
 	private RelativeLayout progressBar;
 
@@ -44,14 +44,14 @@ public class SignUp extends AppCompatActivity {
 		tiEmail = findViewById(R.id.ti_email);
 		tiPassword = findViewById(R.id.ti_password);
 
-		btBackLogin = findViewById(R.id.bt_backLogin);
+		btBackSignIn = findViewById(R.id.bt_backSignIn);
 
 		progressBar = findViewById(R.id.rl_progress);
 
 		mAuth = FirebaseAuth.getInstance();
 		mFirestore = FirebaseFirestore.getInstance();
 
-		btBackLogin.setOnClickListener(v -> this.onBackPressed());
+		btBackSignIn.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	public void doSignUp(View view) {

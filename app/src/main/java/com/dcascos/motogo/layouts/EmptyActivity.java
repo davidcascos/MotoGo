@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.layouts.loginSignup.Login;
+import com.dcascos.motogo.layouts.signInSignUp.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +56,7 @@ public class EmptyActivity extends AppCompatActivity {
 
 			mAuth.signOut();
 
-			startActivity(new Intent(EmptyActivity.this, Login.class));
+			startActivity(new Intent(EmptyActivity.this, SignIn.class));
 			finish();
 
 		});

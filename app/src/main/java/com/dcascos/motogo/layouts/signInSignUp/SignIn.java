@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.loginSignup;
+package com.dcascos.motogo.layouts.signInSignUp;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class Login extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
 
 	private ImageView ivLogo;
 
@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_login);
+		setContentView(R.layout.ac_sign_in);
 
 		ivLogo = findViewById(R.id.iv_logo);
 		tvWelcome = findViewById(R.id.tv_welcome);
@@ -60,7 +60,7 @@ public class Login extends AppCompatActivity {
 
 		mAuth = FirebaseAuth.getInstance();
 
-		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(Login.this, ResetPassword.class)));
+		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(SignIn.this, ResetPassword.class)));
 
 		btSignUp.setOnClickListener(v -> {
 
@@ -73,13 +73,13 @@ public class Login extends AppCompatActivity {
 			pairs[5] = new Pair<View, String>(btGo, "tran_go");
 			pairs[6] = new Pair<View, String>(btSignUp, "tran_newUser");
 
-			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(Login.this, pairs);
+			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignIn.this, pairs);
 
-			startActivity(new Intent(Login.this, SignUp.class), options.toBundle());
+			startActivity(new Intent(SignIn.this, SignUp.class), options.toBundle());
 		});
 	}
 
-	public void doLogin(View view) {
+	public void doSignIn(View view) {
 		if (Validations.validateEmailFormat(getApplicationContext(), tiEmail)
 				& Validations.validateIsEmpty(getApplicationContext(), tiPassword)) {
 
@@ -91,12 +91,12 @@ public class Login extends AppCompatActivity {
 
 			mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					startActivity(new Intent(Login.this, EmptyActivity.class));
+					startActivity(new Intent(SignIn.this, EmptyActivity.class));
 					finish();
 				} else {
 					progressBar.setVisibility(View.GONE);
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-					Toast.makeText(Login.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
+					Toast.makeText(SignIn.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
 				}
 			});
 		}
@@ -107,7 +107,7 @@ public class Login extends AppCompatActivity {
 		super.onStart();
 
 		if (mAuth.getCurrentUser() != null) {
-			startActivity(new Intent(Login.this, EmptyActivity.class));
+			startActivity(new Intent(SignIn.this, EmptyActivity.class));
 			finish();
 		}
 	}

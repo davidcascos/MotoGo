@@ -16,7 +16,7 @@
 	<string name="fullName">Full Name</string>
 	<string name="email">Email</string>
 	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
-	<string name="alreadyHaveAccount">Already have an account? Login</string>
+	<string name="alreadyHaveAccount">Already have an account? Sign In</string>
 
 	<string name="fieldCanNotEmpty">Field can not be empty</string>
 	<string name="usernameToLarge">Username is too large!</string>

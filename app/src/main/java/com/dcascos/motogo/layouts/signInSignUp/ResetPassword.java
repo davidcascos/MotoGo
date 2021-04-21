@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.loginSignup;
+package com.dcascos.motogo.layouts.signInSignUp;
 
 import android.content.Intent;
 import android.os.Bundle;

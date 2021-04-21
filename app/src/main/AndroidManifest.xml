@@ -18,10 +18,10 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".layouts.loginSignup.Login" />
-		<activity android:name=".layouts.loginSignup.SignUp" />
-		<activity android:name=".layouts.loginSignup.ResetPassword" />
-		<activity android:name=".layouts.loginSignup.ResetPasswordSent" />
+		<activity android:name=".layouts.signInSignUp.SignIn" />
+		<activity android:name=".layouts.signInSignUp.SignUp" />
+		<activity android:name=".layouts.signInSignUp.ResetPassword" />
+		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.EmptyActivity" />
 
 		<meta-data
