@@ -41,5 +41,8 @@
 	<string name="passwordResetSent">Password reset sent</string>
 	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
 	<string name="noUserWithThisMail">There is no user with this email</string>
+	<!--Profile Fragment-->
+	<string name="noPublishedAnything">you haven\'t published anything yet</string>
+	<string name="publications">Publications</string>
 
 </resources>
