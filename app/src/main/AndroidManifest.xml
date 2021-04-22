@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.dcascos.motogo">
 
+	<uses-permission android:name="android.permission.INTERNET" />
+
 	<application
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_motogo"
@@ -16,10 +18,10 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".layouts.loginSignup.Login" />
-		<activity android:name=".layouts.loginSignup.SignUp" />
-		<activity android:name=".layouts.loginSignup.ResetPassword" />
-		<activity android:name=".layouts.loginSignup.ResetPasswordSent" />
+		<activity android:name=".layouts.signInSignUp.SignIn" />
+		<activity android:name=".layouts.signInSignUp.SignUp" />
+		<activity android:name=".layouts.signInSignUp.ResetPassword" />
+		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.EmptyActivity" />
 
 		<meta-data

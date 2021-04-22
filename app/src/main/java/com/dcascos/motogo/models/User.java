@@ -1,16 +1,28 @@
-package com.dcascos.motogo.database;
+package com.dcascos.motogo.models;
 
-public class UserHelper {
+public class User {
 
-	String fullName, username, email;
+	private String id;
+	private String fullName;
+	private String username;
+	private String email;
 
-	public UserHelper() {
+	public User() {
 	}
 
-	public UserHelper(String fullName, String username, String email) {
+	public User(String id, String fullName, String username, String email) {
+		this.id = id;
 		this.fullName = fullName;
 		this.username = username;
 		this.email = email;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFullName() {
@@ -36,5 +48,4 @@ public class UserHelper {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }

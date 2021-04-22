@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.loginSignup;
+package com.dcascos.motogo.layouts.signInSignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ public class ResetPasswordSent extends AppCompatActivity {
 		ibClose = findViewById(R.id.ib_close);
 
 		ibClose.setOnClickListener(v -> {
-			startActivity(new Intent(ResetPasswordSent.this, Login.class));
+			startActivity(new Intent(ResetPasswordSent.this, SignIn.class));
 			finish();
 		});
 	}

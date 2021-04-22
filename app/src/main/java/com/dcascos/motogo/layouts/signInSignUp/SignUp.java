@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.loginSignup;
+package com.dcascos.motogo.layouts.signInSignUp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dcascos.motogo.database.UserHelper;
-import com.dcascos.motogo.layouts.EmptyActivity;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.layouts.EmptyActivity;
+import com.dcascos.motogo.models.User;
+import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -28,12 +27,13 @@ public class SignUp extends AppCompatActivity {
 	private TextInputLayout tiEmail;
 	private TextInputLayout tiPassword;
 
-	private Button btBackLogin;
+	private Button btBackSignIn;
+	private Button btGo;
 
 	private RelativeLayout progressBar;
 
-	private FirebaseAuth mAuth;
-	private FirebaseDatabase database;
+	private AuthProvider mAuthProvider;
+	private UsersProvider mUserProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +45,20 @@ public class SignUp extends AppCompatActivity {
 		tiEmail = findViewById(R.id.ti_email);
 		tiPassword = findViewById(R.id.ti_password);
 
-		btBackLogin = findViewById(R.id.bt_backLogin);
+		btBackSignIn = findViewById(R.id.bt_backSignIn);
+		btGo = findViewById(R.id.bt_go);
 
 		progressBar = findViewById(R.id.rl_progress);
 
-		mAuth = FirebaseAuth.getInstance();
-		database = FirebaseDatabase.getInstance();
+		mAuthProvider = new AuthProvider();
+		mUserProvider = new UsersProvider();
 
-		btBackLogin.setOnClickListener(v -> this.onBackPressed());
+		btBackSignIn.setOnClickListener(v -> this.onBackPressed());
+
+		btGo.setOnClickListener(v -> doSignUp());
 	}
 
-	public void doSignUp(View view) {
-
+	private void doSignUp() {
 		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
 				& Validations.validateEmailFormat(getApplicationContext(), tiEmail)
@@ -70,18 +72,14 @@ public class SignUp extends AppCompatActivity {
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
-			mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+			mAuthProvider.signUp(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
+					String userId = mAuthProvider.getUserId();
+					User user = new User(userId, fullname, username, email);
 
-					DatabaseReference reference = database.getReference("Users");
-
-					String idUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-					UserHelper userHelper = new UserHelper(fullname, username, email);
-
-					reference.child(idUser).setValue(userHelper).addOnCompleteListener(task2 -> {
-						if (task2.isSuccessful()) {
-							startActivity(new Intent(SignUp.this, EmptyActivity.class));
-							finish();
+					mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
+						if (task1.isSuccessful()) {
+							startActivity(new Intent(SignUp.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 						} else {
 							progressBar.setVisibility(View.GONE);
 							getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

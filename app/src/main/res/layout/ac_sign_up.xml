@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/white"
-	tools:context=".layouts.loginSignup.SignUp">
+	tools:context=".layouts.signInSignUp.SignUp">
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -132,14 +132,13 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="5dp"
 				android:layout_marginBottom="5dp"
-				android:background="@color/black"
-				android:onClick="doSignUp"
+				android:background="@drawable/shape_buttons"
 				android:text="@string/go"
 				android:textColor="@color/black"
 				android:transitionName="tran_go" />
 
 			<Button
-				android:id="@+id/bt_backLogin"
+				android:id="@+id/bt_backSignIn"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_margin="5dp"

@@ -2,8 +2,8 @@ package com.dcascos.motogo.utils;
 
 import android.content.Context;
 
-import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.constants.Constants;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
