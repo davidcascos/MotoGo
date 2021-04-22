@@ -101,6 +101,13 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		progressBar.setVisibility(View.GONE);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+	}
+
+	@Override
 	protected void onStart() {
 		super.onStart();
 
