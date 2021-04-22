@@ -51,7 +51,7 @@ public class SignIn extends AppCompatActivity {
 	private RelativeLayout progressBar;
 
 	private AuthProvider mAuthProvider;
-	private UsersProvider mUserProvider;
+	private UsersProvider mUsersProvider;
 	private GoogleSignInClient mGoogleSignInClient;
 
 	@Override
@@ -74,7 +74,7 @@ public class SignIn extends AppCompatActivity {
 		progressBar = findViewById(R.id.rl_progress);
 
 		mAuthProvider = new AuthProvider();
-		mUserProvider = new UsersProvider();
+		mUsersProvider = new UsersProvider();
 
 		// Configure Google Sign In
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -174,7 +174,7 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	private void checkUserExist(String idUser) {
-		mUserProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
+		mUsersProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 			} else {
@@ -184,7 +184,7 @@ public class SignIn extends AppCompatActivity {
 
 				User user = new User(idUser, fullname, username, email);
 
-				mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
+				mUsersProvider.createUser(user).addOnCompleteListener(task1 -> {
 					if (task1.isSuccessful()) {
 						startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 					} else {

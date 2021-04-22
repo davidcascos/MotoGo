@@ -6,6 +6,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Map;
+
 public class UsersProvider {
 
 	private CollectionReference mCollection;
@@ -20,6 +22,10 @@ public class UsersProvider {
 
 	public Task<Void> createUser(User user) {
 		return mCollection.document(user.getId()).set(user);
+	}
+
+	public Task<Void> update(User user) {
+		return mCollection.document(user.getId()).update((Map<String, Object>) user);
 	}
 
 }

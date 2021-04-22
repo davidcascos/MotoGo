@@ -44,5 +44,8 @@
 	<!--Profile Fragment-->
 	<string name="noPublishedAnything">you haven\'t published anything yet</string>
 	<string name="publications">Publications</string>
+	<string name="edit_profile">Edit Profile</string>
+	<string name="update">Update</string>
+	<string name="userCouldNotBeUpdated">User could not be updated</string>
 
 </resources>
