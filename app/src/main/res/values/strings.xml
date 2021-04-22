@@ -6,7 +6,7 @@
 	<string name="password">Password</string>
 	<string name="go">GO</string>
 	<!--SignIn-->
-	<string name="welcomeBack">Hello There, Welcome Back</string>
+	<string name="welcomeBack">Welcome Back!</string>
 	<string name="signInContinue">Sign In to continue</string>
 	<string name="forgetPassword">FORGET PASSWORD?</string>
 	<string name="newUser">New User? SIGN UP</string>

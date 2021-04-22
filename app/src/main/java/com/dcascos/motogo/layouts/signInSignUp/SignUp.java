@@ -59,7 +59,6 @@ public class SignUp extends AppCompatActivity {
 	}
 
 	private void doSignUp() {
-
 		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
 				& Validations.validateEmailFormat(getApplicationContext(), tiEmail)
@@ -80,8 +79,7 @@ public class SignUp extends AppCompatActivity {
 
 					mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
 						if (task1.isSuccessful()) {
-							startActivity(new Intent(SignUp.this, EmptyActivity.class));
-							finish();
+							startActivity(new Intent(SignUp.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 						} else {
 							progressBar.setVisibility(View.GONE);
 							getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

@@ -80,14 +80,12 @@ public class SignIn extends AppCompatActivity {
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
 		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
 		btGo.setOnClickListener(v -> doSignIn());
 		btGoogle.setOnClickListener(v -> signInGoogle());
 
 		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(SignIn.this, ResetPassword.class)));
 
 		btSignUp.setOnClickListener(v -> {
-
 			Pair[] pairs = new Pair[7];
 			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
 			pairs[1] = new Pair<View, String>(tvWelcome, "tran_title");
@@ -107,8 +105,7 @@ public class SignIn extends AppCompatActivity {
 		super.onStart();
 
 		if (mAuthProvider.getUserLogged()) {
-			startActivity(new Intent(SignIn.this, EmptyActivity.class));
-			finish();
+			startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 		}
 	}
 
@@ -124,8 +121,7 @@ public class SignIn extends AppCompatActivity {
 
 			mAuthProvider.signIn(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					startActivity(new Intent(SignIn.this, EmptyActivity.class));
-					finish();
+					startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 				} else {
 					progressBar.setVisibility(View.GONE);
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -158,7 +154,6 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-
 		mAuthProvider.googleSignIn(account).addOnCompleteListener(this, task -> {
 			if (task.isSuccessful()) {
 				String idUser = mAuthProvider.getUserId();
@@ -174,8 +169,7 @@ public class SignIn extends AppCompatActivity {
 	private void checkUserExist(String idUser) {
 		mUserProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
-				startActivity(new Intent(SignIn.this, EmptyActivity.class));
-				finish();
+				startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 			} else {
 				String fullname = mAuthProvider.getUserName();
 				String email = mAuthProvider.getUserEmail();
@@ -185,8 +179,7 @@ public class SignIn extends AppCompatActivity {
 
 				mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
 					if (task1.isSuccessful()) {
-						startActivity(new Intent(SignIn.this, EmptyActivity.class));
-						finish();
+						startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 					} else {
 						progressBar.setVisibility(View.GONE);
 						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
