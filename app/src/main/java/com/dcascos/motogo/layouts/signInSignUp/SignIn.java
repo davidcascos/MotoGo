@@ -87,13 +87,13 @@ public class SignIn extends AppCompatActivity {
 
 		btSignUp.setOnClickListener(v -> {
 			Pair[] pairs = new Pair[7];
-			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
-			pairs[1] = new Pair<View, String>(tvWelcome, "tran_title");
-			pairs[2] = new Pair<View, String>(tvSignIn, "tran_signInContinue");
-			pairs[3] = new Pair<View, String>(tiEmail, "tran_email");
-			pairs[4] = new Pair<View, String>(tiPassword, "tran_password");
-			pairs[5] = new Pair<View, String>(btGo, "tran_go");
-			pairs[6] = new Pair<View, String>(btSignUp, "tran_newUser");
+			pairs[0] = new Pair<View, String>(ivLogo, (String) getText(R.string.tran_logo));
+			pairs[1] = new Pair<View, String>(tvWelcome, (String) getText(R.string.tran_title));
+			pairs[2] = new Pair<View, String>(tvSignIn, (String) getText(R.string.tran_signInContinue));
+			pairs[3] = new Pair<View, String>(tiEmail, (String) getText(R.string.tran_email));
+			pairs[4] = new Pair<View, String>(tiPassword, (String) getText(R.string.tran_password));
+			pairs[5] = new Pair<View, String>(btGo, (String) getText(R.string.tran_go));
+			pairs[6] = new Pair<View, String>(btSignUp, (String) getText(R.string.tran_newUser));
 
 			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignIn.this, pairs);
 			startActivity(new Intent(SignIn.this, SignUp.class), options.toBundle());

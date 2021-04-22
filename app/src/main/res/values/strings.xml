@@ -1,6 +1,15 @@
 <resources>
 	<string name="app_name">MotoGo</string>
 	<string name="title">MOTO GO</string>
+	<!--Transitions-->
+	<string name="tran_logo">tran_logo</string>
+	<string name="tran_title">tran_title</string>
+	<string name="tran_signInContinue">tran_signInContinue</string>
+	<string name="tran_email">tran_email</string>
+	<string name="tran_password">tran_password</string>
+	<string name="tran_go">tran_go</string>
+	<string name="tran_newUser">tran_newUser</string>
+	<string name="tran_profile">tran_profile</string>
 	<!--SignIn/SignUp/ForgetPassword-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
@@ -32,6 +41,5 @@
 	<string name="passwordResetSent">Password reset sent</string>
 	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
 	<string name="noUserWithThisMail">There is no user with this email</string>
-
 
 </resources>
