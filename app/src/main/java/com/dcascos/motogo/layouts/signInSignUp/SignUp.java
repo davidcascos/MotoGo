@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.layouts.EmptyActivity;
+import com.dcascos.motogo.layouts.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.UsersProvider;
@@ -79,7 +79,7 @@ public class SignUp extends AppCompatActivity {
 
 					mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
 						if (task1.isSuccessful()) {
-							startActivity(new Intent(SignUp.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+							startActivity(new Intent(SignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 						} else {
 							progressBar.setVisibility(View.GONE);
 							getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

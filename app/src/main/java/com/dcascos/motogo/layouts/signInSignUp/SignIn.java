@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.layouts.EmptyActivity;
+import com.dcascos.motogo.layouts.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.UsersProvider;
@@ -105,7 +105,7 @@ public class SignIn extends AppCompatActivity {
 		super.onStart();
 
 		if (mAuthProvider.getUserLogged()) {
-			startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+			startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 		}
 	}
 
@@ -121,7 +121,7 @@ public class SignIn extends AppCompatActivity {
 
 			mAuthProvider.signIn(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+					startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 				} else {
 					progressBar.setVisibility(View.GONE);
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -169,7 +169,7 @@ public class SignIn extends AppCompatActivity {
 	private void checkUserExist(String idUser) {
 		mUserProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
-				startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+				startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 			} else {
 				String fullname = mAuthProvider.getUserName();
 				String email = mAuthProvider.getUserEmail();
@@ -179,7 +179,7 @@ public class SignIn extends AppCompatActivity {
 
 				mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
 					if (task1.isSuccessful()) {
-						startActivity(new Intent(SignIn.this, EmptyActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+						startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 					} else {
 						progressBar.setVisibility(View.GONE);
 						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
