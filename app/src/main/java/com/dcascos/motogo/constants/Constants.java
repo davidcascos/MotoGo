@@ -2,6 +2,7 @@ package com.dcascos.motogo.constants;
 
 public class Constants {
 
+	//Text formats
 	public static final String NAMEFORMAT = "^[a-zA-Z ]*$";
 
 	/*	Username consists of alphanumeric characters (a-zA-Z0-9), lowercase, or uppercase.
@@ -18,4 +19,7 @@ public class Constants {
 		Password must contain at least one uppercase Latin character [A-Z].
 		Password must contain a length of at least 6 characters.*/
 	public static final String PASSWORDFORMAT = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
+
+	//Google
+	public static final int REQUEST_CODE_GOOGLE = 1;
 }

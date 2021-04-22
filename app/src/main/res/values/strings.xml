@@ -1,7 +1,7 @@
 <resources>
 	<string name="app_name">MotoGo</string>
 	<string name="title">MOTO GO</string>
-	<!--SignIn/SignUp-->
+	<!--SignIn/SignUp/ForgetPassword-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
 	<string name="go">GO</string>
@@ -10,6 +10,8 @@
 	<string name="signInContinue">Sign In to continue</string>
 	<string name="forgetPassword">FORGET PASSWORD?</string>
 	<string name="newUser">New User? SIGN UP</string>
+	<string name="incorrectUsernameOrPassword">Incorrect username or password</string>
+	<string name="couldNotLoginWithGoogle">Could not login with Google</string>
 	<!--SignUp-->
 	<string name="welcome">Welcome,</string>
 	<string name="singUpToStart">SingUp to start your new journey</string>
@@ -17,10 +19,11 @@
 	<string name="email">Email</string>
 	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
 	<string name="alreadyHaveAccount">Already have an account? Sign In</string>
-
 	<string name="fieldCanNotEmpty">Field can not be empty</string>
 	<string name="usernameToLarge">Username is too large!</string>
 	<string name="invalidFormat">Invalid %1s format!</string>
+	<string name="alreadyUserWithMail">There is already a user with this email</string>
+	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
 	<!--ForgetPassword-->
 	<string name="forgetPasswordTitle">Forget Password</string>
 	<string name="forgetPasswordDetail">Provide your account\'s email for which you want to reset your password!</string>
@@ -28,9 +31,7 @@
 	<string name="signOut">Sign Out</string>
 	<string name="passwordResetSent">Password reset sent</string>
 	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
-	<string name="incorrectUsernameOrPassword">Incorrect username or password</string>
 	<string name="noUserWithThisMail">There is no user with this email</string>
-	<string name="alreadyUserWithMail">There is already a user with this email</string>
-	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
+
 
 </resources>

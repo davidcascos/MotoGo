@@ -103,9 +103,16 @@
 				android:layout_marginTop="5dp"
 				android:layout_marginBottom="5dp"
 				android:background="@drawable/shape_buttons"
-				android:onClick="doSignIn"
 				android:text="@string/go"
 				android:textColor="@color/black"
+				android:transitionName="tran_go" />
+
+			<com.google.android.gms.common.SignInButton
+				android:id="@+id/bt_google"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:layout_marginBottom="5dp"
 				android:transitionName="tran_go" />
 
 			<Button

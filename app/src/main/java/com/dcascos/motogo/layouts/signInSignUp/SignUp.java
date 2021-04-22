@@ -11,12 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.database.UserHelper;
 import com.dcascos.motogo.layouts.EmptyActivity;
+import com.dcascos.motogo.models.User;
+import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -28,11 +28,12 @@ public class SignUp extends AppCompatActivity {
 	private TextInputLayout tiPassword;
 
 	private Button btBackSignIn;
+	private Button btGo;
 
 	private RelativeLayout progressBar;
 
-	private FirebaseAuth mAuth;
-	private FirebaseFirestore mFirestore;
+	private AuthProvider mAuthProvider;
+	private UsersProvider mUserProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,19 @@ public class SignUp extends AppCompatActivity {
 		tiPassword = findViewById(R.id.ti_password);
 
 		btBackSignIn = findViewById(R.id.bt_backSignIn);
+		btGo = findViewById(R.id.bt_go);
 
 		progressBar = findViewById(R.id.rl_progress);
 
-		mAuth = FirebaseAuth.getInstance();
-		mFirestore = FirebaseFirestore.getInstance();
+		mAuthProvider = new AuthProvider();
+		mUserProvider = new UsersProvider();
 
 		btBackSignIn.setOnClickListener(v -> this.onBackPressed());
+
+		btGo.setOnClickListener(v -> doSignUp());
 	}
 
-	public void doSignUp(View view) {
+	private void doSignUp() {
 
 		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)
@@ -69,12 +73,12 @@ public class SignUp extends AppCompatActivity {
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
-			mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+			mAuthProvider.signUp(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					String idUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-					UserHelper userHelper = new UserHelper(fullname, username, email);
+					String userId = mAuthProvider.getUserId();
+					User user = new User(userId, fullname, username, email);
 
-					mFirestore.collection("Users").document(idUser).set(userHelper).addOnCompleteListener(task1 -> {
+					mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
 						if (task1.isSuccessful()) {
 							startActivity(new Intent(SignUp.this, EmptyActivity.class));
 							finish();
