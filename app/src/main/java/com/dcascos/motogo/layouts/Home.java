@@ -23,13 +23,12 @@ public class Home extends AppCompatActivity {
 		bottomNavigation = findViewById(R.id.bottom_navigation);
 
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-		openFragment(new ProfileFragment());
+		openFragment(new HomeFragment());
 	}
 
 	public void openFragment(Fragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, fragment);
-		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
