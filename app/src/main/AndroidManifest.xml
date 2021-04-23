@@ -23,6 +23,7 @@
 		<activity android:name=".layouts.signInSignUp.ResetPassword" />
 		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.Home" />
+		<activity android:name=".layouts.Post" />
 
 		<meta-data
 			android:name="preloaded_fonts"
