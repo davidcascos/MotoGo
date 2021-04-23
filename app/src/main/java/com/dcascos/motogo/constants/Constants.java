@@ -22,4 +22,8 @@ public class Constants {
 
 	//Google
 	public static final int REQUEST_CODE_GOOGLE = 1;
+
+	//System
+	public static final int REQUEST_CODE_GALLERY = 1;
+
 }

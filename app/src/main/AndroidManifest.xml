@@ -3,6 +3,7 @@
 	package="com.dcascos.motogo">
 
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 	<application
 		android:allowBackup="true"
@@ -23,7 +24,7 @@
 		<activity android:name=".layouts.signInSignUp.ResetPassword" />
 		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.Home" />
-		<activity android:name=".layouts.Post" />
+		<activity android:name=".layouts.NewPost" />
 
 		<meta-data
 			android:name="preloaded_fonts"

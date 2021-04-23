@@ -36,6 +36,11 @@
 	<string name="location">Location</string>
 	<string name="description">Description</string>
 	<string name="publish">Publish</string>
+	<string name="addCoverImage">Add a cover image</string>
+	<string name="createPost">Create Post</string>
+	<string name="coverPhotoNoUploaded">Cover photo could not be uploaded</string>
+	<string name="postNoUploaded">Post could not be uploaded</string>
+	<string name="postCreated">Post Created</string>
 
 
 </resources>
