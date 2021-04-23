@@ -21,14 +21,10 @@ import java.util.Objects;
 public class ResetPassword extends AppCompatActivity {
 
 	private ImageButton ibBack;
-
 	private Button btResetPassword;
-
 	private TextInputLayout tiEmail;
-
 	private RelativeLayout progressBar;
-
-	private AuthProvider mAuthProvider;
+	private AuthProvider authProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +32,11 @@ public class ResetPassword extends AppCompatActivity {
 		setContentView(R.layout.ac_reset_password);
 
 		ibBack = findViewById(R.id.ib_back);
-
 		btResetPassword = findViewById(R.id.bt_resetPassword);
-
 		tiEmail = findViewById(R.id.ti_email);
-
 		progressBar = findViewById(R.id.rl_progress);
-
-		mAuthProvider = new AuthProvider();
-
+		authProvider = new AuthProvider();
 		ibBack.setOnClickListener(v -> this.onBackPressed());
-
 		btResetPassword.setOnClickListener(v -> resetPassword());
 	}
 
@@ -57,7 +47,7 @@ public class ResetPassword extends AppCompatActivity {
 
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 
-			mAuthProvider.resetPassword(email).addOnCompleteListener(task -> {
+			authProvider.resetPassword(email).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
 					startActivity(new Intent(ResetPassword.this, ResetPasswordSent.class));
 					finish();

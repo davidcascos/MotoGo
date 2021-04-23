@@ -9,17 +9,15 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.layouts.Post;
+import com.dcascos.motogo.layouts.NewPost;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeFragment extends Fragment {
 
-	View view;
-
-	FloatingActionButton abAdd;
+	private View view;
+	private FloatingActionButton abAdd;
 
 	public HomeFragment() {
-
 	}
 
 	@Override
@@ -33,7 +31,6 @@ public class HomeFragment extends Fragment {
 	}
 
 	private void goToPost() {
-		startActivity(new Intent(getContext(), Post.class));
-
+		startActivity(new Intent(getContext(), NewPost.class));
 	}
 }

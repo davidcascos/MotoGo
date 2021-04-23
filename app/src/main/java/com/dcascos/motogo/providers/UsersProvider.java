@@ -8,18 +8,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UsersProvider {
 
-	private CollectionReference mCollection;
+	private CollectionReference collectionReference;
 
 	public UsersProvider() {
-		mCollection = FirebaseFirestore.getInstance().collection("Users");
+		collectionReference = FirebaseFirestore.getInstance().collection("Users");
 	}
 
 	public Task<DocumentSnapshot> getUser(String userId) {
-		return mCollection.document(userId).get();
+		return collectionReference.document(userId).get();
 	}
 
 	public Task<Void> createUser(User user) {
-		return mCollection.document(user.getId()).set(user);
+		return collectionReference.document(user.getId()).set(user);
 	}
 
 }
