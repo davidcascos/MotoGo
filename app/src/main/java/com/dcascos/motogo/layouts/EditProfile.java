@@ -100,7 +100,6 @@ public class EditProfile extends AppCompatActivity {
 				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGEPROFILE)).circleCrop().into(circleImageProfile);
 
 				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			}
 		});
 	}

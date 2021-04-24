@@ -13,6 +13,7 @@
 		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
+		<activity android:name=".layouts.PostDetail"></activity>
 		<activity android:name=".layouts.SplashScreen">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

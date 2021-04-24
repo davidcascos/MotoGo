@@ -1,6 +1,7 @@
 package com.dcascos.motogo.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.layouts.PostDetail;
 import com.dcascos.motogo.models.Post;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.ViewHolder> {
 
@@ -27,11 +30,15 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 
 	@Override
 	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Post model) {
+
+		DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
+
 		if (model.getImage() != null && !model.getImage().isEmpty()) {
 			Glide.with(context).load(model.getImage()).into(holder.ivPostCard);
 		}
 		holder.tvTitleCard.setText(model.getTitle());
 		holder.tvDescriptionCard.setText(model.getDescription());
+		holder.viewHolder.setOnClickListener(v -> context.startActivity(new Intent(context, PostDetail.class).putExtra("documentId", documentSnapshot.getId())));
 	}
 
 	@NonNull
@@ -45,12 +52,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		private ImageView ivPostCard;
 		private TextView tvTitleCard;
 		private TextView tvDescriptionCard;
+		private View viewHolder;
 
 		public ViewHolder(View view) {
 			super(view);
 			ivPostCard = view.findViewById(R.id.iv_postCard);
 			tvTitleCard = view.findViewById(R.id.tv_titleCard);
 			tvDescriptionCard = view.findViewById(R.id.tv_descriptionCard);
+			viewHolder = view;
 		}
 	}
 }
