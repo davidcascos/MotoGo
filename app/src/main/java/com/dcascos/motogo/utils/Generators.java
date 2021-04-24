@@ -7,9 +7,9 @@ public class Generators {
 
 	public static String genRandomUsername() {
 		String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
-		StringBuilder sb = new StringBuilder(15);
+		StringBuilder sb = new StringBuilder(14);
 
-		for (int i = 0; i <= 15; i++) {
+		for (int i = 0; i <= 14; i++) {
 			int index = (int) (AlphaNumericString.length() * Math.random());
 			sb.append(AlphaNumericString.charAt(index));
 		}
@@ -17,7 +17,7 @@ public class Generators {
 	}
 
 	public static String photoNameFormater() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		return simpleDateFormat.format(new Date());
 	}
 }

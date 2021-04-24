@@ -20,6 +20,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.dcascos.motogo.utils.Validations;
@@ -48,6 +49,7 @@ public class SignIn extends AppCompatActivity {
 	private SignInButton btGoogle;
 
 	private AuthProvider authProvider;
+	private ImageProvider imageProvider;
 	private UsersProvider userProvider;
 	private GoogleSignInClient googleSignInClient;
 
@@ -68,6 +70,7 @@ public class SignIn extends AppCompatActivity {
 		btGoogle = findViewById(R.id.bt_google);
 
 		authProvider = new AuthProvider();
+		imageProvider = new ImageProvider();
 		userProvider = new UsersProvider();
 
 		// Configure Google Sign In
@@ -80,17 +83,24 @@ public class SignIn extends AppCompatActivity {
 
 		btSignUp.setOnClickListener(v -> {
 			Pair[] pairs = new Pair[7];
-			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
-			pairs[1] = new Pair<View, String>(tvWelcome, "tran_title");
-			pairs[2] = new Pair<View, String>(tvSignIn, "tran_signInContinue");
-			pairs[3] = new Pair<View, String>(tiEmail, "tran_email");
-			pairs[4] = new Pair<View, String>(tiPassword, "tran_password");
-			pairs[5] = new Pair<View, String>(btGo, "tran_go");
-			pairs[6] = new Pair<View, String>(btSignUp, "tran_newUser");
+			pairs[0] = new Pair<View, String>(ivLogo, (String) getText(R.string.tran_logo));
+			pairs[1] = new Pair<View, String>(tvWelcome, (String) getText(R.string.tran_title));
+			pairs[2] = new Pair<View, String>(tvSignIn, (String) getText(R.string.tran_signInContinue));
+			pairs[3] = new Pair<View, String>(tiEmail, (String) getText(R.string.tran_email));
+			pairs[4] = new Pair<View, String>(tiPassword, (String) getText(R.string.tran_password));
+			pairs[5] = new Pair<View, String>(btGo, (String) getText(R.string.tran_go));
+			pairs[6] = new Pair<View, String>(btSignUp, (String) getText(R.string.tran_newUser));
 
 			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignIn.this, pairs);
 			startActivity(new Intent(SignIn.this, SignUp.class), options.toBundle());
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		progressBar.setVisibility(View.GONE);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 	}
 
 	@Override
@@ -160,20 +170,22 @@ public class SignIn extends AppCompatActivity {
 			if (documentSnapshot.exists()) {
 				goHome();
 			} else {
-				String fullname = authProvider.getUserName();
-				String email = authProvider.getUserEmail();
-				String username = Generators.genRandomUsername();
+				imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
+						imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
+							String fullname = authProvider.getUserName();
+							String email = authProvider.getUserEmail();
+							String username = Generators.genRandomUsername();
 
-				User user = new User(idUser, fullname, username, email);
-
-				userProvider.createUser(user).addOnCompleteListener(task1 -> {
-					if (task1.isSuccessful()) {
-						goHome();
-					} else {
-						hideProgressBar();
-						Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
-					}
-				});
+							User user = new User(idUser, fullname, username, email, uriCover.toString(), uriProfile.toString());
+							userProvider.createUser(user).addOnCompleteListener(task1 -> {
+								if (task1.isSuccessful()) {
+									goHome();
+								} else {
+									hideProgressBar();
+									Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+								}
+							});
+						}));
 			}
 		});
 	}

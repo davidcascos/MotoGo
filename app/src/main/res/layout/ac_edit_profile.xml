@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context=".layouts.EditProfile">
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		android:background="@color/black" />
+
+	<ImageView
+		android:id="@+id/iv_cover"
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		android:alpha="0.8"
+		android:scaleType="centerCrop"
+		android:src="@drawable/motogologo"
+		android:transitionName="@string/tran_profile"
+		app:layout_collapseMode="parallax" />
+
+	<de.hdodenhof.circleimageview.CircleImageView
+		android:id="@+id/circleImageProfile"
+		android:layout_width="match_parent"
+		android:layout_height="140dp"
+		android:layout_marginTop="130dp"
+		android:src="@drawable/ic_fullname"
+		app:civ_border_color="@color/black"
+		app:civ_border_width="5dp"
+		app:civ_circle_background_color="@color/app_colorDark" />
+
+	<ImageButton
+		android:id="@+id/ib_back"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@color/transparent"
+		android:padding="20dp"
+		android:src="@drawable/ic_back"
+		android:tint="@color/white" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="270dp"
+		android:orientation="vertical"
+		android:padding="20dp">
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/ti_fullname"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/fullName"
+			app:endIconMode="clear_text"
+			app:endIconTint="@color/black"
+			app:hintTextColor="@color/black"
+			app:startIconDrawable="@drawable/ic_fullname"
+			app:startIconTint="@color/black">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/ti_username"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/username"
+			app:counterEnabled="true"
+			app:counterMaxLength="15"
+			app:endIconMode="clear_text"
+			app:endIconTint="@color/black"
+			app:hintTextColor="@color/black"
+			app:startIconDrawable="@drawable/ic_username"
+			app:startIconTint="@color/black">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="text" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/ti_email"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/email"
+			android:transitionName="@string/tran_email"
+			app:endIconMode="clear_text"
+			app:endIconTint="@color/black"
+			app:hintTextColor="@color/black"
+			app:startIconDrawable="@drawable/ic_email"
+			app:startIconTint="@color/black">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:focusable="false"
+				android:inputType="textEmailAddress" />
+		</com.google.android.material.textfield.TextInputLayout>
+	</LinearLayout>
+
+	<Button
+		android:id="@+id/bt_updateProfile"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:layout_margin="20dp"
+		android:background="@drawable/shape_buttons"
+		android:text="@string/update"
+		android:textColor="@color/black" />
+
+	<RelativeLayout
+		android:id="@+id/rl_progress"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:background="@drawable/shape_loading"
+		android:elevation="8dp"
+		android:padding="20dp"
+		android:visibility="gone">
+
+		<ProgressBar
+			android:id="@+id/progress_circular"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:layout_centerInParent="true"
+			android:indeterminateTint="@color/black" />
+	</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

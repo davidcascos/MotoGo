@@ -3,7 +3,6 @@ package com.dcascos.motogo.layouts;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,14 +24,11 @@ import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.PostProvider;
-import com.dcascos.motogo.utils.FileUtils;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -47,9 +43,8 @@ public class NewPost extends AppCompatActivity {
 	private ImageButton ibBack;
 	private AlertDialog.Builder builderSelector;
 
-	private File imageFile;
 	private byte[] photoFile;
-	private CharSequence dialogOptions[];
+	private CharSequence[] dialogOptions;
 
 	private AuthProvider authProvider;
 	private ImageProvider imageProvider;
@@ -78,13 +73,7 @@ public class NewPost extends AppCompatActivity {
 
 		ivCover.setOnClickListener(v -> selectOptionImage());
 
-		btPublish.setOnClickListener(v -> {
-			try {
-				createPost();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		});
+		btPublish.setOnClickListener(v -> createPost());
 
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
@@ -112,7 +101,7 @@ public class NewPost extends AppCompatActivity {
 		Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		startActivityForResult(takePhotoIntent, Constants.REQUEST_CODE_PHOTO);
 	}
-	
+
 	private void openGallery() {
 		Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
 		startActivityForResult(galleryIntent, Constants.REQUEST_CODE_GALLERY);
@@ -121,30 +110,29 @@ public class NewPost extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//Select from gallery
-		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
-			try {
-				imageFile = FileUtils.from(this, Objects.requireNonNull(data).getData());
-				ivCover.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
-				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			} catch (IOException e) {
-				e.printStackTrace();
+
+		if (requestCode == Constants.REQUEST_CODE_PHOTO && resultCode == RESULT_OK
+				|| requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
+
+			Bitmap coverImage = null;
+			if (requestCode == Constants.REQUEST_CODE_GALLERY) {
+				try {
+					coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				coverImage = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
 			}
-		}
-
-		//Take photo
-		if (requestCode == Constants.REQUEST_CODE_PHOTO && resultCode == RESULT_OK) {
-			Bitmap photo = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
-			ivCover.setImageBitmap(photo);
-			ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			coverImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			ivCover.setImageBitmap(coverImage);
+			ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			photoFile = baos.toByteArray();
 		}
 	}
 
-	private void createPost() throws FileNotFoundException {
+	private void createPost() {
 		if (Validations.validateIsEmpty(getApplicationContext(), tiTitle)
 				& Validations.validateIsEmpty(getApplicationContext(), tiLocation)
 				& Validations.validateIsEmpty(getApplicationContext(), tiDescription)) {
@@ -155,17 +143,8 @@ public class NewPost extends AppCompatActivity {
 			String location = Objects.requireNonNull(tiLocation.getEditText()).getText().toString().trim();
 			String description = Objects.requireNonNull(tiDescription.getEditText()).getText().toString().trim();
 
-			if (imageFile != null) {
-				imageProvider.save(imageFile).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
-					} else {
-						hideProgressBar();
-						Toast.makeText(NewPost.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (photoFile != null) {
-				imageProvider.saveFromBytes(photoFile).addOnCompleteListener(task -> {
+			if (photoFile != null) {
+				imageProvider.saveFromBytes(photoFile, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
 					if (task.isSuccessful()) {
 						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 					} else {
@@ -174,7 +153,7 @@ public class NewPost extends AppCompatActivity {
 					}
 				});
 			} else {
-				imageProvider.saveWithoutImage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
+				imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 			}
 		}
 	}
@@ -190,7 +169,7 @@ public class NewPost extends AppCompatActivity {
 
 		postProvider.save(post).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {
-				this.onBackPressed();
+				finish();
 				Toast.makeText(NewPost.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
 			} else {
 				hideProgressBar();

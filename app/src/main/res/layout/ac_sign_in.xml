@@ -16,7 +16,7 @@
 			android:layout_width="150dp"
 			android:layout_height="150dp"
 			android:src="@drawable/motogologo"
-			android:transitionName="tran_logo" />
+			android:transitionName="@string/tran_logo" />
 
 		<TextView
 			android:id="@+id/tv_welcome"
@@ -27,7 +27,7 @@
 			android:text="@string/welcomeBack"
 			android:textColor="@color/black"
 			android:textSize="40sp"
-			android:transitionName="tran_title" />
+			android:transitionName="@string/tran_title" />
 
 		<TextView
 			android:id="@+id/tv_signin"
@@ -37,7 +37,7 @@
 			android:fontFamily="@font/antic"
 			android:text="@string/signInContinue"
 			android:textSize="18sp"
-			android:transitionName="tran_signInContinue" />
+			android:transitionName="@string/tran_signInContinue" />
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -53,7 +53,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/email"
-				android:transitionName="tran_email"
+				android:transitionName="@string/tran_email"
 				app:endIconMode="clear_text"
 				app:endIconTint="@color/black"
 				app:hintTextColor="@color/black"
@@ -72,7 +72,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/password"
-				android:transitionName="tran_password"
+				android:transitionName="@string/tran_password"
 				app:hintTextColor="@color/black"
 				app:passwordToggleEnabled="true"
 				app:startIconDrawable="@drawable/ic_password"
@@ -104,7 +104,7 @@
 				android:background="@drawable/shape_buttons"
 				android:text="@string/go"
 				android:textColor="@color/black"
-				android:transitionName="tran_go" />
+				android:transitionName="@string/tran_go" />
 
 			<com.google.android.gms.common.SignInButton
 				android:id="@+id/bt_google"
@@ -112,7 +112,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="5dp"
 				android:layout_marginBottom="5dp"
-				android:transitionName="tran_go" />
+				android:transitionName="@string/tran_go" />
 
 			<Button
 				android:id="@+id/bt_signUp"
@@ -124,7 +124,7 @@
 				android:fontFamily="@font/antic"
 				android:text="@string/newUser"
 				android:textColor="@color/black"
-				android:transitionName="tran_newUser" />
+				android:transitionName="@string/tran_newUser" />
 		</LinearLayout>
 
 		<RelativeLayout
