@@ -1,5 +1,8 @@
 package com.dcascos.motogo.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Generators {
 
 	public static String genRandomUsername() {
@@ -11,5 +14,10 @@ public class Generators {
 			sb.append(AlphaNumericString.charAt(index));
 		}
 		return sb.toString();
+	}
+
+	public static String photoNameFormater() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+		return simpleDateFormat.format(new Date());
 	}
 }

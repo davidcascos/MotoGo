@@ -3,6 +3,8 @@
 	package="com.dcascos.motogo">
 
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA" />
 
 	<application
 		android:allowBackup="true"
@@ -23,6 +25,7 @@
 		<activity android:name=".layouts.signInSignUp.ResetPassword" />
 		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.Home" />
+		<activity android:name=".layouts.NewPost" />
 		<activity android:name=".layouts.EditProfile" />
 
 		<meta-data

@@ -3,13 +3,17 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:layout_marginBottom="50dp"
 	android:padding="20dp"
 	tools:context=".fragments.HomeFragment">
 
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:text="Home" />
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:id="@+id/ab_add"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|end"
+		android:layout_margin="15dp"
+		android:backgroundTint="@color/app_colorDark"
+		android:src="@drawable/ic_add" />
 
 </FrameLayout>
