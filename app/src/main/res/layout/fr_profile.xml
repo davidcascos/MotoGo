@@ -87,6 +87,7 @@
 						android:textStyle="bold" />
 
 					<TextView
+						android:id="@+id/tv_postNumber"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="0"
@@ -114,6 +115,7 @@
 						android:textStyle="bold" />
 
 					<TextView
+						android:id="@+id/tv_username"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/username"
@@ -132,6 +134,7 @@
 					android:orientation="vertical">
 
 					<TextView
+						android:id="@+id/tv_fullName"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:fontFamily="@font/bungee"
@@ -140,6 +143,7 @@
 						android:textSize="20dp" />
 
 					<TextView
+						android:id="@+id/tv_email"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginTop="-10dp"

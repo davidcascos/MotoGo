@@ -29,7 +29,6 @@ import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -88,13 +87,7 @@ public class EditProfile extends AppCompatActivity {
 		ivCover.setOnClickListener(v -> selectOptionImage(SELECT_PHOTO_COVER));
 		circleImageProfile.setOnClickListener(v -> selectOptionImage(SELECT_PHOTO_PROFILE));
 
-		btUpdateProfile.setOnClickListener(v -> {
-			try {
-				getProfileData();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		});
+		btUpdateProfile.setOnClickListener(v -> getProfileData());
 	}
 
 	private void getUserData() {
@@ -194,7 +187,7 @@ public class EditProfile extends AppCompatActivity {
 		}
 	}
 
-	private void getProfileData() throws FileNotFoundException {
+	private void getProfileData()  {
 		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)) {
 
