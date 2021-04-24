@@ -1,5 +1,6 @@
 package com.dcascos.motogo.providers;
 
+import com.dcascos.motogo.utils.Generators;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -8,8 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ImageProvider {
 
@@ -24,18 +23,22 @@ public class ImageProvider {
 	}
 
 	public UploadTask save(File file) throws FileNotFoundException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
-		String date = simpleDateFormat.format(new Date());
-
-		StorageReference storageReference = this.storageReference.child("images/" + date + ".jpg");
+		StorageReference storageReference = this.storageReference.child("images/" + Generators.photoNameFormater() + ".jpeg");
 		InputStream inputStream = new FileInputStream(file);
 
 		this.storageReference = storageReference;
 		return storageReference.putStream(inputStream);
 	}
 
+	public UploadTask saveFromBytes(byte[] byteFile) {
+		StorageReference storageReference = this.storageReference.child("images/" + Generators.photoNameFormater() + ".jpeg");
+
+		this.storageReference = storageReference;
+		return storageReference.putBytes(byteFile);
+	}
+
 	public StorageReference saveWithoutImage() {
-		StorageReference storageReference = this.storageReference.child("images/defaultCover.jpg");
+		StorageReference storageReference = this.storageReference.child("images/defaultCover.jpeg");
 		this.storageReference = storageReference;
 		return storageReference;
 	}
