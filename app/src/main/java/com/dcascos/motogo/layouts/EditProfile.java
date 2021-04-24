@@ -93,11 +93,11 @@ public class EditProfile extends AppCompatActivity {
 	private void getUserData() {
 		usersProvider.getUser(authProvider.getUserId()).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
-				Objects.requireNonNull(tiFullname.getEditText()).setText(documentSnapshot.getString(Constants.FULLNAME));
-				Objects.requireNonNull(tiUsername.getEditText()).setText(documentSnapshot.getString(Constants.USERNAME));
-				Objects.requireNonNull(tiEmail.getEditText()).setText(documentSnapshot.getString(Constants.EMAIL));
-				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGECOVER)).into(ivCover);
-				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGEPROFILE)).circleCrop().into(circleImageProfile);
+				Objects.requireNonNull(tiFullname.getEditText()).setText(documentSnapshot.getString(Constants.USER_FULLNAME));
+				Objects.requireNonNull(tiUsername.getEditText()).setText(documentSnapshot.getString(Constants.USER_USERNAME));
+				Objects.requireNonNull(tiEmail.getEditText()).setText(documentSnapshot.getString(Constants.USER_EMAIL));
+				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGECOVER)).into(ivCover);
+				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGEPROFILE)).circleCrop().into(circleImageProfile);
 
 				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);

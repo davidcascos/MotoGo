@@ -15,7 +15,7 @@ public class UsersProvider {
 	private CollectionReference collectionReference;
 
 	public UsersProvider() {
-		collectionReference = FirebaseFirestore.getInstance().collection("Users");
+		collectionReference = FirebaseFirestore.getInstance().collection(Constants.USERS);
 	}
 
 	public Task<DocumentSnapshot> getUser(String userId) {
@@ -28,14 +28,14 @@ public class UsersProvider {
 
 	public Task<Void> update(User user) {
 		Map<String, Object> map = new HashMap<>();
-		map.put(Constants.FULLNAME, user.getFullName());
-		map.put(Constants.USERNAME, user.getUsername());
+		map.put(Constants.USER_FULLNAME, user.getFullName());
+		map.put(Constants.USER_USERNAME, user.getUsername());
 
 		if (user.getImageCover() != null) {
-			map.put(Constants.IMAGECOVER, user.getImageCover());
+			map.put(Constants.USER_IMAGECOVER, user.getImageCover());
 		}
 		if (user.getImageProfile() != null) {
-			map.put(Constants.IMAGEPROFILE, user.getImageProfile());
+			map.put(Constants.USER_IMAGEPROFILE, user.getImageProfile());
 		}
 
 		return collectionReference.document(user.getId()).update(map);

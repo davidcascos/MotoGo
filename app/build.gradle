@@ -33,7 +33,8 @@ dependencies {
 	//Firebase
 	implementation platform('com.google.firebase:firebase-bom:27.0.0')
 	implementation 'com.google.android.gms:play-services-auth:19.0.0'
-	implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
+	implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
+	implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
 	implementation 'com.google.firebase:firebase-analytics'
 	implementation 'com.google.firebase:firebase-auth'
 	implementation 'com.google.firebase:firebase-firestore'
