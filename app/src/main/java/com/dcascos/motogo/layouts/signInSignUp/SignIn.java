@@ -20,6 +20,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.dcascos.motogo.utils.Validations;
@@ -48,6 +49,7 @@ public class SignIn extends AppCompatActivity {
 	private SignInButton btGoogle;
 
 	private AuthProvider authProvider;
+	private ImageProvider imageProvider;
 	private UsersProvider userProvider;
 	private GoogleSignInClient googleSignInClient;
 
@@ -68,6 +70,7 @@ public class SignIn extends AppCompatActivity {
 		btGoogle = findViewById(R.id.bt_google);
 
 		authProvider = new AuthProvider();
+		imageProvider = new ImageProvider();
 		userProvider = new UsersProvider();
 
 		// Configure Google Sign In
@@ -167,20 +170,22 @@ public class SignIn extends AppCompatActivity {
 			if (documentSnapshot.exists()) {
 				goHome();
 			} else {
-				String fullname = authProvider.getUserName();
-				String email = authProvider.getUserEmail();
-				String username = Generators.genRandomUsername();
+				imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
+						imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
+							String fullname = authProvider.getUserName();
+							String email = authProvider.getUserEmail();
+							String username = Generators.genRandomUsername();
 
-				User user = new User(idUser, fullname, username, email);
-
-				userProvider.createUser(user).addOnCompleteListener(task1 -> {
-					if (task1.isSuccessful()) {
-						goHome();
-					} else {
-						hideProgressBar();
-						Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
-					}
-				});
+							User user = new User(idUser, fullname, username, email, uriCover.toString(), uriProfile.toString());
+							userProvider.createUser(user).addOnCompleteListener(task1 -> {
+								if (task1.isSuccessful()) {
+									goHome();
+								} else {
+									hideProgressBar();
+									Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+								}
+							});
+						}));
 			}
 		});
 	}

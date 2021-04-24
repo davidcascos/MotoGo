@@ -6,6 +6,8 @@ public class User {
 	private String fullName;
 	private String username;
 	private String email;
+	private String imageCover;
+	private String imageProfile;
 
 	public User() {
 	}
@@ -15,6 +17,15 @@ public class User {
 		this.fullName = fullName;
 		this.username = username;
 		this.email = email;
+	}
+
+	public User(String id, String fullName, String username, String email, String imageCover, String imageProfile) {
+		this.id = id;
+		this.fullName = fullName;
+		this.username = username;
+		this.email = email;
+		this.imageCover = imageCover;
+		this.imageProfile = imageProfile;
 	}
 
 	public String getId() {
@@ -47,5 +58,21 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getImageCover() {
+		return imageCover;
+	}
+
+	public void setImageCover(String imageCover) {
+		this.imageCover = imageCover;
+	}
+
+	public String getImageProfile() {
+		return imageProfile;
+	}
+
+	public void setImageProfile(String imageProfile) {
+		this.imageProfile = imageProfile;
 	}
 }

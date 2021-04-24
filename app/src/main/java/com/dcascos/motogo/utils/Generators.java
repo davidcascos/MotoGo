@@ -17,7 +17,7 @@ public class Generators {
 	}
 
 	public static String photoNameFormater() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		return simpleDateFormat.format(new Date());
 	}
 }

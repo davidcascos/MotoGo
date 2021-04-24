@@ -14,6 +14,7 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.layouts.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +32,7 @@ public class SignUp extends AppCompatActivity {
 	private Button btGo;
 
 	private AuthProvider authProvider;
+	private ImageProvider imageProvider;
 	private UsersProvider userProvider;
 
 	@Override
@@ -47,6 +49,7 @@ public class SignUp extends AppCompatActivity {
 		btGo = findViewById(R.id.bt_go);
 
 		authProvider = new AuthProvider();
+		imageProvider = new ImageProvider();
 		userProvider = new UsersProvider();
 
 		btBackSignIn.setOnClickListener(v -> this.onBackPressed());
@@ -68,17 +71,21 @@ public class SignUp extends AppCompatActivity {
 
 			authProvider.signUp(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					String userId = authProvider.getUserId();
-					User user = new User(userId, fullname, username, email);
 
-					userProvider.createUser(user).addOnCompleteListener(task1 -> {
-						if (task1.isSuccessful()) {
-							startActivity(new Intent(SignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-						} else {
-							hideProgressBar();
-							Toast.makeText(SignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
-						}
-					});
+					imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
+							imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
+								String userId = authProvider.getUserId();
+								User user = new User(userId, fullname, username, email, uriCover.toString(), uriProfile.toString());
+
+								userProvider.createUser(user).addOnCompleteListener(task1 -> {
+									if (task1.isSuccessful()) {
+										startActivity(new Intent(SignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+									} else {
+										hideProgressBar();
+										Toast.makeText(SignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+									}
+								});
+							}));
 				} else {
 					hideProgressBar();
 					Toast.makeText(SignUp.this, getText(R.string.alreadyUserWithMail), Toast.LENGTH_SHORT).show();

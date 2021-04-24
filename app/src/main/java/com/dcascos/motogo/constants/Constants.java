@@ -26,6 +26,13 @@ public class Constants {
 	//System
 	public static final int REQUEST_CODE_GALLERY = 2;
 	public static final int REQUEST_CODE_PHOTO = 3;
+	public static final int REQUEST_CODE_GALLERY_PROFILE = 4;
+	public static final int REQUEST_CODE_GALLERY_COVER = 5;
+	public static final int REQUEST_CODE_PHOTO_PROFILE = 6;
+	public static final int REQUEST_CODE_PHOTO_COVER = 7;
 
+	//Folders
+	public static final String FOLDER_COVER = "cover";
+	public static final String FOLDER_PROFILE = "profile";
 
 }

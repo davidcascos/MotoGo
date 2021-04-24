@@ -60,5 +60,7 @@
 	<string name="edit_profile">Edit Profile</string>
 	<string name="update">Update</string>
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
+	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
+	<string name="theUserHasBeenUpdated">The user has been updated</string>
 
 </resources>

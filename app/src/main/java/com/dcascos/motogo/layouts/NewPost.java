@@ -49,7 +49,7 @@ public class NewPost extends AppCompatActivity {
 
 	private File imageFile;
 	private byte[] photoFile;
-	private CharSequence dialogOptions[];
+	private CharSequence[] dialogOptions;
 
 	private AuthProvider authProvider;
 	private ImageProvider imageProvider;
@@ -112,7 +112,7 @@ public class NewPost extends AppCompatActivity {
 		Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		startActivityForResult(takePhotoIntent, Constants.REQUEST_CODE_PHOTO);
 	}
-	
+
 	private void openGallery() {
 		Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
 		startActivityForResult(galleryIntent, Constants.REQUEST_CODE_GALLERY);
@@ -121,17 +121,6 @@ public class NewPost extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//Select from gallery
-		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
-			try {
-				imageFile = FileUtils.from(this, Objects.requireNonNull(data).getData());
-				ivCover.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
-				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
 		//Take photo
 		if (requestCode == Constants.REQUEST_CODE_PHOTO && resultCode == RESULT_OK) {
 			Bitmap photo = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
@@ -141,6 +130,16 @@ public class NewPost extends AppCompatActivity {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 			photoFile = baos.toByteArray();
+		}
+		//Select from gallery
+		if (requestCode == Constants.REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
+			try {
+				imageFile = FileUtils.from(this, Objects.requireNonNull(data).getData());
+				ivCover.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -156,7 +155,7 @@ public class NewPost extends AppCompatActivity {
 			String description = Objects.requireNonNull(tiDescription.getEditText()).getText().toString().trim();
 
 			if (imageFile != null) {
-				imageProvider.save(imageFile).addOnCompleteListener(task -> {
+				imageProvider.save(imageFile, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
 					if (task.isSuccessful()) {
 						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 					} else {
@@ -165,7 +164,7 @@ public class NewPost extends AppCompatActivity {
 					}
 				});
 			} else if (photoFile != null) {
-				imageProvider.saveFromBytes(photoFile).addOnCompleteListener(task -> {
+				imageProvider.saveFromBytes(photoFile, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
 					if (task.isSuccessful()) {
 						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 					} else {
@@ -174,7 +173,7 @@ public class NewPost extends AppCompatActivity {
 					}
 				});
 			} else {
-				imageProvider.saveWithoutImage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
+				imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 			}
 		}
 	}
@@ -190,7 +189,7 @@ public class NewPost extends AppCompatActivity {
 
 		postProvider.save(post).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {
-				this.onBackPressed();
+				finish();
 				Toast.makeText(NewPost.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
 			} else {
 				hideProgressBar();
