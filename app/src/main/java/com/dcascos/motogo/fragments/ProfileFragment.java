@@ -16,6 +16,7 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.EditProfile;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,9 +30,11 @@ public class ProfileFragment extends Fragment {
 	private TextView tvFullName;
 	private TextView tvUsername;
 	private TextView tvEmail;
+	private TextView tvPostsNumber;
 
 	private AuthProvider authProvider;
 	private UsersProvider usersProvider;
+	private PostProvider postProvider;
 
 	public ProfileFragment() {
 
@@ -48,11 +51,14 @@ public class ProfileFragment extends Fragment {
 		tvFullName = view.findViewById(R.id.tv_fullName);
 		tvUsername = view.findViewById(R.id.tv_username);
 		tvEmail = view.findViewById(R.id.tv_email);
+		tvPostsNumber = view.findViewById(R.id.tv_postsNumber);
 
 		authProvider = new AuthProvider();
 		usersProvider = new UsersProvider();
+		postProvider = new PostProvider();
 
 		getUserData();
+		getPostCount();
 
 		llEditProfile.setOnClickListener(v -> goToEditProfile());
 
@@ -67,16 +73,21 @@ public class ProfileFragment extends Fragment {
 	private void getUserData() {
 		usersProvider.getUser(authProvider.getUserId()).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
-				tvFullName.setText(documentSnapshot.getString(Constants.FULLNAME));
-				tvUsername.setText(documentSnapshot.getString(Constants.USERNAME));
-				tvEmail.setText(documentSnapshot.getString(Constants.EMAIL));
-				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGECOVER)).into(ivCover);
-				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGEPROFILE)).circleCrop().into(circleImageProfile);
+				tvFullName.setText(documentSnapshot.getString(Constants.USER_FULLNAME));
+				tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
+				tvEmail.setText(documentSnapshot.getString(Constants.USER_EMAIL));
+				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGECOVER)).into(ivCover);
+				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGEPROFILE)).circleCrop().into(circleImageProfile);
 
 				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			}
 		});
+	}
+
+	private void getPostCount() {
+		postProvider.getPostByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots ->
+				tvPostsNumber.setText(String.valueOf(queryDocumentSnapshots.size())));
 	}
 
 }

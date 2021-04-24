@@ -37,10 +37,21 @@ public class Constants {
 	public static final String FOLDER_PROFILE = "profile";
 
 	//User variables
-	public static final String FULLNAME = "fullName";
-	public static final String USERNAME = "username";
-	public static final String EMAIL = "email";
-	public static final String IMAGECOVER = "imageCover";
-	public static final String IMAGEPROFILE = "imageProfile";
+	public static final String USERS = "Users";
+	public static final String USER_FULLNAME = "fullName";
+	public static final String USER_USERNAME = "username";
+	public static final String USER_EMAIL = "email";
+	public static final String USER_IMAGECOVER = "imageCover";
+	public static final String USER_IMAGEPROFILE = "imageProfile";
+
+	//Post variables
+
+	public static final String POSTS = "Posts";
+	public static final String POST_CREATIONDATE = "creationDate";
+	public static final String POST_TITLE = "title";
+	public static final String POST_LOCATION = "location";
+	public static final String POST_DESCRIPTION = "description";
+	public static final String POST_IMAGE = "image";
+	public static final String POST_USERID = "userId";
 
 }
