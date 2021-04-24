@@ -32,7 +32,6 @@
 					android:alpha="0.8"
 					android:scaleType="centerCrop"
 					android:src="@drawable/motogologo"
-					android:transitionName="@string/tran_profile"
 					app:layout_collapseMode="parallax" />
 
 				<de.hdodenhof.circleimageview.CircleImageView
