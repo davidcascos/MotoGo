@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
-	BottomNavigationView bottomNavigation;
+	private BottomNavigationView bottomNavigation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +23,12 @@ public class Home extends AppCompatActivity {
 		bottomNavigation = findViewById(R.id.bottom_navigation);
 
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-		openFragment(new ProfileFragment());
+		openFragment(new HomeFragment());
 	}
 
 	public void openFragment(Fragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, fragment);
-		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 

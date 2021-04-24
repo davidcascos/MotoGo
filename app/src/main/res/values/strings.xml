@@ -1,6 +1,6 @@
 <resources>
 	<string name="app_name">MotoGo</string>
-	<string name="title">MOTO GO</string>
+	<string name="appTitle">MOTO GO</string>
 	<!--SignIn/SignUp/ForgetPassword-->
 	<string name="username">Username</string>
 	<string name="password">Password</string>
@@ -32,6 +32,19 @@
 	<string name="passwordResetSent">Password reset sent</string>
 	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
 	<string name="noUserWithThisMail">There is no user with this email</string>
-
+	<!--NewPost-->
+	<string name="title">Title</string>
+	<string name="location">Location</string>
+	<string name="description">Description</string>
+	<string name="publish">Publish</string>
+	<string name="addCoverImage">Add a cover image</string>
+	<string name="createPost">Create Post</string>
+	<string name="coverPhotoNoUploaded">Cover photo could not be uploaded</string>
+	<string name="postNoUploaded">Post could not be uploaded</string>
+	<string name="postCreated">Post Created</string>
+	<string name="selectAnOption">Select an option</string>
+	<string name="takePhoto">Take photo</string>
+	<string name="imageFromGallery">Image from gallery</string>
+	<string name="projectAuthority">com.dcascos.motogo</string>
 
 </resources>

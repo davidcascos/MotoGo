@@ -36,53 +36,46 @@ import java.util.Objects;
 
 public class SignIn extends AppCompatActivity {
 
+	private RelativeLayout progressBar;
 	private ImageView ivLogo;
 	private TextView tvWelcome;
 	private TextView tvSignIn;
-
 	private TextInputLayout tiEmail;
 	private TextInputLayout tiPassword;
-
 	private Button btGo;
-	private SignInButton btGoogle;
 	private Button btSignUp;
 	private Button btForgetPassword;
+	private SignInButton btGoogle;
 
-	private RelativeLayout progressBar;
-
-	private AuthProvider mAuthProvider;
-	private UsersProvider mUserProvider;
-	private GoogleSignInClient mGoogleSignInClient;
+	private AuthProvider authProvider;
+	private UsersProvider userProvider;
+	private GoogleSignInClient googleSignInClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_sign_in);
 
+		progressBar = findViewById(R.id.rl_progress);
 		ivLogo = findViewById(R.id.iv_logo);
 		tvWelcome = findViewById(R.id.tv_welcome);
 		tvSignIn = findViewById(R.id.tv_signin);
-
 		tiEmail = findViewById(R.id.ti_email);
 		tiPassword = findViewById(R.id.ti_password);
-
 		btGo = findViewById(R.id.bt_go);
-		btGoogle = findViewById(R.id.bt_google);
 		btSignUp = findViewById(R.id.bt_signUp);
 		btForgetPassword = findViewById(R.id.bt_forgetPassword);
+		btGoogle = findViewById(R.id.bt_google);
 
-		progressBar = findViewById(R.id.rl_progress);
-
-		mAuthProvider = new AuthProvider();
-		mUserProvider = new UsersProvider();
+		authProvider = new AuthProvider();
+		userProvider = new UsersProvider();
 
 		// Configure Google Sign In
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
-		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+		googleSignInClient = GoogleSignIn.getClient(this, gso);
 
 		btGo.setOnClickListener(v -> doSignIn());
 		btGoogle.setOnClickListener(v -> signInGoogle());
-
 		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(SignIn.this, ResetPassword.class)));
 
 		btSignUp.setOnClickListener(v -> {
@@ -104,8 +97,8 @@ public class SignIn extends AppCompatActivity {
 	protected void onStart() {
 		super.onStart();
 
-		if (mAuthProvider.getUserLogged()) {
-			startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+		if (authProvider.getUserLogged()) {
+			goHome();
 		}
 	}
 
@@ -113,18 +106,16 @@ public class SignIn extends AppCompatActivity {
 		if (Validations.validateEmailFormat(getApplicationContext(), tiEmail)
 				& Validations.validateIsEmpty(getApplicationContext(), tiPassword)) {
 
-			progressBar.setVisibility(View.VISIBLE);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+			showProgressBar();
 
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
-			mAuthProvider.signIn(email, password).addOnCompleteListener(task -> {
+			authProvider.signIn(email, password).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+					goHome();
 				} else {
-					progressBar.setVisibility(View.GONE);
-					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+					hideProgressBar();
 					Toast.makeText(SignIn.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
 				}
 			});
@@ -132,9 +123,8 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	private void signInGoogle() {
-		progressBar.setVisibility(View.VISIBLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+		showProgressBar();
+		Intent signInIntent = googleSignInClient.getSignInIntent();
 		startActivityForResult(signInIntent, Constants.REQUEST_CODE_GOOGLE);
 	}
 
@@ -154,39 +144,51 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-		mAuthProvider.googleSignIn(account).addOnCompleteListener(this, task -> {
+		authProvider.googleSignIn(account).addOnCompleteListener(this, task -> {
 			if (task.isSuccessful()) {
-				String idUser = mAuthProvider.getUserId();
+				String idUser = authProvider.getUserId();
 				checkUserExist(idUser);
 			} else {
-				progressBar.setVisibility(View.GONE);
-				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+				hideProgressBar();
 				Toast.makeText(SignIn.this, getText(R.string.couldNotLoginWithGoogle), Toast.LENGTH_LONG).show();
 			}
 		});
 	}
 
 	private void checkUserExist(String idUser) {
-		mUserProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
+		userProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
-				startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+				goHome();
 			} else {
-				String fullname = mAuthProvider.getUserName();
-				String email = mAuthProvider.getUserEmail();
+				String fullname = authProvider.getUserName();
+				String email = authProvider.getUserEmail();
 				String username = Generators.genRandomUsername();
 
 				User user = new User(idUser, fullname, username, email);
 
-				mUserProvider.createUser(user).addOnCompleteListener(task1 -> {
+				userProvider.createUser(user).addOnCompleteListener(task1 -> {
 					if (task1.isSuccessful()) {
-						startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+						goHome();
 					} else {
-						progressBar.setVisibility(View.GONE);
-						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+						hideProgressBar();
 						Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
 		});
+	}
+
+	private void goHome() {
+		startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+	}
+
+	private void showProgressBar() {
+		progressBar.setVisibility(View.VISIBLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+	}
+
+	private void hideProgressBar() {
+		progressBar.setVisibility(View.GONE);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 	}
 }

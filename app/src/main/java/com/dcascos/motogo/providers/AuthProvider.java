@@ -7,39 +7,41 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Objects;
+
 public class AuthProvider {
 
-	private FirebaseAuth mAuth;
+	private FirebaseAuth firebaseAuth;
 
 	public AuthProvider() {
-		mAuth = FirebaseAuth.getInstance();
+		firebaseAuth = FirebaseAuth.getInstance();
 	}
 
 	public Task<AuthResult> signIn(String email, String password) {
-		return mAuth.signInWithEmailAndPassword(email, password);
+		return firebaseAuth.signInWithEmailAndPassword(email, password);
 	}
 
 	public Task<AuthResult> googleSignIn(GoogleSignInAccount googleSignInAccount) {
 		AuthCredential credential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
-		return mAuth.signInWithCredential(credential);
+		return firebaseAuth.signInWithCredential(credential);
 	}
 
 	public Task<AuthResult> signUp(String email, String password) {
-		return mAuth.createUserWithEmailAndPassword(email, password);
+		return firebaseAuth.createUserWithEmailAndPassword(email, password);
 	}
 
 	public Task<Void> resetPassword(String email) {
-		mAuth.setLanguageCode("es");
-		return mAuth.sendPasswordResetEmail(email);
+		firebaseAuth.setLanguageCode("es");
+		return firebaseAuth.sendPasswordResetEmail(email);
 	}
 
 	public Boolean getUserLogged() {
-		return mAuth.getCurrentUser() != null;
+		return firebaseAuth.getCurrentUser() != null;
 	}
 
 	public String getUserId() {
 		if (getUserLogged()) {
-			return mAuth.getCurrentUser().getUid();
+			return Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 		} else {
 			return null;
 		}
@@ -47,7 +49,7 @@ public class AuthProvider {
 
 	public String getUserEmail() {
 		if (getUserLogged()) {
-			return mAuth.getCurrentUser().getEmail();
+			return Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail();
 		} else {
 			return null;
 		}
@@ -55,7 +57,7 @@ public class AuthProvider {
 
 	public String getUserName() {
 		if (getUserLogged()) {
-			return mAuth.getCurrentUser().getDisplayName();
+			return Objects.requireNonNull(firebaseAuth.getCurrentUser()).getDisplayName();
 		} else {
 			return null;
 		}
