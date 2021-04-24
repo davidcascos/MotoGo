@@ -65,8 +65,8 @@ public class SplashScreen extends AppCompatActivity {
 		new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 			Pair[] pairs = new Pair[2];
-			pairs[0] = new Pair<View, String>(ivLogo, "tran_logo");
-			pairs[1] = new Pair<View, String>(tvTitle, "tran_title");
+			pairs[0] = new Pair<View, String>(ivLogo, (String) getText(R.string.tran_logo));
+			pairs[1] = new Pair<View, String>(tvTitle, (String) getText(R.string.tran_title));
 
 			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this, pairs);
 

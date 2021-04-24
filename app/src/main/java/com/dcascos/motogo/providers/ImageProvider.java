@@ -1,14 +1,10 @@
 package com.dcascos.motogo.providers;
 
+import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.utils.Generators;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class ImageProvider {
 
@@ -22,23 +18,20 @@ public class ImageProvider {
 		return storageReference;
 	}
 
-	public UploadTask save(File file) throws FileNotFoundException {
-		StorageReference storageReference = this.storageReference.child("images/" + Generators.photoNameFormater() + ".jpeg");
-		InputStream inputStream = new FileInputStream(file);
-
-		this.storageReference = storageReference;
-		return storageReference.putStream(inputStream);
-	}
-
-	public UploadTask saveFromBytes(byte[] byteFile) {
-		StorageReference storageReference = this.storageReference.child("images/" + Generators.photoNameFormater() + ".jpeg");
-
+	public UploadTask saveFromBytes(byte[] byteFile, String folder) {
+		StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(Constants.FOLDER_IMAGES + "/" + folder + "/" + Generators.photoNameFormater() + ".jpeg");
 		this.storageReference = storageReference;
 		return storageReference.putBytes(byteFile);
 	}
 
-	public StorageReference saveWithoutImage() {
-		StorageReference storageReference = this.storageReference.child("images/defaultCover.jpeg");
+	public StorageReference saveCoverWithoutImage() {
+		StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(Constants.FOLDER_IMAGES + "/" + Constants.FOLDER_COVER + "/defaultCover.jpeg");
+		this.storageReference = storageReference;
+		return storageReference;
+	}
+
+	public StorageReference saveProfileWithoutImage() {
+		StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(Constants.FOLDER_IMAGES + "/" + Constants.FOLDER_PROFILE + "/defaultProfile.jpeg");
 		this.storageReference = storageReference;
 		return storageReference;
 	}

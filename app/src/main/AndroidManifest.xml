@@ -26,6 +26,7 @@
 		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.Home" />
 		<activity android:name=".layouts.NewPost" />
+		<activity android:name=".layouts.EditProfile" />
 
 		<meta-data
 			android:name="preloaded_fonts"
