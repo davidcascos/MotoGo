@@ -1,5 +1,6 @@
 package com.dcascos.motogo.providers;
 
+import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,14 +28,14 @@ public class UsersProvider {
 
 	public Task<Void> update(User user) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("fullName", user.getFullName());
-		map.put("username", user.getUsername());
+		map.put(Constants.FULLNAME, user.getFullName());
+		map.put(Constants.USERNAME, user.getUsername());
 
 		if (user.getImageCover() != null) {
-			map.put("imageCover", user.getImageCover());
+			map.put(Constants.IMAGECOVER, user.getImageCover());
 		}
 		if (user.getImageProfile() != null) {
-			map.put("imageProfile", user.getImageProfile());
+			map.put(Constants.IMAGEPROFILE, user.getImageProfile());
 		}
 
 		return collectionReference.document(user.getId()).update(map);

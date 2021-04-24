@@ -32,7 +32,15 @@ public class Constants {
 	public static final int REQUEST_CODE_PHOTO_COVER = 7;
 
 	//Folders
+	public static final String FOLDER_IMAGES = "images";
 	public static final String FOLDER_COVER = "cover";
 	public static final String FOLDER_PROFILE = "profile";
+
+	//User variables
+	public static final String FULLNAME = "fullName";
+	public static final String USERNAME = "username";
+	public static final String EMAIL = "email";
+	public static final String IMAGECOVER = "imageCover";
+	public static final String IMAGEPROFILE = "imageProfile";
 
 }

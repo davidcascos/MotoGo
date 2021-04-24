@@ -3,8 +3,6 @@ package com.dcascos.motogo.layouts;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -19,20 +17,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.UsersProvider;
-import com.dcascos.motogo.utils.FileUtils;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
@@ -51,10 +47,9 @@ public class EditProfile extends AppCompatActivity {
 	private Button btUpdateProfile;
 	private AlertDialog.Builder builderSelector;
 
-	private File imageFileCover;
-	private byte[] photoFileCover;
-	private File imageFileProfile;
-	private byte[] photoFileProfile;
+	private byte[] imageFileCover;
+	private byte[] imageFileProfile;
+
 	private CharSequence[] dialogOptions;
 
 	private static final int SELECT_PHOTO_COVER = 1;
@@ -86,6 +81,8 @@ public class EditProfile extends AppCompatActivity {
 		usersProvider = new UsersProvider();
 		imageProvider = new ImageProvider();
 
+		getUserData();
+
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 
 		ivCover.setOnClickListener(v -> selectOptionImage(SELECT_PHOTO_COVER));
@@ -96,6 +93,21 @@ public class EditProfile extends AppCompatActivity {
 				getProfileData();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+			}
+		});
+	}
+
+	private void getUserData() {
+		usersProvider.getUser(authProvider.getUserId()).addOnSuccessListener(documentSnapshot -> {
+			if (documentSnapshot.exists()) {
+				Objects.requireNonNull(tiFullname.getEditText()).setText(documentSnapshot.getString(Constants.FULLNAME));
+				Objects.requireNonNull(tiUsername.getEditText()).setText(documentSnapshot.getString(Constants.USERNAME));
+				Objects.requireNonNull(tiEmail.getEditText()).setText(documentSnapshot.getString(Constants.EMAIL));
+				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGECOVER)).into(ivCover);
+				Glide.with(this).load(documentSnapshot.getString(Constants.IMAGEPROFILE)).circleCrop().into(circleImageProfile);
+
+				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			}
 		});
 	}
@@ -140,56 +152,45 @@ public class EditProfile extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//Take photo
-		if (requestCode == Constants.REQUEST_CODE_PHOTO_COVER && resultCode == RESULT_OK) {
-			setPhotoFile(data, requestCode);
-		}
-		if (requestCode == Constants.REQUEST_CODE_PHOTO_PROFILE && resultCode == RESULT_OK) {
-			setPhotoFile(data, requestCode);
-		}
 
-		//Select from gallery
-		if (requestCode == Constants.REQUEST_CODE_GALLERY_COVER && resultCode == RESULT_OK) {
-			setGalleryFile(data, requestCode);
-		}
-		if (requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE && resultCode == RESULT_OK) {
-			setGalleryFile(data, requestCode);
+		if ((requestCode == Constants.REQUEST_CODE_PHOTO_COVER && resultCode == RESULT_OK)
+				|| (requestCode == Constants.REQUEST_CODE_PHOTO_PROFILE && resultCode == RESULT_OK)
+				|| (requestCode == Constants.REQUEST_CODE_GALLERY_COVER && resultCode == RESULT_OK)
+				|| (requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE && resultCode == RESULT_OK)) {
+			try {
+				setImageFile(data, requestCode);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void setPhotoFile(Intent data, int requestCode) {
-		Bitmap photo = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-		if (requestCode == Constants.REQUEST_CODE_PHOTO_COVER) {
-			ivCover.setImageBitmap(photo);
+	private void setImageFile(Intent data, int requestCode) throws IOException {
+		if (requestCode == Constants.REQUEST_CODE_PHOTO_COVER || requestCode == Constants.REQUEST_CODE_GALLERY_COVER) {
+			Bitmap coverImage;
+			if (requestCode == Constants.REQUEST_CODE_GALLERY_COVER) {
+				coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+			} else {
+				coverImage = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			coverImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			ivCover.setImageBitmap(coverImage);
 			ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			photoFileCover = baos.toByteArray();
-		} else if (requestCode == Constants.REQUEST_CODE_PHOTO_PROFILE) {
-			circleImageProfile.setImageBitmap(photo);
-			circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			photoFileProfile = baos.toByteArray();
+			imageFileCover = baos.toByteArray();
 		}
-	}
 
-	private void setGalleryFile(Intent data, int requestCode) {
-		if (requestCode == Constants.REQUEST_CODE_GALLERY_COVER) {
-			try {
-				imageFileCover = FileUtils.from(this, Objects.requireNonNull(data).getData());
-				ivCover.setImageBitmap(BitmapFactory.decodeFile(imageFileCover.getAbsolutePath()));
-				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			} catch (IOException e) {
-				e.printStackTrace();
+		if (requestCode == Constants.REQUEST_CODE_PHOTO_PROFILE || requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE) {
+			Bitmap profileImage;
+			if (requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE) {
+				profileImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+			} else {
+				profileImage = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
 			}
-		} else if (requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE) {
-			try {
-				imageFileProfile = FileUtils.from(this, Objects.requireNonNull(data).getData());
-				circleImageProfile.setImageBitmap(BitmapFactory.decodeFile(imageFileProfile.getAbsolutePath()));
-				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			profileImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			circleImageProfile.setImageBitmap(profileImage);
+			imageFileProfile = baos.toByteArray();
 		}
 	}
 
@@ -202,110 +203,63 @@ public class EditProfile extends AppCompatActivity {
 			String fullname = Objects.requireNonNull(tiFullname.getEditText()).getText().toString().trim();
 			String username = Objects.requireNonNull(tiUsername.getEditText()).getText().toString().trim();
 
-
-			if (photoFileCover != null && photoFileProfile != null) {
-				imageProvider.saveFromBytes(photoFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri ->
-								imageProvider.saveFromBytes(photoFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task1 -> saveImageProfile(task1, uri, fullname, username)));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (imageFileCover != null && photoFileProfile != null) {
-				imageProvider.save(imageFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri ->
-								imageProvider.saveFromBytes(photoFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task1 -> saveImageProfile(task1, uri, fullname, username)));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (photoFileCover != null && imageFileProfile != null) {
-				imageProvider.saveFromBytes(photoFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-							try {
-								imageProvider.save(imageFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task1 -> saveImageProfile(task1, uri, fullname, username));
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-						});
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (imageFileCover != null && imageFileProfile != null) {
-				imageProvider.save(imageFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-							try {
-								imageProvider.save(imageFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task1 -> saveImageProfile(task1, uri, fullname, username));
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-						});
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (photoFileCover != null) {
-				imageProvider.saveFromBytes(photoFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> updateProfile(uri.toString(), null, fullname, username));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
-			} else if (photoFileProfile != null) {
-				imageProvider.saveFromBytes(photoFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> updateProfile(null, uri.toString(), fullname, username));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
+			if (imageFileCover != null && imageFileProfile != null) {
+				saveCoverAndProfileImages(imageFileCover, imageFileProfile, fullname, username);
 			} else if (imageFileCover != null) {
-				imageProvider.save(imageFileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> updateProfile(uri.toString(), null, fullname, username));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
+				saveImage(imageFileCover, true, fullname, username);
 			} else if (imageFileProfile != null) {
-				imageProvider.save(imageFileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task -> {
-					if (task.isSuccessful()) {
-						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> updateProfile(null, uri.toString(), fullname, username));
-					} else {
-						hideProgressBar();
-						Toast.makeText(EditProfile.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
-					}
-				});
+				saveImage(imageFileProfile, false, fullname, username);
 			} else {
-				updateProfile(null, null, fullname, username);
+				updateProfile(fullname, username, null, null);
 			}
 		}
 	}
 
-	private void saveImageProfile(Task task, Uri urlCover, String fullname, String username) {
-		if (task.isSuccessful()) {
-			imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(urlProfile -> updateProfile(urlCover.toString(), urlProfile.toString(), fullname, username));
+	private void saveImage(byte[] imageFile, boolean isImageCover, String fullname, String username) {
+		String folder;
+
+		if (isImageCover) {
+			folder = Constants.FOLDER_COVER;
 		} else {
-			hideProgressBar();
-			Toast.makeText(EditProfile.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
+			folder = Constants.FOLDER_PROFILE;
 		}
+		imageProvider.saveFromBytes(imageFile, folder).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+					if (isImageCover) {
+						updateProfile(fullname, username, uri.toString(), null);
+					} else {
+						updateProfile(fullname, username, null, uri.toString());
+					}
+				});
+			} else {
+				hideProgressBar();
+				Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
+	private void saveCoverAndProfileImages(byte[] fileCover, byte[] fileProfile, String fullname, String username) {
+		imageProvider.saveFromBytes(fileCover, Constants.FOLDER_COVER).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uriCover ->
+						imageProvider.saveFromBytes(fileProfile, Constants.FOLDER_PROFILE).addOnCompleteListener(task1 -> {
+							if (task1.isSuccessful()) {
+								imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uriProfile ->
+										updateProfile(fullname, username, uriCover.toString(), uriProfile.toString()));
+							} else {
+								hideProgressBar();
+								Toast.makeText(EditProfile.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
+							}
+						}));
+			} else {
+				hideProgressBar();
+				Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
 
-	private void updateProfile(String urlCover, String urlProfile, String fullname, String username) {
+	private void updateProfile(String fullname, String username, String urlCover, String urlProfile) {
 		User user = new User();
 		user.setId(authProvider.getUserId());
 		user.setFullName(fullname);
