@@ -90,4 +90,8 @@ public class Validations {
 		}
 	}
 
+	public static boolean validateEditTextIsEmpty(String textInput) {
+		return !textInput.isEmpty();
+	}
+
 }

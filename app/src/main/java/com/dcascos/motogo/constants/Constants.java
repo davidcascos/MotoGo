@@ -45,7 +45,6 @@ public class Constants {
 	public static final String USER_IMAGEPROFILE = "imageProfile";
 
 	//Post variables
-
 	public static final String POSTS = "Posts";
 	public static final String POST_CREATIONDATE = "creationDate";
 	public static final String POST_TITLE = "title";
@@ -54,4 +53,10 @@ public class Constants {
 	public static final String POST_IMAGE = "image";
 	public static final String POST_USERID = "userId";
 
+	//Comments
+	public static final String COMMENTS = "Comments";
+	public static final String COMMENT_CREATIONDATE = "creationDate";
+	public static final String COMMENT_TEXT = "comment";
+	public static final String COMMENT_USERID = "userId";
+	public static final String COMMENT_POSTID = "postId";
 }
