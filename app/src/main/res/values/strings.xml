@@ -62,5 +62,7 @@
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
 	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
 	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<!--Post Detail-->
+	<string name="see_profile">See Profile</string>
 
 </resources>
