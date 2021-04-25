@@ -62,7 +62,18 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		});
 
 		getUserInfo(post.getUserId(), holder);
+		checkLike(documentSnapshot.getId(), post.getUserId(), holder);
 		getNumberLikesByPost(documentSnapshot.getId(), holder);
+	}
+
+	private void checkLike(String postId, String userId, ViewHolder holder) {
+		likesProvider.getLikeByPostAndUser(postId, userId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+			if (queryDocumentSnapshots.isEmpty()) {
+				holder.ivLikes.setImageResource(R.drawable.ic_love_empty);
+			} else {
+				holder.ivLikes.setImageResource(R.drawable.ic_love_red);
+			}
+		});
 	}
 
 	private void createLike(Like like, ViewHolder holder) {
