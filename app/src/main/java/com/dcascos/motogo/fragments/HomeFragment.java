@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.PostsAdapter;
-import com.dcascos.motogo.layouts.NewPost;
+import com.dcascos.motogo.layouts.posts.NewPost;
 import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.PostProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

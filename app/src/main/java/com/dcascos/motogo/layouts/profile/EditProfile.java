@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts;
+package com.dcascos.motogo.layouts.profile;
 
 import android.Manifest;
 import android.content.Intent;

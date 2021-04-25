@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.layouts.EditProfile;
+import com.dcascos.motogo.layouts.profile.EditProfile;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.providers.UsersProvider;
@@ -68,7 +68,6 @@ public class ProfileFragment extends Fragment {
 	private void goToEditProfile() {
 		startActivity(new Intent(getContext(), EditProfile.class));
 	}
-
 
 	private void getUserData() {
 		usersProvider.getUser(authProvider.getUserId()).addOnSuccessListener(documentSnapshot -> {

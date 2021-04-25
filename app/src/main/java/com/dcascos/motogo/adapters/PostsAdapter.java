@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.layouts.PostDetail;
+import com.dcascos.motogo.layouts.posts.PostDetail;
 import com.dcascos.motogo.models.Post;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

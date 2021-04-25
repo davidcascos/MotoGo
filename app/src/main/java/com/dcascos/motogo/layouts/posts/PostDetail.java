@@ -1,7 +1,9 @@
-package com.dcascos.motogo.layouts;
+package com.dcascos.motogo.layouts.posts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.layouts.profile.UserProfile;
 import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 
@@ -24,12 +27,13 @@ public class PostDetail extends AppCompatActivity {
 	private TextView tvLocation;
 	private TextView tvDescription;
 	private Button btShowProfile;
+	private ImageButton ibBack;
 
+	private String userId = "";
 	private String extraPostId;
 
-
-	UsersProvider usersProvider;
-	PostProvider postProvider;
+	private UsersProvider usersProvider;
+	private PostProvider postProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class PostDetail extends AppCompatActivity {
 		tvLocation = findViewById(R.id.tv_location);
 		tvDescription = findViewById(R.id.tv_description);
 		btShowProfile = findViewById(R.id.bt_showProfile);
+		ibBack = findViewById(R.id.ib_back);
 
 		extraPostId = getIntent().getStringExtra("documentId");
 
@@ -50,6 +55,16 @@ public class PostDetail extends AppCompatActivity {
 		postProvider = new PostProvider();
 
 		getPost();
+
+		btShowProfile.setOnClickListener(v -> goToShowProfile());
+
+		ibBack.setOnClickListener(v -> this.onBackPressed());
+	}
+
+	private void goToShowProfile() {
+		if (!userId.equals("")) {
+			startActivity(new Intent(PostDetail.this, UserProfile.class).putExtra("userId", userId));
+		}
 	}
 
 	private void getPost() {
@@ -73,7 +88,8 @@ public class PostDetail extends AppCompatActivity {
 				}
 
 				if (documentSnapshot.contains(Constants.POST_USERID)) {
-					getUserInfo(documentSnapshot.getString(Constants.POST_USERID));
+					userId = documentSnapshot.getString(Constants.POST_USERID);
+					getUserInfo(userId);
 				}
 			}
 		});
