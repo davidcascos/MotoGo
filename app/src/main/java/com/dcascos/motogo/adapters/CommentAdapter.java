@@ -17,7 +17,6 @@ import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,7 +25,6 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 	Context context;
 	UsersProvider usersProvider;
 
-
 	public CommentAdapter(FirestoreRecyclerOptions<Comment> options, Context context) {
 		super(options);
 		this.context = context;
@@ -34,14 +32,12 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 	}
 
 	@Override
-	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Comment model) {
+	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Comment comment) {
 
-		DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
+		holder.tvCommentDescription.setText(comment.getCommentText());
 
-		holder.tvCommentDescription.setText(model.getCommentText());
-
-		holder.tvDate.setText(Generators.dateFormater(model.getCreationDate()));
-		getUserInfo(documentSnapshot.getString(Constants.COMMENT_USERID), holder);
+		holder.tvDate.setText(Generators.dateFormater(comment.getCreationDate()));
+		getUserInfo(comment.getUserId(), holder);
 	}
 
 	private void getUserInfo(String userId, ViewHolder holder) {

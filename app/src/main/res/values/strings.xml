@@ -70,4 +70,6 @@
 	<string name="commentCouldNotBeCreated">Comment could not be created</string>
 	<string name="Comments">Comments</string>
 
+	<string name="likes">%1s Likes</string>
+
 </resources>

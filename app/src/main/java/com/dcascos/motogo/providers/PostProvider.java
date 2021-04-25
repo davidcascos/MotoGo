@@ -4,6 +4,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.Post;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -17,7 +18,9 @@ public class PostProvider {
 	}
 
 	public Task<Void> create(Post post) {
-		return collectionReference.document().set(post);
+		DocumentReference documentReference = collectionReference.document();
+		post.setId(documentReference.getId());
+		return documentReference.set(post);
 	}
 
 	public Query getAll() {

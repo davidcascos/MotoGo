@@ -59,4 +59,10 @@ public class Constants {
 	public static final String COMMENT_TEXT = "commentText";
 	public static final String COMMENT_USERID = "userId";
 	public static final String COMMENT_POSTID = "postId";
+
+	//Comments
+	public static final String LIKES = "Likes";
+	public static final String LIKE_CREATIONDATE = "creationDate";
+	public static final String LIKE_POSTID = "postId";
+	public static final String LIKE_USERID = "userId";
 }
