@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts;
+package com.dcascos.motogo.layouts.profile;
 
 import android.Manifest;
 import android.content.Intent;
@@ -100,7 +100,6 @@ public class EditProfile extends AppCompatActivity {
 				Glide.with(this).load(documentSnapshot.getString(Constants.USER_IMAGEPROFILE)).circleCrop().into(circleImageProfile);
 
 				ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				circleImageProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			}
 		});
 	}

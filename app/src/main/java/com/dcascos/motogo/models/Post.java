@@ -3,7 +3,7 @@ package com.dcascos.motogo.models;
 public class Post {
 
 	private String id;
-	private String creationDate;
+	private long creationDate;
 	private String title;
 	private String location;
 	private String description;
@@ -13,9 +13,9 @@ public class Post {
 	public Post() {
 	}
 
-	public Post(String id, String creationDate, String title, String location, String description, String image, String userId) {
+	public Post(String id, long creationDate, String title, String location, String description, String image, String userId) {
 		this.id = id;
-		this.id = creationDate;
+		this.creationDate = creationDate;
 		this.title = title;
 		this.location = location;
 		this.description = description;
@@ -31,11 +31,11 @@ public class Post {
 		this.id = id;
 	}
 
-	public String getCreationDate() {
+	public long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(long creationDate) {
 		this.creationDate = creationDate;
 	}
 

@@ -62,5 +62,14 @@
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
 	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
 	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<!--Post Detail-->
+	<string name="see_profile">See Profile</string>
+	<string name="newComment">New Coment</string>
+	<string name="addYourComment">Add your comment</string>
+	<string name="commentCreated">Comment created</string>
+	<string name="commentCouldNotBeCreated">Comment could not be created</string>
+	<string name="Comments">Comments</string>
+
+	<string name="likes">%1s Likes</string>
 
 </resources>

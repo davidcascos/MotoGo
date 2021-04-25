@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.PostsAdapter;
-import com.dcascos.motogo.layouts.NewPost;
+import com.dcascos.motogo.layouts.posts.NewPost;
 import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.PostProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -22,7 +22,7 @@ import com.google.firebase.firestore.Query;
 public class HomeFragment extends Fragment {
 
 	private View view;
-	private FloatingActionButton abAdd;
+	private FloatingActionButton btAddPost;
 	private RecyclerView recyclerView;
 	private PostsAdapter postsAdapter;
 
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fr_home, container, false);
 
-		abAdd = view.findViewById(R.id.ab_add);
+		btAddPost = view.findViewById(R.id.bt_addPost);
 		recyclerView = view.findViewById(R.id.rv_home);
 
 		postProvider = new PostProvider();
@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 		recyclerView.setLayoutManager(linearLayoutManager);
 
-		abAdd.setOnClickListener(v -> goToPost());
+		btAddPost.setOnClickListener(v -> goToPost());
 		return view;
 	}
 
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		postsAdapter.startListening();
+		postsAdapter.stopListening();
 	}
 
 	private void goToPost() {

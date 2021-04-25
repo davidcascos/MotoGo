@@ -13,6 +13,8 @@
 		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
+		<activity android:name=".layouts.profile.UserProfile"></activity>
+		<activity android:name=".layouts.posts.PostDetail" />
 		<activity android:name=".layouts.SplashScreen">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -25,8 +27,8 @@
 		<activity android:name=".layouts.signInSignUp.ResetPassword" />
 		<activity android:name=".layouts.signInSignUp.ResetPasswordSent" />
 		<activity android:name=".layouts.Home" />
-		<activity android:name=".layouts.NewPost" />
-		<activity android:name=".layouts.EditProfile" />
+		<activity android:name=".layouts.posts.NewPost" />
+		<activity android:name=".layouts.profile.EditProfile" />
 
 		<meta-data
 			android:name="preloaded_fonts"
