@@ -40,7 +40,6 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 
 		holder.tvCommentDescription.setText(model.getCommentText());
 
-
 		holder.tvDate.setText(Generators.dateFormater(model.getCreationDate()));
 		getUserInfo(documentSnapshot.getString(Constants.COMMENT_USERID), holder);
 	}

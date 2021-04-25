@@ -169,7 +169,7 @@ public class PostDetail extends AppCompatActivity {
 
 		EditText editText = new EditText(PostDetail.this);
 		editText.setInputType(InputType.TYPE_CLASS_TEXT);
-		editText.setHint("Your comment");
+		editText.setHint(R.string.addYourComment);
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		params.setMargins(36, 0, 36, 36);
@@ -181,7 +181,6 @@ public class PostDetail extends AppCompatActivity {
 		container.addView(editText);
 
 		alert.setView(container);
-
 
 		alert.setPositiveButton("Add", (dialog, which) -> {
 			showProgressBar();

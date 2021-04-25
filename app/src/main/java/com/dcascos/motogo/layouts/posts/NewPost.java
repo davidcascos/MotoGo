@@ -169,7 +169,7 @@ public class NewPost extends AppCompatActivity {
 		post.setUserId(authProvider.getUserId());
 		post.setCreationDate(new Date().getTime());
 
-		postProvider.save(post).addOnCompleteListener(task1 -> {
+		postProvider.create(post).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {
 				finish();
 				Toast.makeText(NewPost.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();

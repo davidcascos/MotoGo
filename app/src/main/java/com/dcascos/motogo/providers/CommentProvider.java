@@ -20,7 +20,8 @@ public class CommentProvider {
 	}
 
 	public Query getCommentsByPost(String postId) {
-		return collectionReference.whereEqualTo(Constants.COMMENT_POSTID, postId).orderBy(Constants.COMMENT_CREATIONDATE, Query.Direction.DESCENDING);
+		Query query = collectionReference.whereEqualTo(Constants.COMMENT_POSTID, postId);
+		return query;
 	}
 
 }

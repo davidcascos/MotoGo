@@ -16,7 +16,7 @@ public class PostProvider {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.POSTS);
 	}
 
-	public Task<Void> save(Post post) {
+	public Task<Void> create(Post post) {
 		return collectionReference.document().set(post);
 	}
 

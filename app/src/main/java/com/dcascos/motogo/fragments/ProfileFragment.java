@@ -57,12 +57,17 @@ public class ProfileFragment extends Fragment {
 		usersProvider = new UsersProvider();
 		postProvider = new PostProvider();
 
-		getUserData();
-		getPostCount();
-
 		llEditProfile.setOnClickListener(v -> goToEditProfile());
 
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		getUserData();
+		getPostCount();
 	}
 
 	private void goToEditProfile() {
