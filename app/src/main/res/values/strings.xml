@@ -68,5 +68,6 @@
 	<string name="addYourComment">Add your comment</string>
 	<string name="commentCreated">Comment created</string>
 	<string name="commentCouldNotBeCreated">Comment could not be created</string>
+	<string name="Comments">Comments</string>
 
 </resources>

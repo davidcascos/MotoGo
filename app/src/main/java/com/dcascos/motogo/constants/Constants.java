@@ -56,7 +56,7 @@ public class Constants {
 	//Comments
 	public static final String COMMENTS = "Comments";
 	public static final String COMMENT_CREATIONDATE = "creationDate";
-	public static final String COMMENT_TEXT = "comment";
+	public static final String COMMENT_TEXT = "commentText";
 	public static final String COMMENT_USERID = "userId";
 	public static final String COMMENT_POSTID = "postId";
 }

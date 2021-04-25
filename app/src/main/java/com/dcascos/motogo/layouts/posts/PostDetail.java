@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.profile.UserProfile;
 import com.dcascos.motogo.models.Comment;
@@ -26,9 +29,12 @@ import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.CommentProvider;
 import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.providers.UsersProvider;
-import com.dcascos.motogo.utils.Generators;
 import com.dcascos.motogo.utils.Validations;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.Query;
+
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,8 +48,9 @@ public class PostDetail extends AppCompatActivity {
 	private TextView tvLocation;
 	private TextView tvDescription;
 	private Button btShowProfile;
-	private ImageButton ibBack;
 	private FloatingActionButton btAddComment;
+	private ImageButton ibBack;
+	private RecyclerView rvComments;
 
 	private String userId = "";
 	private String extraPostId;
@@ -52,6 +59,8 @@ public class PostDetail extends AppCompatActivity {
 	private UsersProvider usersProvider;
 	private PostProvider postProvider;
 	private CommentProvider commentProvider;
+
+	private CommentAdapter commentAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,7 @@ public class PostDetail extends AppCompatActivity {
 		btShowProfile = findViewById(R.id.bt_showProfile);
 		btAddComment = findViewById(R.id.bt_addComment);
 		ibBack = findViewById(R.id.ib_back);
+		rvComments = findViewById(R.id.rv_comments);
 
 		extraPostId = getIntent().getStringExtra("documentId");
 
@@ -75,6 +85,9 @@ public class PostDetail extends AppCompatActivity {
 		usersProvider = new UsersProvider();
 		postProvider = new PostProvider();
 		commentProvider = new CommentProvider();
+
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetail.this);
+		rvComments.setLayoutManager(linearLayoutManager);
 
 		getPost();
 
@@ -85,59 +98,20 @@ public class PostDetail extends AppCompatActivity {
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
 
-	private void showDialogComment() {
-		AlertDialog.Builder alert = new AlertDialog.Builder(PostDetail.this);
-		alert.setTitle(R.string.newComment);
-		alert.setMessage(R.string.addYourComment);
-
-		EditText editText = new EditText(PostDetail.this);
-		editText.setInputType(InputType.TYPE_CLASS_TEXT);
-		editText.setHint("Your comment");
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		params.setMargins(36, 0, 36, 36);
-		editText.setLayoutParams(params);
-
-		RelativeLayout container = new RelativeLayout(PostDetail.this);
-		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		container.setLayoutParams(relativeParams);
-		container.addView(editText);
-
-		alert.setView(container);
-
-
-		alert.setPositiveButton("Add", (dialog, which) -> {
-			showProgressBar();
-			String commentText = editText.getText().toString().trim();
-			if (Validations.validateEditTextIsEmpty(commentText)) {
-				createComment(commentText);
-			} else {
-				hideProgressBar();
-				Toast.makeText(PostDetail.this, getText(R.string.fieldCanNotEmpty), Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		alert.setNegativeButton("Cancel", (dialog, which) -> {
-		});
-
-		alert.show();
+	@Override
+	public void onStart() {
+		super.onStart();
+		Query query = commentProvider.getCommentsByPost(extraPostId);
+		FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>().setQuery(query, Comment.class).build();
+		commentAdapter = new CommentAdapter(options, PostDetail.this);
+		rvComments.setAdapter(commentAdapter);
+		commentAdapter.startListening();
 	}
 
-	private void createComment(String commentText) {
-		Comment comment = new Comment();
-		comment.setComment(commentText);
-		comment.setPostId(extraPostId);
-		comment.setUserId(authProvider.getUserId());
-		comment.setCreationDate(Generators.dateFormater());
-		commentProvider.create(comment).addOnCompleteListener(task -> {
-			if (task.isSuccessful()) {
-				hideProgressBar();
-				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();
-			} else {
-				hideProgressBar();
-				Toast.makeText(PostDetail.this, getText(R.string.commentCouldNotBeCreated), Toast.LENGTH_SHORT).show();
-			}
-		});
+	@Override
+	public void onStop() {
+		super.onStop();
+		commentAdapter.stopListening();
 	}
 
 	private void goToShowProfile() {
@@ -184,6 +158,61 @@ public class PostDetail extends AppCompatActivity {
 				if (documentSnapshot.contains(Constants.USER_USERNAME)) {
 					tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
 				}
+			}
+		});
+	}
+
+	private void showDialogComment() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(PostDetail.this);
+		alert.setTitle(R.string.newComment);
+		alert.setMessage(R.string.addYourComment);
+
+		EditText editText = new EditText(PostDetail.this);
+		editText.setInputType(InputType.TYPE_CLASS_TEXT);
+		editText.setHint("Your comment");
+
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		params.setMargins(36, 0, 36, 36);
+		editText.setLayoutParams(params);
+
+		RelativeLayout container = new RelativeLayout(PostDetail.this);
+		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		container.setLayoutParams(relativeParams);
+		container.addView(editText);
+
+		alert.setView(container);
+
+
+		alert.setPositiveButton("Add", (dialog, which) -> {
+			showProgressBar();
+			String commentText = editText.getText().toString().trim();
+			if (Validations.validateEditTextIsEmpty(commentText)) {
+				createComment(commentText);
+			} else {
+				hideProgressBar();
+				Toast.makeText(PostDetail.this, getText(R.string.fieldCanNotEmpty), Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		alert.setNegativeButton("Cancel", (dialog, which) -> {
+		});
+
+		alert.show();
+	}
+
+	private void createComment(String commentText) {
+		Comment comment = new Comment();
+		comment.setCommentText(commentText);
+		comment.setPostId(extraPostId);
+		comment.setUserId(authProvider.getUserId());
+		comment.setCreationDate(new Date().getTime());
+		commentProvider.create(comment).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				hideProgressBar();
+				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();
+			} else {
+				hideProgressBar();
+				Toast.makeText(PostDetail.this, getText(R.string.commentCouldNotBeCreated), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

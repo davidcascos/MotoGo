@@ -3,8 +3,8 @@ package com.dcascos.motogo.models;
 public class Comment {
 
 	private String id;
-	private String creationDate;
-	private String comment;
+	private long creationDate;
+	private String commentText;
 	private String userId;
 	private String postId;
 
@@ -12,10 +12,10 @@ public class Comment {
 
 	}
 
-	public Comment(String id, String creationDate, String comment, String userId, String postId) {
+	public Comment(String id, long creationDate, String commentText, String userId, String postId) {
 		this.id = id;
 		this.creationDate = creationDate;
-		this.comment = comment;
+		this.commentText = commentText;
 		this.userId = userId;
 		this.postId = postId;
 	}
@@ -28,20 +28,20 @@ public class Comment {
 		this.id = id;
 	}
 
-	public String getCreationDate() {
+	public long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(long creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getCommentText() {
+		return commentText;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setCommentText(String commentText) {
+		this.commentText = commentText;
 	}
 
 	public String getUserId() {

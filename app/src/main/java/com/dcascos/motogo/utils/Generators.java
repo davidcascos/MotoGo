@@ -21,8 +21,8 @@ public class Generators {
 		return simpleDateFormat.format(new Date());
 	}
 
-	public static String dateFormater() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
-		return simpleDateFormat.format(new Date());
+	public static String dateFormater(long dateTime) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		return simpleDateFormat.format(dateTime);
 	}
 }

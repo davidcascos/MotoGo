@@ -24,13 +24,13 @@ import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.PostProvider;
-import com.dcascos.motogo.utils.Generators;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 
 public class NewPost extends AppCompatActivity {
@@ -167,7 +167,7 @@ public class NewPost extends AppCompatActivity {
 		post.setLocation(location);
 		post.setDescription(description);
 		post.setUserId(authProvider.getUserId());
-		post.setCreationDate(Generators.dateFormater());
+		post.setCreationDate(new Date().getTime());
 
 		postProvider.save(post).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {

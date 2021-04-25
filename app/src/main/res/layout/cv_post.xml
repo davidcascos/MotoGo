@@ -4,6 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_margin="10dp"
+	app:cardBackgroundColor="@color/softGray"
 	app:cardCornerRadius="10dp">
 
 	<LinearLayout
@@ -15,6 +16,9 @@
 			android:id="@+id/iv_postCard"
 			android:layout_width="match_parent"
 			android:layout_height="150dp"
+			android:layout_marginStart="10dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginEnd="10dp"
 			android:scaleType="centerCrop" />
 
 		<TextView
@@ -27,6 +31,7 @@
 			android:paddingTop="10dp"
 			android:paddingRight="10dp"
 			android:text="@string/title"
+			android:textColor="@color/black"
 			android:textSize="16dp" />
 
 		<TextView
