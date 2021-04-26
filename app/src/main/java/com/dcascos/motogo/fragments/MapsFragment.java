@@ -23,6 +23,9 @@ import androidx.fragment.app.Fragment;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.GeoFireProvider;
+import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -45,6 +48,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private LocationRequest locationRequest;
 	private FusedLocationProviderClient fusedLocationProviderClient;
 
+	private LatLng currentLatLong;
+
+	private AuthProvider authProvider;
+	private UsersProvider usersProvider;
+	private GeoFireProvider geoFireProvider;
+
 	private LocationCallback locationCallback = new LocationCallback() {
 		@Override
 		public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -52,8 +61,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 			for (Location location : locationResult.getLocations()) {
 				if (getContext() != null) {
+					currentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
+
 					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
 							new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
+
+					updateLocation();
 				}
 			}
 		}
@@ -66,6 +79,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
+
+		authProvider = new AuthProvider();
+		geoFireProvider = new GeoFireProvider();
 
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
@@ -96,6 +112,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 			if (itsGpsActived()) {
 				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+				mMap.setMyLocationEnabled(true);
 			} else {
 				showAlertDialogNoGps();
 			}
@@ -107,6 +124,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 			if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 				if (itsGpsActived()) {
 					fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+					mMap.setMyLocationEnabled(true);
 				} else {
 					showAlertDialogNoGps();
 				}
@@ -116,6 +134,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		} else {
 			if (itsGpsActived()) {
 				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+				mMap.setMyLocationEnabled(true);
 			} else {
 				showAlertDialogNoGps();
 			}
@@ -144,11 +163,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Constants.REQUEST_CODE_SETTINGS && itsGpsActived()) {
-			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-					&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 				return;
 			}
 			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			mMap.setMyLocationEnabled(true);
 		} else {
 			showAlertDialogNoGps();
 		}
@@ -156,7 +175,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 	private boolean itsGpsActived() {
 		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			return true;
+		} else {
+			geoFireProvider.deleteLocation(authProvider.getUserId());
+			return false;
+		}
+	}
+
+	private void updateLocation() {
+		if (currentLatLong != null) {
+			geoFireProvider.saveLocation(authProvider.getUserId(), currentLatLong);
+		}
 	}
 
 }
