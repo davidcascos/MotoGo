@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		view = inflater.inflate(R.layout.fr_profile, container, false);
 
 		llEditProfile = view.findViewById(R.id.ll_editProfile);

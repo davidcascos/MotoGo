@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class UsersProvider {
 
-	private CollectionReference collectionReference;
+	private final CollectionReference collectionReference;
 
 	public UsersProvider() {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.USERS);

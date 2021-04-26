@@ -24,11 +24,13 @@ public class HomeFragment extends Fragment {
 	private View view;
 	private FloatingActionButton btAddPost;
 	private RecyclerView recyclerView;
+
 	private PostsAdapter postsAdapter;
 
 	private PostProvider postProvider;
 
 	public HomeFragment() {
+
 	}
 
 	@Override

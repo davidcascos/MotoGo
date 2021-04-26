@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Query;
 
 public class LikesProvider {
 
-	CollectionReference collectionReference;
+	final CollectionReference collectionReference;
 
 	public LikesProvider() {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.LIKES);

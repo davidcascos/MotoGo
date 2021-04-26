@@ -108,6 +108,11 @@ public class EditProfile extends AppCompatActivity {
 		builderSelector.setItems(dialogOptions, (dialog, which) -> {
 			if (which == 0) {
 				if (!PermissionUtils.hasPermission(EditProfile.this, Manifest.permission.CAMERA)) {
+
+					if (PermissionUtils.shouldShowRational(EditProfile.this, Manifest.permission.CAMERA)) {
+						Toast.makeText(EditProfile.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(EditProfile.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
 				} else {
 					if (selectedImage == SELECT_PHOTO_COVER) {
@@ -118,6 +123,11 @@ public class EditProfile extends AppCompatActivity {
 				}
 			} else if (which == 1) {
 				if (!PermissionUtils.hasPermission(EditProfile.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+					if (PermissionUtils.shouldShowRational(EditProfile.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+						Toast.makeText(EditProfile.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(EditProfile.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
 				} else {
 					if (selectedImage == SELECT_PHOTO_COVER) {
@@ -186,7 +196,7 @@ public class EditProfile extends AppCompatActivity {
 		}
 	}
 
-	private void getProfileData()  {
+	private void getProfileData() {
 		if (Validations.validateFullNameFormat(getApplicationContext(), tiFullname)
 				& Validations.validateUsernameFormat(getApplicationContext(), tiUsername)) {
 

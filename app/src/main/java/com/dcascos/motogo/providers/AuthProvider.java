@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class AuthProvider {
 
-	private FirebaseAuth firebaseAuth;
+	private final FirebaseAuth firebaseAuth;
 
 	public AuthProvider() {
 		firebaseAuth = FirebaseAuth.getInstance();

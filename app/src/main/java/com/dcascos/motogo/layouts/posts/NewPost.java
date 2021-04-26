@@ -83,12 +83,22 @@ public class NewPost extends AppCompatActivity {
 		builderSelector.setItems(dialogOptions, (dialog, which) -> {
 			if (which == 0) {
 				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.CAMERA)) {
+
+					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.CAMERA)) {
+						Toast.makeText(NewPost.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
 				} else {
 					takePhoto();
 				}
 			} else if (which == 1) {
 				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+						Toast.makeText(NewPost.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
 				} else {
 					openGallery();
@@ -118,7 +128,7 @@ public class NewPost extends AppCompatActivity {
 			Bitmap coverImage = null;
 			if (requestCode == Constants.REQUEST_CODE_GALLERY) {
 				try {
-					coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+					coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Objects.requireNonNull(data).getData());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -126,7 +136,7 @@ public class NewPost extends AppCompatActivity {
 				coverImage = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
 			}
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			coverImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			Objects.requireNonNull(coverImage).compress(Bitmap.CompressFormat.JPEG, 100, baos);
 			ivCover.setImageBitmap(coverImage);
 			ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			photoFile = baos.toByteArray();

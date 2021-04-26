@@ -4,6 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:layout_marginBottom="50dp"
 	tools:context=".fragments.ProfileFragment">
 
 	<com.google.android.material.appbar.AppBarLayout
@@ -60,7 +61,7 @@
 					<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="5dp"
+						android:layout_marginStart="5dp"
 						android:text="@string/edit_profile"
 						android:textStyle="bold" />
 				</LinearLayout>

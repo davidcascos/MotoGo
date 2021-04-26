@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.fragments.HomeFragment;
+import com.dcascos.motogo.fragments.MapsFragment;
 import com.dcascos.motogo.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,23 +27,23 @@ public class Home extends AppCompatActivity {
 		openFragment(new HomeFragment());
 	}
 
-	public void openFragment(Fragment fragment) {
+	private void openFragment(Fragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, fragment);
 		transaction.commit();
 	}
 
-	BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = item -> {
+	final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = item -> {
 		switch (item.getItemId()) {
 			case R.id.itemHome:
 				openFragment(new HomeFragment());
 				return true;
-			case R.id.itemItem2:
-				openFragment(new HomeFragment());
+			case R.id.itemMap:
+				openFragment(new MapsFragment());
 				return true;
-			case R.id.itemItem3:
-				openFragment(new HomeFragment());
-				return true;
+//			case R.id.itemItem3:
+//				openFragment(new HomeFragment());
+//				return true;
 			case R.id.itemProfile:
 				openFragment(new ProfileFragment());
 				return true;

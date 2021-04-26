@@ -30,6 +30,8 @@ public class Constants {
 	public static final int REQUEST_CODE_GALLERY_COVER = 5;
 	public static final int REQUEST_CODE_PHOTO_PROFILE = 6;
 	public static final int REQUEST_CODE_PHOTO_COVER = 7;
+	public static final int REQUEST_CODE_LOCATION = 8;
+
 
 	//Folders
 	public static final String FOLDER_IMAGES = "images";
