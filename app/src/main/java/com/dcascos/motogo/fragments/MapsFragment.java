@@ -2,17 +2,22 @@ package com.dcascos.motogo.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -82,18 +87,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		checkVersionTostartLocation();
 	}
 
-	private void checkVersionTostartLocation() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-			if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-			} else {
-				checkLocationPermissions();
-			}
-		} else {
-			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-		}
-	}
-
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -101,7 +94,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		if (requestCode == Constants.REQUEST_CODE_LOCATION
 				&& grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
 				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			if (itsGpsActived()) {
+				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			} else {
+				showAlertDialogNoGps();
+			}
+		}
+	}
+
+	private void checkVersionTostartLocation() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+				if (itsGpsActived()) {
+					fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+				} else {
+					showAlertDialogNoGps();
+				}
+			} else {
+				checkLocationPermissions();
+			}
+		} else {
+			if (itsGpsActived()) {
+				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			} else {
+				showAlertDialogNoGps();
+			}
 		}
 	}
 
@@ -115,4 +132,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 			}
 		}
 	}
+
+	private void showAlertDialogNoGps() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == Constants.REQUEST_CODE_SETTINGS && itsGpsActived()) {
+			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				return;
+			}
+			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+		} else {
+			showAlertDialogNoGps();
+		}
+	}
+
+	private boolean itsGpsActived() {
+		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+
 }

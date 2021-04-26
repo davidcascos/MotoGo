@@ -75,5 +75,7 @@
 	<string name="commentCouldNotBeCreated">Comment could not be created</string>
 	<string name="Comments">Comments</string>
 	<string name="likes">%1s Likes</string>
+	<!--Maps-->
+	<string name="pleaseActiveLocation">Please activate your location to continue</string>
 
 </resources>
