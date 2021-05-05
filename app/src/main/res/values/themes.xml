@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<!-- Base application theme. -->
 	<style name="Theme.MotoGo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+		<item name="android:windowBackground">@android:color/white</item>
+		<item name="android:textColor">@android:color/black</item>
 		<!-- Prevent white screen after splash. -->
 		<item name="android:windowDisablePreview">true</item>
 		<!-- Primary brand color. -->

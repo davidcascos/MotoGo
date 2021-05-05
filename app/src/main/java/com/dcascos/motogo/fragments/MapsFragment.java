@@ -25,7 +25,6 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
-import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,7 +50,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private LatLng currentLatLong;
 
 	private AuthProvider authProvider;
-	private UsersProvider usersProvider;
 	private GeoFireProvider geoFireProvider;
 
 	private LocationCallback locationCallback = new LocationCallback() {
@@ -63,8 +61,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 				if (getContext() != null) {
 					currentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
 
-					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
-							new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
+					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
 
 					updateLocation();
 				}
@@ -100,7 +97,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 				.setSmallestDisplacement(5);
 
-		checkVersionTostartLocation();
+		checkVersionToStartLocation();
 	}
 
 	@Override
@@ -110,34 +107,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		if (requestCode == Constants.REQUEST_CODE_LOCATION
 				&& grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
 				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			if (itsGpsActived()) {
-				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-				mMap.setMyLocationEnabled(true);
-			} else {
-				showAlertDialogNoGps();
-			}
+			checlAllForLocation();
 		}
 	}
 
-	private void checkVersionTostartLocation() {
+	private void checlAllForLocation() {
+		if (itsGpsActived()) {
+			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				return;
+			}
+			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			mMap.setMyLocationEnabled(true);
+		} else {
+			showAlertDialogNoGps();
+		}
+	}
+
+	private void checkVersionToStartLocation() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 			if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-				if (itsGpsActived()) {
-					fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-					mMap.setMyLocationEnabled(true);
-				} else {
-					showAlertDialogNoGps();
-				}
+				checlAllForLocation();
 			} else {
 				checkLocationPermissions();
 			}
 		} else {
-			if (itsGpsActived()) {
-				fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-				mMap.setMyLocationEnabled(true);
-			} else {
-				showAlertDialogNoGps();
-			}
+			checlAllForLocation();
 		}
 	}
 

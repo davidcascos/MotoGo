@@ -1,5 +1,7 @@
 package com.dcascos.motogo.layouts;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.fragments.HomeFragment;
 import com.dcascos.motogo.fragments.MapsFragment;
 import com.dcascos.motogo.fragments.ProfileFragment;
+import com.dcascos.motogo.utils.PermissionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
@@ -25,6 +29,8 @@ public class Home extends AppCompatActivity {
 
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 		openFragment(new HomeFragment());
+
+		checkLocationPermissions();
 	}
 
 	private void openFragment(Fragment fragment) {
@@ -51,4 +57,16 @@ public class Home extends AppCompatActivity {
 				return false;
 		}
 	};
+
+
+	private void checkLocationPermissions() {
+		if (!PermissionUtils.hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+			if (PermissionUtils.shouldShowRational(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+				new AlertDialog.Builder(this).setTitle(R.string.permissionLocationTitle).setMessage(getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
+						PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION)).create().show();
+			} else {
+				PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
+			}
+		}
+	}
 }

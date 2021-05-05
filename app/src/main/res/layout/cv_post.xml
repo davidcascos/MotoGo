@@ -48,7 +48,8 @@
 				android:layout_weight="1"
 				android:fontFamily="@font/muli"
 				android:gravity="end"
-				android:textColor="@color/black" />
+				android:textColor="@color/black"
+				android:textSize="10dp" />
 		</LinearLayout>
 
 		<TextView
