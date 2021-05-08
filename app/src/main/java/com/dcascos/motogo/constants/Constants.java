@@ -32,7 +32,7 @@ public class Constants {
 	public static final int REQUEST_CODE_PHOTO_COVER = 7;
 	public static final int REQUEST_CODE_LOCATION = 8;
 	public static final int REQUEST_CODE_SETTINGS = 9;
-
+	public static final int REQUEST_CODE_AUTOCOMPLETE = 10;
 
 	//Folders
 	public static final String FOLDER_IMAGES = "images";
