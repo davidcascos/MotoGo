@@ -26,7 +26,7 @@ public class GeoFireProvider {
 		geoFire.removeLocation(userId);
 	}
 
-	public GeoQuery getActiveDrivers(LatLng latLng, Long radius) {
+	public GeoQuery getActiveDrivers(LatLng latLng, double radius) {
 		GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), radius);
 		geoQuery.removeAllListeners();
 		return geoQuery;

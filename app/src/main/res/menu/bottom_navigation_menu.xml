@@ -4,12 +4,12 @@
 		android:id="@+id/itemHome"
 		android:enabled="true"
 		android:icon="@drawable/ic_home"
-		android:title="Home" />
+		android:title="@string/home" />
 	<item
 		android:id="@+id/itemMap"
 		android:enabled="true"
 		android:icon="@drawable/ic_map"
-		android:title="Map" />
+		android:title="@string/map" />
 	<!--	<item-->
 	<!--		android:id="@+id/itemItem3"-->
 	<!--		android:icon="@drawable/ic_close"-->
@@ -18,5 +18,5 @@
 		android:id="@+id/itemProfile"
 		android:enabled="true"
 		android:icon="@drawable/ic_username"
-		android:title="Profile" />
+		android:title="@string/profile" />
 </menu>

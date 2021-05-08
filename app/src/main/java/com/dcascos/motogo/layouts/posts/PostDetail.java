@@ -115,7 +115,7 @@ public class PostDetail extends AppCompatActivity {
 	}
 
 	private void goToShowProfile() {
-		if (!userId.equals("")) {
+		if (!userId.equals(getString(R.string.empty))) {
 			startActivity(new Intent(PostDetail.this, UserProfile.class).putExtra("userId", userId));
 		}
 	}

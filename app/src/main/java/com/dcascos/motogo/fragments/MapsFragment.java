@@ -36,6 +36,7 @@ import com.dcascos.motogo.utils.MapPreferences;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -50,9 +51,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -62,7 +69,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 	private boolean showMyLocation;
 	private boolean showOthers;
-	private Long distanceRadius;
+	private double distanceRadius;
 
 	private GoogleMap mMap;
 	private SupportMapFragment mapFragment;
@@ -78,13 +85,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private Marker meMarker;
 	private List<Marker> driversMarkers = new ArrayList<>();
 
+	private AutocompleteSupportFragment autocompleteSupportFragment;
+	private PlacesClient placesClient;
+	private String destinationName;
+	private LatLng destinationLatLong;
+
 	private LocationCallback locationCallback = new LocationCallback() {
 		@Override
 		public void onLocationResult(@NonNull LocationResult locationResult) {
 			super.onLocationResult(locationResult);
 
 			for (Location location : locationResult.getLocations()) {
-				if (getContext() != null) {
+				if (view.getContext() != null) {
 
 					if (meMarker != null) {
 						meMarker.remove();
@@ -96,6 +108,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 							.zIndex(1));
 
 					currentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
+					checkActiveDrivers();
 
 					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
 
@@ -113,7 +126,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		toolbar = view.findViewById(R.id.toolbar);
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
+		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.empty));
 		setHasOptionsMenu(true);
 
 		mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -124,7 +137,36 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
+		autocompleteDestination();
+
 		return view;
+	}
+
+	private void autocompleteDestination() {
+		if (!Places.isInitialized()) {
+			Places.initialize(view.getContext(), getResources().getString(R.string.google_api_key));
+		}
+		placesClient = Places.createClient(view.getContext());
+		autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_support_fragment);
+		autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+		autocompleteSupportFragment.setHint(getString(R.string.destination));
+		autocompleteSupportFragment.setOnPlaceSelectedListener(getPlaceSelectionListener());
+	}
+
+	@NonNull
+	private PlaceSelectionListener getPlaceSelectionListener() {
+		return new PlaceSelectionListener() {
+			@Override
+			public void onPlaceSelected(@NonNull Place place) {
+				destinationName = place.getName();
+				destinationLatLong = place.getLatLng();
+
+			}
+
+			@Override
+			public void onError(@NonNull Status status) {
+			}
+		};
 	}
 
 	@Override
@@ -146,20 +188,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		super.onResume();
 		getPreferences();
 
+		checkShowMyLocation();
+		checkActiveDrivers();
+	}
+
+	private void checkShowMyLocation() {
 		if (!showMyLocation) {
-			if (fusedLocationProviderClient != null) {
-				fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-				geoFireProvider.deleteLocation(authProvider.getUserId());
-			}
+			stopLocationUpdates();
+			geoFireProvider.deleteLocation(authProvider.getUserId());
 		} else {
 			if (mMap != null) {
 				checkVersionToStartLocation();
 			}
 		}
+	}
 
-		if (showOthers) {
-			if (currentLatLong != null) {
-				getActiveDrivers();
+	private void checkActiveDrivers() {
+		if (showOthers && currentLatLong != null) {
+			getActiveDrivers();
+		} else if (!showOthers) {
+			for (Marker marker : driversMarkers) {
+				if (marker.getTag() != null) {
+					marker.remove();
+					driversMarkers.remove(marker);
+				}
 			}
 		}
 	}
@@ -205,13 +257,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		if (requestCode == Constants.REQUEST_CODE_LOCATION
 				&& grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
 				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			checlAllForLocation();
+			checklAllForLocation();
 		}
 	}
 
-	private void checlAllForLocation() {
+	private void checklAllForLocation() {
 		if (itsGpsActived()) {
-			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 				return;
 			}
 			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
@@ -224,19 +276,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void checkVersionToStartLocation() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 			if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-				checlAllForLocation();
+				checklAllForLocation();
 			} else {
 				checkLocationPermissions();
 			}
 		} else {
-			checlAllForLocation();
+			checklAllForLocation();
 		}
 	}
 
 	private void checkLocationPermissions() {
 		if (!PermissionUtils.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
 			if (PermissionUtils.shouldShowRational(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-				new AlertDialog.Builder(getContext()).setTitle(R.string.permissionLocationTitle).setMessage(getContext().getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
+				new AlertDialog.Builder(view.getContext()).setTitle(R.string.permissionLocationTitle).setMessage(view.getContext().getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
 						PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION)).create().show();
 			} else {
 				PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
@@ -244,18 +296,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
-	private void showAlertDialogNoGps() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
-	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Constants.REQUEST_CODE_SETTINGS && itsGpsActived()) {
-			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 				return;
 			}
 			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
@@ -275,6 +321,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
+	private void showAlertDialogNoGps() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
+	}
+
 	private void updateLocation() {
 		if (currentLatLong != null && showMyLocation) {
 			geoFireProvider.saveLocation(authProvider.getUserId(), currentLatLong);
@@ -282,55 +335,59 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void getActiveDrivers() {
-		geoFireProvider.getActiveDrivers(currentLatLong, distanceRadius).addGeoQueryEventListener(new GeoQueryEventListener() {
-			@Override
-			public void onKeyEntered(String key, GeoLocation location) {
-				for (Marker marker : driversMarkers) {
-					if (marker.getTag() != null && (marker.getTag().equals(key) || key.equals(authProvider.getUserId()))) {
-						return;
+		if (showOthers) {
+			geoFireProvider.getActiveDrivers(currentLatLong, distanceRadius).addGeoQueryEventListener(new GeoQueryEventListener() {
+				@Override
+				public void onKeyEntered(String key, GeoLocation location) {
+					for (Marker marker : driversMarkers) {
+						if (marker.getTag() != null && (marker.getTag().equals(key) || key.equals(authProvider.getUserId()))) {
+							return;
+						}
+					}
+
+					if (!key.equals(authProvider.getUserId())) {
+						LatLng driverLatLong = new LatLng(location.latitude, location.longitude);
+						Marker otherDriverMarker = mMap.addMarker(new MarkerOptions()
+								.position(driverLatLong)
+								.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_other)));
+
+						otherDriverMarker.setTag(key);
+						driversMarkers.add(otherDriverMarker);
 					}
 				}
 
-				LatLng driverLatLong = new LatLng(location.latitude, location.longitude);
-				Marker otherDriverMarker = mMap.addMarker(new MarkerOptions()
-						.position(driverLatLong)
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_other)));
-
-				otherDriverMarker.setTag(key);
-				driversMarkers.add(otherDriverMarker);
-			}
-
-			@Override
-			public void onKeyExited(String key) {
-				for (Marker marker : driversMarkers) {
-					if (marker.getTag() != null && marker.getTag().equals(key)) {
-						marker.remove();
-						driversMarkers.remove(marker);
-						return;
+				@Override
+				public void onKeyExited(String key) {
+					for (Marker marker : driversMarkers) {
+						if (marker.getTag() != null && marker.getTag().equals(key)) {
+							marker.remove();
+							driversMarkers.remove(marker);
+							return;
+						}
 					}
 				}
-			}
 
-			@Override
-			public void onKeyMoved(String key, GeoLocation location) {
-				for (Marker marker : driversMarkers) {
-					if (marker.getTag() != null && marker.getTag().equals(key) && !key.equals(authProvider.getUserId())) {
-						marker.setPosition(new LatLng(location.latitude, location.longitude));
-						return;
+				@Override
+				public void onKeyMoved(String key, GeoLocation location) {
+					for (Marker marker : driversMarkers) {
+						if (marker.getTag() != null && marker.getTag().equals(key) && !key.equals(authProvider.getUserId())) {
+							marker.setPosition(new LatLng(location.latitude, location.longitude));
+							return;
+						}
 					}
 				}
-			}
 
-			@Override
-			public void onGeoQueryReady() {
+				@Override
+				public void onGeoQueryReady() {
 
-			}
+				}
 
-			@Override
-			public void onGeoQueryError(DatabaseError error) {
+				@Override
+				public void onGeoQueryError(DatabaseError error) {
 
-			}
-		});
+				}
+			});
+		}
 	}
 
 }
