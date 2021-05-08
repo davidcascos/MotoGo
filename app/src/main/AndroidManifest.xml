@@ -57,6 +57,9 @@
 		<activity
 			android:name=".layouts.profile.UserProfile"
 			android:screenOrientation="portrait" />
+		<activity
+			android:name=".utils.MapPreferences"
+			android:screenOrientation="portrait" />
 
 		<meta-data
 			android:name="preloaded_fonts"

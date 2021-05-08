@@ -78,4 +78,27 @@
 	<!--Maps-->
 	<string name="pleaseActiveLocation">Please activate your location to continue</string>
 
+
+	<!--MapPreferences-->
+	<!--KEYS-->
+	<string name="prefShowMyLocation">prefShowMyLocation</string>
+	<string name="prefShowOthers">prefShowOthers</string>
+	<string name="prefDistanceRadius">prefDistanceRadius</string>
+	<!--Texts-->
+	<string name="showMyLocationTitle">Show my location</string>
+	<string name="showMyLocationSummary">Show my location to other drivers</string>
+	<string name="showOtherDriversTitle">Show other drivers</string>
+	<string name="showOtherDriversSummary">Show other drivers around</string>
+	<string name="distanceRadiusTitle">Distance radius</string>
+	<string name="distanceRadiusSummary">Distance radius to show other drivers</string>
+	<string name="defaultDistanceRadius">5</string>
+	<!--values-->
+	<string-array name="distanceRadiusValues">
+		<item>5</item>
+		<item>25</item>
+		<item>50</item>
+		<item>75</item>
+		<item>100</item>
+	</string-array>
+
 </resources>
