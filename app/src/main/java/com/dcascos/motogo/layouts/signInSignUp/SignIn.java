@@ -68,6 +68,7 @@ public class SignIn extends AppCompatActivity {
 		btSignUp = findViewById(R.id.bt_signUp);
 		btForgetPassword = findViewById(R.id.bt_forgetPassword);
 		btGoogle = findViewById(R.id.bt_google);
+		btGoogle.setSize(SignInButton.SIZE_WIDE);
 
 		authProvider = new AuthProvider();
 		imageProvider = new ImageProvider();

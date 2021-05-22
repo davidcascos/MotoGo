@@ -160,7 +160,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 			public void onPlaceSelected(@NonNull Place place) {
 				destinationName = place.getName();
 				destinationLatLong = place.getLatLng();
-
 			}
 
 			@Override
