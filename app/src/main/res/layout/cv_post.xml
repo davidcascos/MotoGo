@@ -48,7 +48,8 @@
 				android:layout_weight="1"
 				android:fontFamily="@font/muli"
 				android:gravity="end"
-				android:textColor="@color/black" />
+				android:textColor="@color/black"
+				android:textSize="10dp" />
 		</LinearLayout>
 
 		<TextView
@@ -91,7 +92,7 @@
 				android:id="@+id/iv_like"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:src="@drawable/ic_love_empty" />
+				android:src="@drawable/ic_like_no" />
 
 			<TextView
 				android:id="@+id/tv_likes"

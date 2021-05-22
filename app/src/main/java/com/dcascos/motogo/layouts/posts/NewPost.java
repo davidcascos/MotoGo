@@ -26,11 +26,17 @@ import com.dcascos.motogo.providers.ImageProvider;
 import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class NewPost extends AppCompatActivity {
@@ -74,21 +80,43 @@ public class NewPost extends AppCompatActivity {
 
 		ivCover.setOnClickListener(v -> selectOptionImage());
 
+		tiLocation.getEditText().setOnClickListener(v -> getAutocompletedLocation());
+
 		btPublish.setOnClickListener(v -> createPost());
 
 		ibBack.setOnClickListener(v -> this.onBackPressed());
+	}
+
+	private void getAutocompletedLocation() {
+		if (!Places.isInitialized()) {
+			Places.initialize(this, getResources().getString(R.string.google_api_key));
+		}
+		List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME);
+
+		Intent autoCompleteIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this);
+		startActivityForResult(autoCompleteIntent, Constants.REQUEST_CODE_AUTOCOMPLETE);
 	}
 
 	private void selectOptionImage() {
 		builderSelector.setItems(dialogOptions, (dialog, which) -> {
 			if (which == 0) {
 				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.CAMERA)) {
+
+					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.CAMERA)) {
+						Toast.makeText(NewPost.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
 				} else {
 					takePhoto();
 				}
 			} else if (which == 1) {
 				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+						Toast.makeText(NewPost.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
+					}
+
 					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
 				} else {
 					openGallery();
@@ -118,7 +146,7 @@ public class NewPost extends AppCompatActivity {
 			Bitmap coverImage = null;
 			if (requestCode == Constants.REQUEST_CODE_GALLERY) {
 				try {
-					coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+					coverImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Objects.requireNonNull(data).getData());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -126,10 +154,15 @@ public class NewPost extends AppCompatActivity {
 				coverImage = (Bitmap) Objects.requireNonNull(data).getExtras().get("data");
 			}
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			coverImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			Objects.requireNonNull(coverImage).compress(Bitmap.CompressFormat.JPEG, 100, baos);
 			ivCover.setImageBitmap(coverImage);
 			ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			photoFile = baos.toByteArray();
+		}
+
+		if (requestCode == Constants.REQUEST_CODE_AUTOCOMPLETE && resultCode == RESULT_OK) {
+			Place place = Autocomplete.getPlaceFromIntent(data);
+			tiLocation.getEditText().setText(place.getName());
 		}
 	}
 

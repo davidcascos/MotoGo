@@ -22,8 +22,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAdapter.ViewHolder> {
 
-	Context context;
-	UsersProvider usersProvider;
+	private final Context context;
+	private final UsersProvider usersProvider;
 
 	public CommentAdapter(FirestoreRecyclerOptions<Comment> options, Context context) {
 		super(options);
@@ -31,13 +31,34 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 		usersProvider = new UsersProvider();
 	}
 
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		private final CircleImageView cvProfile;
+		private final TextView tvUsername;
+		private final TextView tvCommentDescription;
+		private final TextView tvDate;
+
+		public ViewHolder(View view) {
+			super(view);
+			cvProfile = view.findViewById(R.id.cv_profile);
+			tvUsername = view.findViewById(R.id.tv_username);
+			tvCommentDescription = view.findViewById(R.id.tv_commentDescription);
+			tvDate = view.findViewById(R.id.tv_date);
+		}
+	}
+
 	@Override
 	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Comment comment) {
-
 		holder.tvCommentDescription.setText(comment.getCommentText());
 
 		holder.tvDate.setText(Generators.dateFormater(comment.getCreationDate()));
 		getUserInfo(comment.getUserId(), holder);
+	}
+
+	@NonNull
+	@Override
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cv_comment, parent, false);
+		return new ViewHolder(view);
 	}
 
 	private void getUserInfo(String userId, ViewHolder holder) {
@@ -55,27 +76,5 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 				}
 			}
 		});
-	}
-
-	@NonNull
-	@Override
-	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cv_comment, parent, false);
-		return new ViewHolder(view);
-	}
-
-	public class ViewHolder extends RecyclerView.ViewHolder {
-		private CircleImageView cvProfile;
-		private TextView tvUsername;
-		private TextView tvCommentDescription;
-		private TextView tvDate;
-
-		public ViewHolder(View view) {
-			super(view);
-			cvProfile = view.findViewById(R.id.cv_profile);
-			tvUsername = view.findViewById(R.id.tv_username);
-			tvCommentDescription = view.findViewById(R.id.tv_commentDescription);
-			tvDate = view.findViewById(R.id.tv_date);
-		}
 	}
 }

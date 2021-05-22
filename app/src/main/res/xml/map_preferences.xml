@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="Me">
+		<SwitchPreference
+			android:defaultValue="false"
+			android:key="@string/prefShowMyLocation"
+			android:summary="@string/showMyLocationSummary"
+			android:title="@string/showMyLocationTitle" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Other drivers">
+		<SwitchPreference
+			android:defaultValue="false"
+			android:key="@string/prefShowOthers"
+			android:summary="@string/showOtherDriversSummary"
+			android:title="@string/showOtherDriversTitle" />
+
+		<ListPreference
+			android:defaultValue="@string/defaultDistanceRadius"
+			android:entries="@array/distanceRadiusValues"
+			android:entryValues="@array/distanceRadiusValues"
+			android:key="@string/prefDistanceRadius"
+			android:summary="@string/distanceRadiusSummary"
+			android:title="@string/distanceRadiusTitle" />
+	</PreferenceCategory>
+</PreferenceScreen>

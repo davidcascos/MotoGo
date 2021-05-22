@@ -11,7 +11,7 @@ import com.google.firebase.firestore.Query;
 
 public class PostProvider {
 
-	CollectionReference collectionReference;
+	final CollectionReference collectionReference;
 
 	public PostProvider() {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.POSTS);
