@@ -1,4 +1,4 @@
-package com.dcascos.motogo.fragments;
+package com.dcascos.motogo.layouts.maps;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -19,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,6 +80,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private FusedLocationProviderClient fusedLocationProviderClient;
 
 	private LatLng currentLatLong;
+	private LatLng destinationLatLong;
 
 	private AuthProvider authProvider;
 	private GeoFireProvider geoFireProvider;
@@ -88,7 +91,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private AutocompleteSupportFragment autocompleteSupportFragment;
 	private PlacesClient placesClient;
 	private String destinationName;
-	private LatLng destinationLatLong;
+
+	private Button btCreateRoute;
 
 	private LocationCallback locationCallback = new LocationCallback() {
 		@Override
@@ -139,7 +143,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		autocompleteDestination();
 
+		btCreateRoute = view.findViewById(R.id.bt_createRoute);
+
+		btCreateRoute.setOnClickListener(v -> createRoute());
+
 		return view;
+	}
+
+	private void createRoute() {
+		if (currentLatLong != null && destinationLatLong != null) {
+			Intent intent = new Intent(getContext(), RouteDetail.class);
+			intent.putExtra("currentLat", currentLatLong.latitude);
+			intent.putExtra("currentLon", currentLatLong.longitude);
+			intent.putExtra("destinationLat", destinationLatLong.latitude);
+			intent.putExtra("destinationLon", destinationLatLong.longitude);
+
+			startActivity(intent);
+		} else {
+			Toast.makeText(getContext(), R.string.selectDestination, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void autocompleteDestination() {
