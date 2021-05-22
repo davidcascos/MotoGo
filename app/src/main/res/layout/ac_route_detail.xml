@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context=".layouts.maps.RouteDetail">
+
+	<ImageButton
+		android:id="@+id/ib_back"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@color/transparent"
+		android:elevation="1dp"
+		android:padding="20dp"
+		android:src="@drawable/ic_back"
+		android:tint="@color/black" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<androidx.fragment.app.FragmentContainerView
+			android:id="@+id/map"
+			android:name="com.google.android.gms.maps.SupportMapFragment"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			tools:context=".layouts.maps.MapsFragment" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:padding="20dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/muli_black"
+				android:text="@string/originRoute"
+				android:textColor="@color/black"
+				android:textSize="16dp" />
+
+			<TextView
+				android:id="@+id/tv_origin"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/muli" />
+		</LinearLayout>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="25dp"
+			android:background="@color/app_colorDark" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:padding="20dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/muli_black"
+				android:text="@string/destinationRoute"
+				android:textColor="@color/black"
+				android:textSize="16dp" />
+
+			<TextView
+				android:id="@+id/tv_destination"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/muli" />
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/bt_startRoute"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:layout_margin="20dp"
+			android:background="@drawable/shape_buttons"
+			android:text="@string/startRoute" />
+
+	</LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

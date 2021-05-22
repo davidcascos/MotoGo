@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_marginBottom="50dp"
-	tools:context=".fragments.MapsFragment">
+	tools:context=".layouts.maps.MapsFragment">
 
 	<include layout="@layout/action_bar_toolbar" />
 
@@ -16,8 +15,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginTop="55dp"
-		tools:context=".fragments.MapsFragment" />
-
+		tools:context=".layouts.maps.MapsFragment" />
 
 	<androidx.cardview.widget.CardView
 		android:layout_width="match_parent"
@@ -36,5 +34,15 @@
 
 	</androidx.cardview.widget.CardView>
 
+	<Button
+		android:id="@+id/bt_createRoute"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:layout_marginBottom="20dp"
+		android:layout_marginLeft="60dp"
+		android:layout_marginRight="60dp"
+		android:background="@drawable/shape_buttons"
+		android:text="@string/createRoute" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
