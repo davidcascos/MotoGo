@@ -2,20 +2,68 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.dcascos.motogo">
 
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 	<application
 		android:allowBackup="true"
-		android:icon="@mipmap/ic_launcher"
+		android:icon="@mipmap/ic_motogo"
 		android:label="@string/app_name"
-		android:roundIcon="@mipmap/ic_launcher_round"
+		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
-		<activity android:name=".MainActivity">
+
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="${mapsApiKey}" />
+
+		<activity
+			android:name=".layouts.SplashScreen"
+			android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		<activity
+			android:name=".layouts.signInSignUp.SignIn"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.signInSignUp.SignUp"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.signInSignUp.ResetPassword"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.signInSignUp.ResetPasswordSent"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.Home"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.posts.NewPost"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.posts.PostDetail"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.profile.EditProfile"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.profile.UserProfile"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".utils.MapPreferences"
+			android:screenOrientation="portrait" />
+
+		<meta-data
+			android:name="preloaded_fonts"
+			android:resource="@array/preloaded_fonts" />
 	</application>
 
 </manifest>

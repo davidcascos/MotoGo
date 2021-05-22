@@ -1,3 +1,109 @@
 <resources>
 	<string name="app_name">MotoGo</string>
+	<string name="appTitle">MOTO GO</string>
+	<string name="empty" />
+	<!--Permissions-->
+	<string name="permissionCamera">Camera permission is needed to show the camera preview</string>
+	<string name="permissionStorage">Storage permission is needed to acces the gallery</string>
+	<string name="permissionLocationTitle">Location permission is required</string>
+	<string name="permissionLocation">Access to the location service is required to shows your current location on the map</string>
+	<!--Transitions-->
+	<string name="tran_logo">tran_logo</string>
+	<string name="tran_title">tran_title</string>
+	<string name="tran_signInContinue">tran_signInContinue</string>
+	<string name="tran_email">tran_email</string>
+	<string name="tran_password">tran_password</string>
+	<string name="tran_go">tran_go</string>
+	<string name="tran_newUser">tran_newUser</string>
+	<!--SignIn/SignUp/ForgetPassword-->
+	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="go">GO</string>
+	<!--SignIn-->
+	<string name="welcomeBack">Welcome Back!</string>
+	<string name="signInContinue">Sign In to continue</string>
+	<string name="forgetPassword">FORGET PASSWORD?</string>
+	<string name="newUser">New User? SIGN UP</string>
+	<string name="incorrectUsernameOrPassword">Incorrect username or password</string>
+	<string name="couldNotLoginWithGoogle">Could not login with Google</string>
+	<!--SignUp-->
+	<string name="welcome">Welcome,</string>
+	<string name="singUpToStart">SingUp to start your new journey</string>
+	<string name="fullName">Full Name</string>
+	<string name="email">Email</string>
+	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
+	<string name="alreadyHaveAccount">Already have an account? Sign In</string>
+	<string name="fieldCanNotEmpty">Field can not be empty</string>
+	<string name="usernameToLarge">Username is too large!</string>
+	<string name="invalidFormat">Invalid %1s format!</string>
+	<string name="alreadyUserWithMail">There is already a user with this email</string>
+	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
+	<!--ForgetPassword-->
+	<string name="forgetPasswordTitle">Forget Password</string>
+	<string name="forgetPasswordDetail">Provide your account\'s email for which you want to reset your password!</string>
+	<string name="resetPassword">Reset Password</string>
+	<string name="signOut">Sign Out</string>
+	<string name="passwordResetSent">Password reset sent</string>
+	<string name="passwordResetSentDetail">We have sent you an email to reset your password</string>
+	<string name="noUserWithThisMail">There is no user with this email</string>
+	<!--NewPost-->
+	<string name="title">Title</string>
+	<string name="location">Location</string>
+	<string name="description">Description</string>
+	<string name="publish">Publish</string>
+	<string name="addCoverImage">Add a cover image</string>
+	<string name="createPost">Create Post</string>
+	<string name="coverPhotoNoUploaded">Cover photo could not be uploaded</string>
+	<string name="postNoUploaded">Post could not be uploaded</string>
+	<string name="postCreated">Post Created</string>
+	<string name="selectAnOption">Select an option</string>
+	<string name="takePhoto">Take photo</string>
+	<string name="imageFromGallery">Image from gallery</string>
+	<!--Profile Fragment-->
+	<string name="noPublishedAnything">you haven\'t published anything yet</string>
+	<string name="publications">Publications</string>
+	<string name="edit_profile">Edit Profile</string>
+	<string name="update">Update</string>
+	<string name="userCouldNotBeUpdated">User could not be updated</string>
+	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
+	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<!--Post Detail-->
+	<string name="see_profile">See Profile</string>
+	<string name="newComment">New Coment</string>
+	<string name="addYourComment">Add your comment</string>
+	<string name="commentCreated">Comment created</string>
+	<string name="commentCouldNotBeCreated">Comment could not be created</string>
+	<string name="Comments">Comments</string>
+	<string name="likes">%1s Likes</string>
+	<!--Maps-->
+	<string name="pleaseActiveLocation">Please activate your location to continue</string>
+	<string name="destination">Destination</string>
+	<!--Menus-->
+	<string name="settings">Settings</string>
+	<string name="home">Home</string>
+	<string name="map">Map</string>
+	<string name="profile">Profile</string>
+	<!--MapPreferences-->
+	<!--KEYS-->
+	<string name="prefShowMyLocation">prefShowMyLocation</string>
+	<string name="prefShowOthers">prefShowOthers</string>
+	<string name="prefDistanceRadius">prefDistanceRadius</string>
+	<!--Texts-->
+	<string name="showMyLocationTitle">Show my location</string>
+	<string name="showMyLocationSummary">Show my location to other drivers</string>
+	<string name="showOtherDriversTitle">Show other drivers</string>
+	<string name="showOtherDriversSummary">Show other drivers around</string>
+	<string name="distanceRadiusTitle">Distance radius</string>
+	<string name="distanceRadiusSummary">Distance radius to show other drivers</string>
+	<string name="defaultDistanceRadius">5</string>
+	<!--values-->
+	<string-array name="distanceRadiusValues">
+		<item>5</item>
+		<item>25</item>
+		<item>50</item>
+		<item>75</item>
+		<item>100</item>
+	</string-array>
+
+
 </resources>

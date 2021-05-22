@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/itemHome"
+		android:enabled="true"
+		android:icon="@drawable/ic_home"
+		android:title="@string/home" />
+	<item
+		android:id="@+id/itemMap"
+		android:enabled="true"
+		android:icon="@drawable/ic_map"
+		android:title="@string/map" />
+	<!--	<item-->
+	<!--		android:id="@+id/itemItem3"-->
+	<!--		android:icon="@drawable/ic_close"-->
+	<!--		android:title="Item3" />-->
+	<item
+		android:id="@+id/itemProfile"
+		android:enabled="true"
+		android:icon="@drawable/ic_username"
+		android:title="@string/profile" />
+</menu>
