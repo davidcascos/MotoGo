@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -26,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -55,11 +58,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseError;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,6 +71,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 	private View view;
 	private Toolbar toolbar;
+	private CardView cvAutocomplete;
 
 	private boolean showMyLocation;
 	private boolean showOthers;
@@ -89,7 +93,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private List<Marker> driversMarkers = new ArrayList<>();
 
 	private AutocompleteSupportFragment autocompleteSupportFragment;
-	private PlacesClient placesClient;
+	private String currentName;
 	private String destinationName;
 
 	private Button btCreateRoute;
@@ -117,6 +121,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
 
 					updateLocation();
+
+					btCreateRoute.setVisibility(View.VISIBLE);
+					cvAutocomplete.setVisibility(View.VISIBLE);
 				}
 			}
 		}
@@ -127,6 +134,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fr_maps, container, false);
 		getPreferences();
+
+		cvAutocomplete = view.findViewById(R.id.cv_autocomplete);
 
 		toolbar = view.findViewById(R.id.toolbar);
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -153,6 +162,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void createRoute() {
 		if (currentLatLong != null && destinationLatLong != null) {
 			Intent intent = new Intent(getContext(), RouteDetail.class);
+			intent.putExtra("currentName", currentName);
+			intent.putExtra("destinationName", destinationName);
 			intent.putExtra("currentLat", currentLatLong.latitude);
 			intent.putExtra("currentLon", currentLatLong.longitude);
 			intent.putExtra("destinationLat", destinationLatLong.latitude);
@@ -164,13 +175,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
+	private void getCurrentInfo() {
+		Geocoder geocoder = new Geocoder(getContext());
+		try {
+			List<Address> addressList = geocoder.getFromLocation(currentLatLong.latitude, currentLatLong.longitude, 1);
+			currentName = addressList.get(0).getAddressLine(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void autocompleteDestination() {
 		if (!Places.isInitialized()) {
 			Places.initialize(view.getContext(), getResources().getString(R.string.google_api_key));
 		}
-		placesClient = Places.createClient(view.getContext());
 		autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_support_fragment);
-		autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+		autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
 		autocompleteSupportFragment.setHint(getString(R.string.destination));
 		autocompleteSupportFragment.setOnPlaceSelectedListener(getPlaceSelectionListener());
 	}
@@ -180,7 +200,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		return new PlaceSelectionListener() {
 			@Override
 			public void onPlaceSelected(@NonNull Place place) {
-				destinationName = place.getName();
+				destinationName = place.getAddress();
 				destinationLatLong = place.getLatLng();
 			}
 
@@ -204,26 +224,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		getPreferences();
-
-		checkShowMyLocation();
-		checkActiveDrivers();
-	}
-
-	private void checkShowMyLocation() {
-		if (!showMyLocation) {
-			stopLocationUpdates();
-			geoFireProvider.deleteLocation(authProvider.getUserId());
-		} else {
-			if (mMap != null) {
-				checkVersionToStartLocation();
-			}
-		}
-	}
-
 	private void checkActiveDrivers() {
 		if (showOthers && currentLatLong != null) {
 			getActiveDrivers();
@@ -234,18 +234,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					driversMarkers.remove(marker);
 				}
 			}
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		stopLocationUpdates();
-	}
-
-	private void stopLocationUpdates() {
-		if (fusedLocationProviderClient != null) {
-			fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 		}
 	}
 
@@ -317,7 +305,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -350,8 +337,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void updateLocation() {
-		if (currentLatLong != null && showMyLocation) {
-			geoFireProvider.saveLocation(authProvider.getUserId(), currentLatLong);
+		if (currentLatLong != null) {
+			getCurrentInfo();
+
+			if (showMyLocation) {
+				geoFireProvider.saveLocation(authProvider.getUserId(), currentLatLong);
+			}
 		}
 	}
 
@@ -408,6 +399,38 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 				}
 			});
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getPreferences();
+
+		checkShowMyLocation();
+		checkActiveDrivers();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		stopLocationUpdates();
+	}
+
+	private void checkShowMyLocation() {
+		if (!showMyLocation) {
+			stopLocationUpdates();
+			geoFireProvider.deleteLocation(authProvider.getUserId());
+		} else {
+			if (mMap != null) {
+				checkVersionToStartLocation();
+			}
+		}
+	}
+
+	private void stopLocationUpdates() {
+		if (fusedLocationProviderClient != null) {
+			fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 		}
 	}
 

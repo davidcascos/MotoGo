@@ -80,8 +80,10 @@
 	<string name="destination">Destination</string>
 	<string name="createRoute">Create Route</string>
 	<string name="selectDestination">You must select a destination</string>
-	<string name="originRoute">Origin:</string>
-	<string name="destinationRoute">Destination:</string>
+	<string name="originRoute">Origin: </string>
+	<string name="destinationRoute">Destination: </string>
+	<string name="timeRoute">Duration: </string>
+	<string name="distanceRoute">Distance: </string>
 	<string name="startRoute">Start Route</string>
 	<!--Menus-->
 	<string name="settings">Settings</string>
@@ -110,6 +112,5 @@
 		<item>75</item>
 		<item>100</item>
 	</string-array>
-
 
 </resources>

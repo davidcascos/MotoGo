@@ -18,12 +18,14 @@
 		tools:context=".layouts.maps.MapsFragment" />
 
 	<androidx.cardview.widget.CardView
+		android:id="@+id/cv_autocomplete"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginStart="20dp"
 		android:layout_marginTop="65dp"
 		android:layout_marginEnd="70dp"
 		android:background="@color/white"
+		android:visibility="gone"
 		app:cardCornerRadius="20dp">
 
 		<androidx.fragment.app.FragmentContainerView
@@ -39,10 +41,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
-		android:layout_marginBottom="20dp"
 		android:layout_marginLeft="60dp"
 		android:layout_marginRight="60dp"
+		android:layout_marginBottom="20dp"
 		android:background="@drawable/shape_buttons"
-		android:text="@string/createRoute" />
+		android:text="@string/createRoute"
+		android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
