@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.layouts.Home;
+import com.dcascos.motogo.layouts.home.Home;
 import com.dcascos.motogo.models.User;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;

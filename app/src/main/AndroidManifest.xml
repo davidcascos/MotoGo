@@ -43,7 +43,7 @@
 			android:name=".layouts.signInSignUp.ResetPasswordSent"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.Home"
+			android:name=".layouts.home.Home"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.posts.NewPost"
@@ -59,6 +59,9 @@
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".utils.MapPreferences"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.maps.RouteDetail"
 			android:screenOrientation="portrait" />
 
 		<meta-data

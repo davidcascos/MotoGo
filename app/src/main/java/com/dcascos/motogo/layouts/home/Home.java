@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts;
+package com.dcascos.motogo.layouts.home;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -10,9 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.fragments.HomeFragment;
-import com.dcascos.motogo.fragments.MapsFragment;
-import com.dcascos.motogo.fragments.ProfileFragment;
+import com.dcascos.motogo.layouts.maps.MapsFragment;
+import com.dcascos.motogo.layouts.profile.ProfileFragment;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

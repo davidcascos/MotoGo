@@ -1,4 +1,4 @@
-package com.dcascos.motogo.fragments;
+package com.dcascos.motogo.layouts.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.layouts.profile.EditProfile;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.PostProvider;
 import com.dcascos.motogo.providers.UsersProvider;

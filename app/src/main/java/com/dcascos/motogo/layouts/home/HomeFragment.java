@@ -1,4 +1,4 @@
-package com.dcascos.motogo.fragments;
+package com.dcascos.motogo.layouts.home;
 
 import android.content.Intent;
 import android.os.Bundle;
