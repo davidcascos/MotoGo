@@ -146,7 +146,8 @@
 			android:layout_gravity="bottom"
 			android:layout_margin="20dp"
 			android:background="@drawable/shape_buttons"
-			android:text="@string/startRoute" />
+			android:text="@string/startRoute"
+			android:visibility="invisible" />
 
 	</LinearLayout>
 

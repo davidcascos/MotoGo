@@ -25,7 +25,7 @@
 		android:layout_marginTop="65dp"
 		android:layout_marginEnd="70dp"
 		android:background="@color/white"
-		android:visibility="gone"
+		android:visibility="invisible"
 		app:cardCornerRadius="20dp">
 
 		<androidx.fragment.app.FragmentContainerView
@@ -46,6 +46,6 @@
 		android:layout_marginBottom="20dp"
 		android:background="@drawable/shape_buttons"
 		android:text="@string/createRoute"
-		android:visibility="gone" />
+		android:visibility="invisible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

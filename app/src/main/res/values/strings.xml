@@ -84,7 +84,7 @@
 	<string name="destinationRoute">Destination: </string>
 	<string name="timeRoute">Duration: </string>
 	<string name="distanceRoute">Distance: </string>
-	<string name="startRoute">Start Route</string>
+	<string name="startRoute">(SAVE) Start Route</string>
 	<!--Menus-->
 	<string name="settings">Settings</string>
 	<string name="home">Home</string>

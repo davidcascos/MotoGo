@@ -3,14 +3,19 @@ package com.dcascos.motogo.layouts.maps;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.models.Route;
+import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GoogleAPIProvider;
+import com.dcascos.motogo.providers.RoutesProvider;
 import com.dcascos.motogo.utils.DecodePoints;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,6 +58,7 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 	private double destinationLon;
 	private String distance;
 	private String duration;
+	private String points;
 
 	private LatLng currentLatLong;
 	private LatLng destinationLatLong;
@@ -61,6 +67,9 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 
 	private List<LatLng> polylineList;
 	private PolylineOptions polylineOptions;
+
+	private AuthProvider authProvider;
+	private RoutesProvider routesProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +92,11 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 		destinationLatLong = new LatLng(destinationLat, destinationLon);
 
 		googleAPIProvider = new GoogleAPIProvider(RouteDetail.this);
+
+		authProvider = new AuthProvider();
+		routesProvider = new RoutesProvider();
+
+		btStartRoute.setOnClickListener(v -> createRoute());
 
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
@@ -121,7 +135,7 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 					JSONObject jsonObjectRoute = jsonArrayRoutes.getJSONObject(0);
 
 					JSONObject polylines = jsonObjectRoute.getJSONObject("overview_polyline");
-					String points = polylines.getString("points");
+					points = polylines.getString("points");
 
 					polylineList = DecodePoints.decodePoly(points);
 					polylineOptions = new PolylineOptions();
@@ -140,7 +154,7 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 					distance = jsonObjectDistance.getString("text");
 					duration = jsonObjectDuration.getString("text");
 
-					fillTextViews();
+					showInfo();
 
 				} catch (Exception e) {
 					Log.d("Error", e.getMessage());
@@ -153,10 +167,35 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 		});
 	}
 
-	private void fillTextViews() {
+	private void showInfo() {
 		tvOrigin.setText(currentName);
 		tvDestination.setText(destinationName);
 		tvDistance.setText(distance);
 		tvDuration.setText(duration);
+
+		btStartRoute.setVisibility(View.VISIBLE);
+	}
+
+	private void createRoute() {
+		Route route = new Route();
+		route.setUserId(authProvider.getUserId());
+		route.setOrigin(currentName);
+		route.setDestination(destinationName);
+		route.setDistance(distance);
+		route.setDuration(duration);
+		route.setOriginLat(currentLat);
+		route.setOriginLon(currentLon);
+		route.setDestinationLat(destinationLat);
+		route.setDestinationLon(destinationLon);
+		route.setPoints(points);
+
+		routesProvider.create(route).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				finish();
+				Toast.makeText(RouteDetail.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(RouteDetail.this, getText(R.string.postNoUploaded), Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 }
