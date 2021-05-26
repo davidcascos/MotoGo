@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.providers.PostProvider;
+import com.dcascos.motogo.providers.PostsProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserProfile extends AppCompatActivity {
+public class ProfileFromUser extends AppCompatActivity {
 
 	private ImageView ivCover;
 	private CircleImageView circleImageProfile;
@@ -28,12 +28,12 @@ public class UserProfile extends AppCompatActivity {
 	private String extraUserId;
 
 	private UsersProvider usersProvider;
-	private PostProvider postProvider;
+	private PostsProvider postsProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_user_profile);
+		setContentView(R.layout.ac_profile_from_user);
 
 		ivCover = findViewById(R.id.iv_cover);
 		circleImageProfile = findViewById(R.id.circleImageProfile);
@@ -46,7 +46,7 @@ public class UserProfile extends AppCompatActivity {
 		extraUserId = getIntent().getStringExtra("userId");
 
 		usersProvider = new UsersProvider();
-		postProvider = new PostProvider();
+		postsProvider = new PostsProvider();
 
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 
@@ -70,7 +70,7 @@ public class UserProfile extends AppCompatActivity {
 	}
 
 	private void getPostCount() {
-		postProvider.getPostByUser(extraUserId).get().addOnSuccessListener(queryDocumentSnapshots ->
+		postsProvider.getPostByUser(extraUserId).get().addOnSuccessListener(queryDocumentSnapshots ->
 				tvPostsNumber.setText(String.valueOf(queryDocumentSnapshots.size())));
 	}
 }

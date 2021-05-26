@@ -41,6 +41,7 @@ public class Constants {
 
 	//User variables
 	public static final String USERS = "Users";
+	public static final String USER_ID = "id";
 	public static final String USER_FULLNAME = "fullName";
 	public static final String USER_USERNAME = "username";
 	public static final String USER_EMAIL = "email";
@@ -59,20 +60,17 @@ public class Constants {
 	//Comments
 	public static final String COMMENTS = "Comments";
 	public static final String COMMENT_CREATIONDATE = "creationDate";
-	public static final String COMMENT_TEXT = "commentText";
-	public static final String COMMENT_USERID = "userId";
 	public static final String COMMENT_POSTID = "postId";
 
 	//Likes
 	public static final String LIKES = "Likes";
-	public static final String LIKE_CREATIONDATE = "creationDate";
 	public static final String LIKE_POSTID = "postId";
 	public static final String LIKE_USERID = "userId";
 
-	//Maps
-	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";
-
 	//Routes
 	public static final String ROUTES = "Routes";
+
+	//Maps
+	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";
 
 }

@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
-import com.dcascos.motogo.providers.PostProvider;
+import com.dcascos.motogo.providers.PostsProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,7 +33,7 @@ public class ProfileFragment extends Fragment {
 
 	private AuthProvider authProvider;
 	private UsersProvider usersProvider;
-	private PostProvider postProvider;
+	private PostsProvider postsProvider;
 
 	public ProfileFragment() {
 
@@ -53,7 +53,7 @@ public class ProfileFragment extends Fragment {
 
 		authProvider = new AuthProvider();
 		usersProvider = new UsersProvider();
-		postProvider = new PostProvider();
+		postsProvider = new PostsProvider();
 
 		llEditProfile.setOnClickListener(v -> goToEditProfile());
 
@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void goToEditProfile() {
-		startActivity(new Intent(getContext(), EditProfile.class));
+		startActivity(new Intent(getContext(), ProfileEdit.class));
 	}
 
 	private void getUserData() {
@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void getPostCount() {
-		postProvider.getPostByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots ->
+		postsProvider.getPostByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots ->
 				tvPostsNumber.setText(String.valueOf(queryDocumentSnapshots.size())));
 	}
 

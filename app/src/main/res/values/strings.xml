@@ -31,12 +31,14 @@
 	<string name="singUpToStart">SingUp to start your new journey</string>
 	<string name="fullName">Full Name</string>
 	<string name="email">Email</string>
+	<string name="formatUsername">Alphanumeric characters, underscores and hyphens allowed, must not be the first or last character and must not appear consecutively</string>
 	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
 	<string name="alreadyHaveAccount">Already have an account? Sign In</string>
 	<string name="fieldCanNotEmpty">Field can not be empty</string>
 	<string name="usernameToLarge">Username is too large!</string>
 	<string name="invalidFormat">Invalid %1s format!</string>
 	<string name="alreadyUserWithMail">There is already a user with this email</string>
+	<string name="alreadyUserWithUsername">There is already a user with this username</string>
 	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
 	<!--ForgetPassword-->
 	<string name="forgetPasswordTitle">Forget Password</string>
@@ -73,7 +75,8 @@
 	<string name="addYourComment">Add your comment</string>
 	<string name="commentCreated">Comment created</string>
 	<string name="commentCouldNotBeCreated">Comment could not be created</string>
-	<string name="Comments">Comments</string>
+	<string name="commentsTitle">Comments</string>
+	<string name="comments">%1s Comments</string>
 	<string name="likes">%1s Likes</string>
 	<!--Maps-->
 	<string name="pleaseActiveLocation">Please activate your location to continue</string>
@@ -85,6 +88,8 @@
 	<string name="timeRoute">Duration: </string>
 	<string name="distanceRoute">Distance: </string>
 	<string name="startRoute">(SAVE) Start Route</string>
+	<string name="routeNoUploaded">Route could not be uploaded</string>
+	<string name="routeCreated">Route Created</string>
 	<!--Menus-->
 	<string name="settings">Settings</string>
 	<string name="home">Home</string>

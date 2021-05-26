@@ -13,11 +13,13 @@ public class Route {
 	private double destinationLat;
 	private double destinationLon;
 	private String points;
+	private long creationDate;
 
 	public Route() {
+
 	}
 
-	public Route(String id, String userId, String origin, String destination, String distance, String duration, double originLat, double originLon, double destinationLat, double destinationLon, String points) {
+	public Route(String id, String userId, String origin, String destination, String distance, String duration, double originLat, double originLon, double destinationLat, double destinationLon, String points, long creationDate) {
 		this.id = id;
 		this.userId = userId;
 		this.origin = origin;
@@ -29,6 +31,7 @@ public class Route {
 		this.destinationLat = destinationLat;
 		this.destinationLon = destinationLon;
 		this.points = points;
+		this.creationDate = creationDate;
 	}
 
 	public String getId() {
@@ -117,5 +120,13 @@ public class Route {
 
 	public void setPoints(String points) {
 		this.points = points;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
 	}
 }

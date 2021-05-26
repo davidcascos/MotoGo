@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.signInSignUp;
+package com.dcascos.motogo.layouts.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,10 @@ import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Date;
 import java.util.Objects;
 
-public class SignUp extends AppCompatActivity {
+public class LoginSignUp extends AppCompatActivity {
 
 	private RelativeLayout progressBar;
 	private TextInputLayout tiFullname;
@@ -33,12 +34,12 @@ public class SignUp extends AppCompatActivity {
 
 	private AuthProvider authProvider;
 	private ImageProvider imageProvider;
-	private UsersProvider userProvider;
+	private UsersProvider usersProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_sign_up);
+		setContentView(R.layout.ac_login_signup);
 
 		progressBar = findViewById(R.id.rl_progress);
 		tiFullname = findViewById(R.id.ti_fullname);
@@ -50,7 +51,7 @@ public class SignUp extends AppCompatActivity {
 
 		authProvider = new AuthProvider();
 		imageProvider = new ImageProvider();
-		userProvider = new UsersProvider();
+		usersProvider = new UsersProvider();
 
 		btBackSignIn.setOnClickListener(v -> this.onBackPressed());
 		btGo.setOnClickListener(v -> doSignUp());
@@ -69,26 +70,32 @@ public class SignUp extends AppCompatActivity {
 			String email = Objects.requireNonNull(tiEmail.getEditText()).getText().toString().trim();
 			String password = Objects.requireNonNull(tiPassword.getEditText()).getText().toString().trim();
 
-			authProvider.signUp(email, password).addOnCompleteListener(task -> {
-				if (task.isSuccessful()) {
+			usersProvider.checkUsernameExists(username).get().addOnSuccessListener(queryDocumentSnapshots -> {
+				if (queryDocumentSnapshots.isEmpty()) {
+					authProvider.signUp(email, password).addOnCompleteListener(task -> {
+						if (task.isSuccessful()) {
+							imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
+									imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
+										String userId = authProvider.getUserId();
+										User user = new User(userId, fullname, username, email, uriCover.toString(), uriProfile.toString(), new Date().getTime(), new Date().getTime());
 
-					imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
-							imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
-								String userId = authProvider.getUserId();
-								User user = new User(userId, fullname, username, email, uriCover.toString(), uriProfile.toString());
-
-								userProvider.createUser(user).addOnCompleteListener(task1 -> {
-									if (task1.isSuccessful()) {
-										startActivity(new Intent(SignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-									} else {
-										hideProgressBar();
-										Toast.makeText(SignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
-									}
-								});
-							}));
+										usersProvider.createUser(user).addOnCompleteListener(task1 -> {
+											if (task1.isSuccessful()) {
+												startActivity(new Intent(LoginSignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+											} else {
+												hideProgressBar();
+												Toast.makeText(LoginSignUp.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+											}
+										});
+									}));
+						} else {
+							hideProgressBar();
+							Toast.makeText(LoginSignUp.this, getText(R.string.alreadyUserWithMail), Toast.LENGTH_SHORT).show();
+						}
+					});
 				} else {
 					hideProgressBar();
-					Toast.makeText(SignUp.this, getText(R.string.alreadyUserWithMail), Toast.LENGTH_SHORT).show();
+					Toast.makeText(LoginSignUp.this, getText(R.string.alreadyUserWithUsername), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}

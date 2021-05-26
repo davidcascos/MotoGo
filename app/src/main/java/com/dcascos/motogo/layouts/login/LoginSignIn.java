@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.signInSignUp;
+package com.dcascos.motogo.layouts.login;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -32,10 +32,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
-public class SignIn extends AppCompatActivity {
+public class LoginSignIn extends AppCompatActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivLogo;
@@ -50,13 +54,13 @@ public class SignIn extends AppCompatActivity {
 
 	private AuthProvider authProvider;
 	private ImageProvider imageProvider;
-	private UsersProvider userProvider;
+	private UsersProvider usersProvider;
 	private GoogleSignInClient googleSignInClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_sign_in);
+		setContentView(R.layout.ac_login_signin);
 
 		progressBar = findViewById(R.id.rl_progress);
 		ivLogo = findViewById(R.id.iv_logo);
@@ -72,7 +76,7 @@ public class SignIn extends AppCompatActivity {
 
 		authProvider = new AuthProvider();
 		imageProvider = new ImageProvider();
-		userProvider = new UsersProvider();
+		usersProvider = new UsersProvider();
 
 		// Configure Google Sign In
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -80,7 +84,7 @@ public class SignIn extends AppCompatActivity {
 
 		btGo.setOnClickListener(v -> doSignIn());
 		btGoogle.setOnClickListener(v -> signInGoogle());
-		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(SignIn.this, ResetPassword.class)));
+		btForgetPassword.setOnClickListener(v -> startActivity(new Intent(LoginSignIn.this, LoginPasswordReset.class)));
 
 		btSignUp.setOnClickListener(v -> {
 			Pair[] pairs = new Pair[7];
@@ -92,8 +96,8 @@ public class SignIn extends AppCompatActivity {
 			pairs[5] = new Pair<View, String>(btGo, (String) getText(R.string.tran_go));
 			pairs[6] = new Pair<View, String>(btSignUp, (String) getText(R.string.tran_newUser));
 
-			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignIn.this, pairs);
-			startActivity(new Intent(SignIn.this, SignUp.class), options.toBundle());
+			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginSignIn.this, pairs);
+			startActivity(new Intent(LoginSignIn.this, LoginSignUp.class), options.toBundle());
 		});
 	}
 
@@ -127,7 +131,7 @@ public class SignIn extends AppCompatActivity {
 					goHome();
 				} else {
 					hideProgressBar();
-					Toast.makeText(SignIn.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
+					Toast.makeText(LoginSignIn.this, getText(R.string.incorrectUsernameOrPassword), Toast.LENGTH_LONG).show();
 				}
 			});
 		}
@@ -161,13 +165,13 @@ public class SignIn extends AppCompatActivity {
 				checkUserExist(idUser);
 			} else {
 				hideProgressBar();
-				Toast.makeText(SignIn.this, getText(R.string.couldNotLoginWithGoogle), Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginSignIn.this, getText(R.string.couldNotLoginWithGoogle), Toast.LENGTH_LONG).show();
 			}
 		});
 	}
 
 	private void checkUserExist(String idUser) {
-		userProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
+		usersProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				goHome();
 			} else {
@@ -175,15 +179,29 @@ public class SignIn extends AppCompatActivity {
 						imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
 							String fullname = authProvider.getUserName();
 							String email = authProvider.getUserEmail();
-							String username = Generators.genRandomUsername();
 
-							User user = new User(idUser, fullname, username, email, uriCover.toString(), uriProfile.toString());
-							userProvider.createUser(user).addOnCompleteListener(task1 -> {
-								if (task1.isSuccessful()) {
-									goHome();
-								} else {
-									hideProgressBar();
-									Toast.makeText(SignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+							usersProvider.checkUsernameExistsToGenerateRandom().get().addOnCompleteListener(task -> {
+								if (task.isSuccessful()) {
+
+									List<String> usernames = new ArrayList<>();
+									for (QueryDocumentSnapshot document : task.getResult()) {
+										usernames.add(document.getString(Constants.USER_USERNAME));
+									}
+
+									String username;
+									do {
+										username = Generators.genRandomUsername();
+									} while (usernames.contains(username));
+
+									User user = new User(idUser, fullname, username, email, uriCover.toString(), uriProfile.toString(), new Date().getTime(), new Date().getTime());
+									usersProvider.createUser(user).addOnCompleteListener(task1 -> {
+										if (task1.isSuccessful()) {
+											goHome();
+										} else {
+											hideProgressBar();
+											Toast.makeText(LoginSignIn.this, getText(R.string.userCouldNotBeCreated), Toast.LENGTH_SHORT).show();
+										}
+									});
 								}
 							});
 						}));
@@ -192,7 +210,7 @@ public class SignIn extends AppCompatActivity {
 	}
 
 	private void goHome() {
-		startActivity(new Intent(SignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+		startActivity(new Intent(LoginSignIn.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 	}
 
 	private void showProgressBar() {

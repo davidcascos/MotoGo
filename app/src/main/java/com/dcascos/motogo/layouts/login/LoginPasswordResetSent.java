@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.signInSignUp;
+package com.dcascos.motogo.layouts.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,19 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
 
-public class ResetPasswordSent extends AppCompatActivity {
-
-	private ImageButton ibClose;
+public class LoginPasswordResetSent extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_reset_password_sent);
+		setContentView(R.layout.ac_login_password_reset_sent);
 
-		ibClose = findViewById(R.id.ib_close);
+		ImageButton ibClose = findViewById(R.id.ib_close);
 
 		ibClose.setOnClickListener(v -> {
-			startActivity(new Intent(ResetPasswordSent.this, SignIn.class));
+			startActivity(new Intent(LoginPasswordResetSent.this, LoginSignIn.class));
 			finish();
 		});
 	}

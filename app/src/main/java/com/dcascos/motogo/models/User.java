@@ -8,24 +8,22 @@ public class User {
 	private String email;
 	private String imageCover;
 	private String imageProfile;
+	private long creationDate;
+	private long modificationDate;
 
 	public User() {
+
 	}
 
-	public User(String id, String fullName, String username, String email) {
-		this.id = id;
-		this.fullName = fullName;
-		this.username = username;
-		this.email = email;
-	}
-
-	public User(String id, String fullName, String username, String email, String imageCover, String imageProfile) {
+	public User(String id, String fullName, String username, String email, String imageCover, String imageProfile, long creationDate, long modificationDate) {
 		this.id = id;
 		this.fullName = fullName;
 		this.username = username;
 		this.email = email;
 		this.imageCover = imageCover;
 		this.imageProfile = imageProfile;
+		this.creationDate = creationDate;
+		this.modificationDate = modificationDate;
 	}
 
 	public String getId() {
@@ -74,5 +72,21 @@ public class User {
 
 	public void setImageProfile(String imageProfile) {
 		this.imageProfile = imageProfile;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public long getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(long modificationDate) {
+		this.modificationDate = modificationDate;
 	}
 }

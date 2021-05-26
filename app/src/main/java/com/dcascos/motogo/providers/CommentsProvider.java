@@ -8,11 +8,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class CommentProvider {
+public class CommentsProvider {
 
 	final CollectionReference collectionReference;
 
-	public CommentProvider() {
+	public CommentsProvider() {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.COMMENTS);
 	}
 

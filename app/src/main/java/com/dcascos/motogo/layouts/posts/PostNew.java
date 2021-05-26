@@ -23,7 +23,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
-import com.dcascos.motogo.providers.PostProvider;
+import com.dcascos.motogo.providers.PostsProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.libraries.places.api.Places;
@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class NewPost extends AppCompatActivity {
+public class PostNew extends AppCompatActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;
@@ -55,12 +55,12 @@ public class NewPost extends AppCompatActivity {
 
 	private AuthProvider authProvider;
 	private ImageProvider imageProvider;
-	private PostProvider postProvider;
+	private PostsProvider postsProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_new_post);
+		setContentView(R.layout.ac_post_new);
 
 		progressBar = findViewById(R.id.rl_progress);
 		ivCover = findViewById(R.id.iv_cover);
@@ -76,7 +76,7 @@ public class NewPost extends AppCompatActivity {
 
 		authProvider = new AuthProvider();
 		imageProvider = new ImageProvider();
-		postProvider = new PostProvider();
+		postsProvider = new PostsProvider();
 
 		ivCover.setOnClickListener(v -> selectOptionImage());
 
@@ -91,7 +91,7 @@ public class NewPost extends AppCompatActivity {
 		if (!Places.isInitialized()) {
 			Places.initialize(this, getResources().getString(R.string.google_api_key));
 		}
-		List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME);
+		List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS);
 
 		Intent autoCompleteIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this);
 		startActivityForResult(autoCompleteIntent, Constants.REQUEST_CODE_AUTOCOMPLETE);
@@ -100,24 +100,20 @@ public class NewPost extends AppCompatActivity {
 	private void selectOptionImage() {
 		builderSelector.setItems(dialogOptions, (dialog, which) -> {
 			if (which == 0) {
-				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.CAMERA)) {
-
-					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.CAMERA)) {
-						Toast.makeText(NewPost.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
+				if (!PermissionUtils.hasPermission(PostNew.this, Manifest.permission.CAMERA)) {
+					if (PermissionUtils.shouldShowRational(PostNew.this, Manifest.permission.CAMERA)) {
+						Toast.makeText(PostNew.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
 					}
-
-					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
+					PermissionUtils.requestPermissions(PostNew.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
 				} else {
 					takePhoto();
 				}
 			} else if (which == 1) {
-				if (!PermissionUtils.hasPermission(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-					if (PermissionUtils.shouldShowRational(NewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-						Toast.makeText(NewPost.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
+				if (!PermissionUtils.hasPermission(PostNew.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+					if (PermissionUtils.shouldShowRational(PostNew.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+						Toast.makeText(PostNew.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
 					}
-
-					PermissionUtils.requestPermissions(NewPost.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
+					PermissionUtils.requestPermissions(PostNew.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
 				} else {
 					openGallery();
 				}
@@ -162,7 +158,7 @@ public class NewPost extends AppCompatActivity {
 
 		if (requestCode == Constants.REQUEST_CODE_AUTOCOMPLETE && resultCode == RESULT_OK) {
 			Place place = Autocomplete.getPlaceFromIntent(data);
-			tiLocation.getEditText().setText(place.getName());
+			tiLocation.getEditText().setText(place.getAddress());
 		}
 	}
 
@@ -183,7 +179,7 @@ public class NewPost extends AppCompatActivity {
 						imageProvider.getStorage().getDownloadUrl().addOnSuccessListener(uri -> savePost(uri, title, location, description));
 					} else {
 						hideProgressBar();
-						Toast.makeText(NewPost.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
+						Toast.makeText(PostNew.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
 					}
 				});
 			} else {
@@ -202,13 +198,13 @@ public class NewPost extends AppCompatActivity {
 		post.setUserId(authProvider.getUserId());
 		post.setCreationDate(new Date().getTime());
 
-		postProvider.create(post).addOnCompleteListener(task1 -> {
+		postsProvider.create(post).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {
 				finish();
-				Toast.makeText(NewPost.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
+				Toast.makeText(PostNew.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
 			} else {
 				hideProgressBar();
-				Toast.makeText(NewPost.this, getText(R.string.postNoUploaded), Toast.LENGTH_SHORT).show();
+				Toast.makeText(PostNew.this, getText(R.string.postNoUploaded), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

@@ -12,22 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.PostsAdapter;
-import com.dcascos.motogo.layouts.posts.NewPost;
+import com.dcascos.motogo.layouts.posts.PostNew;
 import com.dcascos.motogo.models.Post;
-import com.dcascos.motogo.providers.PostProvider;
+import com.dcascos.motogo.providers.PostsProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 
 public class HomeFragment extends Fragment {
 
-	private View view;
-	private FloatingActionButton btAddPost;
 	private RecyclerView recyclerView;
-
 	private PostsAdapter postsAdapter;
-
-	private PostProvider postProvider;
+	private PostsProvider postsProvider;
 
 	public HomeFragment() {
 
@@ -35,12 +31,12 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fr_home, container, false);
+		View view = inflater.inflate(R.layout.fr_home, container, false);
 
-		btAddPost = view.findViewById(R.id.bt_addPost);
+		FloatingActionButton btAddPost = view.findViewById(R.id.bt_addPost);
 		recyclerView = view.findViewById(R.id.rv_home);
 
-		postProvider = new PostProvider();
+		postsProvider = new PostsProvider();
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 		recyclerView.setLayoutManager(linearLayoutManager);
@@ -52,7 +48,7 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		Query query = postProvider.getAll();
+		Query query = postsProvider.getAll();
 		FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();
 		postsAdapter = new PostsAdapter(options, getContext());
 		recyclerView.setAdapter(postsAdapter);
@@ -66,6 +62,6 @@ public class HomeFragment extends Fragment {
 	}
 
 	private void goToPost() {
-		startActivity(new Intent(getContext(), NewPost.class));
+		startActivity(new Intent(getContext(), PostNew.class));
 	}
 }

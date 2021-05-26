@@ -17,14 +17,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
-	private BottomNavigationView bottomNavigation;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_home);
 
-		bottomNavigation = findViewById(R.id.bottom_navigation);
+		BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
 
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 		openFragment(new HomeFragment());

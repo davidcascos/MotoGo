@@ -57,7 +57,7 @@
 					android:orientation="horizontal">
 
 					<de.hdodenhof.circleimageview.CircleImageView
-						android:id="@+id/cv_profile"
+						android:id="@+id/civ_profile"
 						android:layout_width="55dp"
 						android:layout_height="55dp"
 						app:civ_border_color="@color/app_colorDark"
@@ -165,7 +165,7 @@
 				android:layout_marginLeft="25dp"
 				android:layout_marginRight="25dp"
 				android:fontFamily="@font/muli_black"
-				android:text="@string/Comments"
+				android:text="@string/commentsTitle"
 				android:textColor="@color/black"
 				android:textSize="16dp"
 				android:textStyle="bold" />

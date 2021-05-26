@@ -9,11 +9,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class PostProvider {
+public class PostsProvider {
 
 	final CollectionReference collectionReference;
 
-	public PostProvider() {
+	public PostsProvider() {
 		collectionReference = FirebaseFirestore.getInstance().collection(Constants.POSTS);
 	}
 

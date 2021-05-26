@@ -23,11 +23,11 @@ import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.layouts.profile.UserProfile;
+import com.dcascos.motogo.layouts.profile.ProfileFromUser;
 import com.dcascos.motogo.models.Comment;
 import com.dcascos.motogo.providers.AuthProvider;
-import com.dcascos.motogo.providers.CommentProvider;
-import com.dcascos.motogo.providers.PostProvider;
+import com.dcascos.motogo.providers.CommentsProvider;
+import com.dcascos.motogo.providers.PostsProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -57,8 +57,8 @@ public class PostDetail extends AppCompatActivity {
 
 	private AuthProvider authProvider;
 	private UsersProvider usersProvider;
-	private PostProvider postProvider;
-	private CommentProvider commentProvider;
+	private PostsProvider postsProvider;
+	private CommentsProvider commentsProvider;
 
 	private CommentAdapter commentAdapter;
 
@@ -69,7 +69,7 @@ public class PostDetail extends AppCompatActivity {
 
 		progressBar = findViewById(R.id.rl_progress);
 		ivCover = findViewById(R.id.iv_cover);
-		cvProfile = findViewById(R.id.cv_profile);
+		cvProfile = findViewById(R.id.civ_profile);
 		tvUsername = findViewById(R.id.tv_username);
 		tvTitle = findViewById(R.id.tv_title);
 		tvLocation = findViewById(R.id.tv_location);
@@ -83,8 +83,8 @@ public class PostDetail extends AppCompatActivity {
 
 		authProvider = new AuthProvider();
 		usersProvider = new UsersProvider();
-		postProvider = new PostProvider();
-		commentProvider = new CommentProvider();
+		postsProvider = new PostsProvider();
+		commentsProvider = new CommentsProvider();
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetail.this);
 		rvComments.setLayoutManager(linearLayoutManager);
@@ -92,16 +92,14 @@ public class PostDetail extends AppCompatActivity {
 		getPost();
 
 		btAddComment.setOnClickListener(v -> showDialogComment());
-
 		btShowProfile.setOnClickListener(v -> goToShowProfile());
-
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		Query query = commentProvider.getCommentsByPost(extraPostId);
+		Query query = commentsProvider.getCommentsByPost(extraPostId).orderBy(Constants.COMMENT_CREATIONDATE, Query.Direction.ASCENDING);
 		FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>().setQuery(query, Comment.class).build();
 		commentAdapter = new CommentAdapter(options, PostDetail.this);
 		rvComments.setAdapter(commentAdapter);
@@ -116,12 +114,12 @@ public class PostDetail extends AppCompatActivity {
 
 	private void goToShowProfile() {
 		if (!userId.equals(getString(R.string.empty))) {
-			startActivity(new Intent(PostDetail.this, UserProfile.class).putExtra("userId", userId));
+			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userId", userId));
 		}
 	}
 
 	private void getPost() {
-		postProvider.getPostById(extraPostId).addOnSuccessListener(documentSnapshot -> {
+		postsProvider.getPostById(extraPostId).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				if (documentSnapshot.contains(Constants.POST_IMAGE)) {
 					Glide.with(getApplicationContext()).load(documentSnapshot.getString(Constants.POST_IMAGE)).into(ivCover);
@@ -201,11 +199,11 @@ public class PostDetail extends AppCompatActivity {
 
 	private void createComment(String commentText) {
 		Comment comment = new Comment();
-		comment.setCommentText(commentText);
+		comment.setText(commentText);
 		comment.setPostId(extraPostId);
 		comment.setUserId(authProvider.getUserId());
 		comment.setCreationDate(new Date().getTime());
-		commentProvider.create(comment).addOnCompleteListener(task -> {
+		commentsProvider.create(comment).addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();

@@ -18,6 +18,7 @@ import com.dcascos.motogo.layouts.posts.PostDetail;
 import com.dcascos.motogo.models.Like;
 import com.dcascos.motogo.models.Post;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.CommentsProvider;
 import com.dcascos.motogo.providers.LikesProvider;
 import com.dcascos.motogo.providers.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
@@ -33,6 +34,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 	private final Context context;
 	private final UsersProvider usersProvider;
 	private final LikesProvider likesProvider;
+	private final CommentsProvider commentsProvider;
 	private final AuthProvider authProvider;
 
 	public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context) {
@@ -40,28 +42,31 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		this.context = context;
 		usersProvider = new UsersProvider();
 		likesProvider = new LikesProvider();
+		commentsProvider = new CommentsProvider();
 		authProvider = new AuthProvider();
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		private final ImageView ivPostCard;
-		private final TextView tvTitleCard;
-		private final TextView tvDate;
+		private final ImageView ivPostImage;
+		private final TextView tvPostTitle;
+		private final TextView tvCreationDate;
 		private final TextView tvUsername;
-		private final TextView tvDescriptionCard;
+		private final TextView tvDescription;
 		private final View viewHolder;
 		private final ImageView ivLikes;
 		private final TextView tvLikes;
+		private final TextView tvComments;
 
 		public ViewHolder(View view) {
 			super(view);
-			ivPostCard = view.findViewById(R.id.iv_postCard);
-			tvTitleCard = view.findViewById(R.id.tv_titleCard);
-			tvDate = view.findViewById(R.id.tv_date);
+			ivPostImage = view.findViewById(R.id.iv_postImage);
+			tvPostTitle = view.findViewById(R.id.tv_postTitle);
+			tvCreationDate = view.findViewById(R.id.tv_creationDate);
 			tvUsername = view.findViewById(R.id.tv_username);
-			tvDescriptionCard = view.findViewById(R.id.tv_descriptionCard);
+			tvDescription = view.findViewById(R.id.tv_description);
 			ivLikes = view.findViewById(R.id.iv_like);
 			tvLikes = view.findViewById(R.id.tv_likes);
+			tvComments = view.findViewById(R.id.tv_comments);
 			viewHolder = view;
 		}
 	}
@@ -71,11 +76,11 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
 
 		if (post.getImage() != null && !post.getImage().isEmpty()) {
-			Glide.with(context).load(post.getImage()).into(holder.ivPostCard);
+			Glide.with(context).load(post.getImage()).into(holder.ivPostImage);
 		}
-		holder.tvTitleCard.setText(post.getTitle());
-		holder.tvDate.setText(Generators.dateFormater(post.getCreationDate()));
-		holder.tvDescriptionCard.setText(post.getDescription());
+		holder.tvPostTitle.setText(post.getTitle());
+		holder.tvCreationDate.setText(Generators.dateFormater(post.getCreationDate()));
+		holder.tvDescription.setText(post.getDescription());
 		holder.viewHolder.setOnClickListener(v -> context.startActivity(new Intent(context, PostDetail.class).putExtra("documentId", documentSnapshot.getId())));
 
 		holder.ivLikes.setOnClickListener(v -> {
@@ -91,6 +96,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		checkLike(documentSnapshot.getId(), authProvider.getUserId(), holder);
 
 		getNumberLikesByPost(documentSnapshot.getId(), holder);
+		getNumberCommentsByPost(documentSnapshot.getId(), holder);
 	}
 
 	@NonNull
@@ -102,10 +108,8 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 
 	private void getUserInfo(String userId, PostsAdapter.ViewHolder holder) {
 		usersProvider.getUser(userId).addOnSuccessListener(documentSnapshot -> {
-			if (documentSnapshot.exists()) {
-				if (documentSnapshot.contains(Constants.USER_USERNAME)) {
-					holder.tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
-				}
+			if (documentSnapshot.exists() && documentSnapshot.contains(Constants.USER_USERNAME)) {
+				holder.tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
 			}
 		});
 	}
@@ -137,6 +141,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 			int likes = Objects.requireNonNull(value).size();
 
 			holder.tvLikes.setText(context.getString(R.string.likes, String.valueOf(likes)));
+		});
+	}
+
+	private void getNumberCommentsByPost(String postId, ViewHolder holder) {
+		commentsProvider.getCommentsByPost(postId).addSnapshotListener((value, error) -> {
+			int comments = Objects.requireNonNull(value).size();
+
+			holder.tvComments.setText(context.getString(R.string.comments, String.valueOf(comments)));
 		});
 	}
 }

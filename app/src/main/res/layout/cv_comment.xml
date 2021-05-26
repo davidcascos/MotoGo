@@ -15,7 +15,7 @@
 		android:orientation="horizontal">
 
 		<de.hdodenhof.circleimageview.CircleImageView
-			android:id="@+id/cv_profile"
+			android:id="@+id/civ_profile"
 			android:layout_width="45dp"
 			android:layout_height="45dp"
 			app:civ_border_color="@color/app_colorDark"
@@ -52,7 +52,7 @@
 						android:textColor="@color/black" />
 
 					<TextView
-						android:id="@+id/tv_date"
+						android:id="@+id/tv_creationDate"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginStart="5dp"
@@ -64,7 +64,7 @@
 				</LinearLayout>
 
 				<TextView
-					android:id="@+id/tv_commentDescription"
+					android:id="@+id/tv_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="10dp"

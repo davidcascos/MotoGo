@@ -3,21 +3,21 @@ package com.dcascos.motogo.models;
 public class Comment {
 
 	private String id;
-	private long creationDate;
-	private String commentText;
+	private String text;
 	private String userId;
 	private String postId;
+	private long creationDate;
 
 	public Comment() {
 
 	}
 
-	public Comment(String id, long creationDate, String commentText, String userId, String postId) {
+	public Comment(String id, String text, String userId, String postId, long creationDate) {
 		this.id = id;
-		this.creationDate = creationDate;
-		this.commentText = commentText;
+		this.text = text;
 		this.userId = userId;
 		this.postId = postId;
+		this.creationDate = creationDate;
 	}
 
 	public String getId() {
@@ -28,20 +28,12 @@ public class Comment {
 		this.id = id;
 	}
 
-	public long getCreationDate() {
-		return creationDate;
+	public String getText() {
+		return text;
 	}
 
-	public void setCreationDate(long creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public String getCommentText() {
-		return commentText;
-	}
-
-	public void setCommentText(String commentText) {
-		this.commentText = commentText;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getUserId() {
@@ -58,5 +50,13 @@ public class Comment {
 
 	public void setPostId(String postId) {
 		this.postId = postId;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
 	}
 }

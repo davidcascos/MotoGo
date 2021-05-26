@@ -1,4 +1,4 @@
-package com.dcascos.motogo.layouts.signInSignUp;
+package com.dcascos.motogo.layouts.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-public class ResetPassword extends AppCompatActivity {
+public class LoginPasswordReset extends AppCompatActivity {
 
 	private ImageButton ibBack;
 	private Button btResetPassword;
@@ -29,7 +29,7 @@ public class ResetPassword extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_reset_password);
+		setContentView(R.layout.ac_login_password_reset);
 
 		ibBack = findViewById(R.id.ib_back);
 		btResetPassword = findViewById(R.id.bt_resetPassword);
@@ -49,12 +49,12 @@ public class ResetPassword extends AppCompatActivity {
 
 			authProvider.resetPassword(email).addOnCompleteListener(task -> {
 				if (task.isSuccessful()) {
-					startActivity(new Intent(ResetPassword.this, ResetPasswordSent.class));
+					startActivity(new Intent(LoginPasswordReset.this, LoginPasswordResetSent.class));
 					finish();
 				} else {
 					progressBar.setVisibility(View.GONE);
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-					Toast.makeText(ResetPassword.this, getText(R.string.noUserWithThisMail), Toast.LENGTH_SHORT).show();
+					Toast.makeText(LoginPasswordReset.this, getText(R.string.noUserWithThisMail), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}

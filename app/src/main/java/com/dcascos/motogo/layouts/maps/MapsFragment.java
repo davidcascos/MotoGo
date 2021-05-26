@@ -70,32 +70,21 @@ import java.util.List;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 	private View view;
-	private Toolbar toolbar;
 	private CardView cvAutocomplete;
-
 	private boolean showMyLocation;
 	private boolean showOthers;
 	private double distanceRadius;
-
 	private GoogleMap mMap;
-	private SupportMapFragment mapFragment;
-
 	private LocationRequest locationRequest;
 	private FusedLocationProviderClient fusedLocationProviderClient;
-
-	private LatLng currentLatLong;
+	private LatLng originLatLong;
 	private LatLng destinationLatLong;
-
 	private AuthProvider authProvider;
 	private GeoFireProvider geoFireProvider;
-
 	private Marker meMarker;
 	private List<Marker> driversMarkers = new ArrayList<>();
-
-	private AutocompleteSupportFragment autocompleteSupportFragment;
-	private String currentName;
+	private String originName;
 	private String destinationName;
-
 	private Button btCreateRoute;
 
 	private LocationCallback locationCallback = new LocationCallback() {
@@ -115,7 +104,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 							.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me))
 							.zIndex(1));
 
-					currentLatLong = new LatLng(location.getLatitude(), location.getLongitude());
+					originLatLong = new LatLng(location.getLatitude(), location.getLongitude());
 					checkActiveDrivers();
 
 					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
@@ -125,6 +114,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					btCreateRoute.setVisibility(View.VISIBLE);
 					cvAutocomplete.setVisibility(View.VISIBLE);
 				}
+			}
+		}
+
+		private void updateLocation() {
+			if (originLatLong != null) {
+				getOriginInfo();
+
+				if (showMyLocation) {
+					geoFireProvider.saveLocation(authProvider.getUserId(), originLatLong);
+				}
+			}
+		}
+
+		private void getOriginInfo() {
+			Geocoder geocoder = new Geocoder(getContext());
+			try {
+				List<Address> addressList = geocoder.getFromLocation(originLatLong.latitude, originLatLong.longitude, 1);
+				originName = addressList.get(0).getAddressLine(0);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	};
@@ -137,12 +146,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		cvAutocomplete = view.findViewById(R.id.cv_autocomplete);
 
-		toolbar = view.findViewById(R.id.toolbar);
+		Toolbar toolbar = view.findViewById(R.id.toolbar);
 		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.empty));
 		setHasOptionsMenu(true);
 
-		mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+		SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 
 		authProvider = new AuthProvider();
@@ -153,43 +162,37 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		autocompleteDestination();
 
 		btCreateRoute = view.findViewById(R.id.bt_createRoute);
-
 		btCreateRoute.setOnClickListener(v -> createRoute());
 
 		return view;
 	}
 
-	private void createRoute() {
-		if (currentLatLong != null && destinationLatLong != null) {
-			Intent intent = new Intent(getContext(), RouteDetail.class);
-			intent.putExtra("currentName", currentName);
-			intent.putExtra("destinationName", destinationName);
-			intent.putExtra("currentLat", currentLatLong.latitude);
-			intent.putExtra("currentLon", currentLatLong.longitude);
-			intent.putExtra("destinationLat", destinationLatLong.latitude);
-			intent.putExtra("destinationLon", destinationLatLong.longitude);
-
-			startActivity(intent);
-		} else {
-			Toast.makeText(getContext(), R.string.selectDestination, Toast.LENGTH_SHORT).show();
-		}
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+		inflater.inflate(R.menu.map_options_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-	private void getCurrentInfo() {
-		Geocoder geocoder = new Geocoder(getContext());
-		try {
-			List<Address> addressList = geocoder.getFromLocation(currentLatLong.latitude, currentLatLong.longitude, 1);
-			currentName = addressList.get(0).getAddressLine(0);
-		} catch (IOException e) {
-			e.printStackTrace();
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		if (item.getItemId() == R.id.menu_options) {
+			startActivity(new Intent(getActivity(), MapPreferences.class));
 		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void getPreferences() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		showMyLocation = prefs.getBoolean(getString(R.string.prefShowMyLocation), false);
+		showOthers = prefs.getBoolean(getString(R.string.prefShowOthers), false);
+		distanceRadius = Long.parseLong(prefs.getString(getString(R.string.prefDistanceRadius), getString(R.string.defaultDistanceRadius)));
 	}
 
 	private void autocompleteDestination() {
 		if (!Places.isInitialized()) {
 			Places.initialize(view.getContext(), getResources().getString(R.string.google_api_key));
 		}
-		autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_support_fragment);
+		AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_support_fragment);
 		autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
 		autocompleteSupportFragment.setHint(getString(R.string.destination));
 		autocompleteSupportFragment.setOnPlaceSelectedListener(getPlaceSelectionListener());
@@ -210,38 +213,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		};
 	}
 
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-		inflater.inflate(R.menu.map_options_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
+	private void createRoute() {
+		if (originLatLong != null && destinationLatLong != null) {
+			Intent intent = new Intent(getContext(), MapsRouteDetail.class);
+			intent.putExtra("originName", originName);
+			intent.putExtra("destinationName", destinationName);
+			intent.putExtra("originLat", originLatLong.latitude);
+			intent.putExtra("originLon", originLatLong.longitude);
+			intent.putExtra("destinationLat", destinationLatLong.latitude);
+			intent.putExtra("destinationLon", destinationLatLong.longitude);
 
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-		if (item.getItemId() == R.id.menu_options) {
-			startActivity(new Intent(getActivity(), MapPreferences.class));
+			startActivity(intent);
+		} else {
+			Toast.makeText(getContext(), R.string.selectDestination, Toast.LENGTH_SHORT).show();
 		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	private void checkActiveDrivers() {
-		if (showOthers && currentLatLong != null) {
-			getActiveDrivers();
-		} else if (!showOthers) {
-			for (Marker marker : driversMarkers) {
-				if (marker.getTag() != null) {
-					marker.remove();
-					driversMarkers.remove(marker);
-				}
-			}
-		}
-	}
-
-	public void getPreferences() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		showMyLocation = prefs.getBoolean(getString(R.string.prefShowMyLocation), false);
-		showOthers = prefs.getBoolean(getString(R.string.prefShowOthers), false);
-		distanceRadius = Long.parseLong(prefs.getString(getString(R.string.prefDistanceRadius), getString(R.string.defaultDistanceRadius)));
 	}
 
 	@Override
@@ -257,29 +242,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 				.setSmallestDisplacement(5);
 
 		checkVersionToStartLocation();
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-		if (requestCode == Constants.REQUEST_CODE_LOCATION
-				&& grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			checklAllForLocation();
-		}
-	}
-
-	private void checklAllForLocation() {
-		if (itsGpsActived()) {
-			if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-				return;
-			}
-			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-			mMap.setMyLocationEnabled(true);
-		} else {
-			showAlertDialogNoGps();
-		}
 	}
 
 	private void checkVersionToStartLocation() {
@@ -306,6 +268,36 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (requestCode == Constants.REQUEST_CODE_LOCATION
+				&& grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+				&& ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+			checklAllForLocation();
+		}
+	}
+
+	private void checklAllForLocation() {
+		if (itsGpsActived()) {
+			if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				return;
+			}
+			fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+			mMap.setMyLocationEnabled(true);
+		} else {
+			showAlertDialogNoGps();
+		}
+	}
+
+	private void showAlertDialogNoGps() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Constants.REQUEST_CODE_SETTINGS && itsGpsActived()) {
@@ -329,26 +321,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
-	private void showAlertDialogNoGps() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-
-		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
-	}
-
-	private void updateLocation() {
-		if (currentLatLong != null) {
-			getCurrentInfo();
-
-			if (showMyLocation) {
-				geoFireProvider.saveLocation(authProvider.getUserId(), currentLatLong);
+	private void checkActiveDrivers() {
+		if (showOthers && originLatLong != null) {
+			getActiveDrivers();
+		} else if (!showOthers) {
+			for (Marker marker : driversMarkers) {
+				if (marker.getTag() != null) {
+					marker.remove();
+					driversMarkers.remove(marker);
+				}
 			}
 		}
 	}
 
 	private void getActiveDrivers() {
 		if (showOthers) {
-			geoFireProvider.getActiveDrivers(currentLatLong, distanceRadius).addGeoQueryEventListener(new GeoQueryEventListener() {
+			geoFireProvider.getActiveDrivers(originLatLong, distanceRadius).addGeoQueryEventListener(new GeoQueryEventListener() {
 				@Override
 				public void onKeyEntered(String key, GeoLocation location) {
 					for (Marker marker : driversMarkers) {

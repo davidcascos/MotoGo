@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".layouts.signInSignUp.SignUp">
+	tools:context=".layouts.login.LoginSignUp">
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -76,6 +76,7 @@
 				app:counterMaxLength="15"
 				app:endIconMode="clear_text"
 				app:endIconTint="@color/black"
+				app:helperText="@string/formatUsername"
 				app:hintTextColor="@color/black"
 				app:startIconDrawable="@drawable/ic_username"
 				app:startIconTint="@color/black">

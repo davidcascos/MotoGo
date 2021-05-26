@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dcascos.motogo.layouts.signInSignUp.SignIn;
+import com.dcascos.motogo.layouts.login.LoginSignIn;
 import com.dcascos.motogo.R;
 
 public class SplashScreen extends AppCompatActivity {
@@ -70,7 +70,7 @@ public class SplashScreen extends AppCompatActivity {
 
 			ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this, pairs);
 
-			startActivity(new Intent(SplashScreen.this, SignIn.class), options.toBundle());
+			startActivity(new Intent(SplashScreen.this, LoginSignIn.class), options.toBundle());
 			finish();
 		}, SPLASH_SCREEN_TIME);
 	}

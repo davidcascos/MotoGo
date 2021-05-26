@@ -17,11 +17,11 @@ public class GoogleAPIProvider {
 
 	private Context context;
 
-	public Call<String> getDirections(LatLng currentLatLong, LatLng destinationLatLong) {
+	public Call<String> getDirections(LatLng originLatLong, LatLng destinationLatLong) {
 		String baseUrl = "https://maps.googleapis.com";
 
 		String query = "/maps/api/directions/json?mode=driving&transit_routing_preferences=less_driving&"
-				+ "origin=" + currentLatLong.latitude + "," + currentLatLong.longitude + "&"
+				+ "origin=" + originLatLong.latitude + "," + originLatLong.longitude + "&"
 				+ "destination=" + destinationLatLong.latitude + "," + destinationLatLong.longitude + "&"
 				+ "key=" + context.getResources().getString(R.string.google_api_key);
 

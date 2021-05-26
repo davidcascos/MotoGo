@@ -32,13 +32,15 @@ import com.google.android.gms.maps.model.SquareCap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCallback {
 
 	private TextView tvOrigin;
 	private TextView tvDestination;
@@ -46,35 +48,28 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 	private TextView tvDuration;
 	private Button btStartRoute;
 	private ImageButton ibBack;
-
 	private GoogleMap mMap;
-	private SupportMapFragment mapFragment;
-
-	private String currentName;
+	private String originName;
 	private String destinationName;
-	private double currentLat;
-	private double currentLon;
+	private double originLat;
+	private double originLon;
 	private double destinationLat;
 	private double destinationLon;
 	private String distance;
 	private String duration;
 	private String points;
-
-	private LatLng currentLatLong;
+	private LatLng originLatLong;
 	private LatLng destinationLatLong;
-
 	private GoogleAPIProvider googleAPIProvider;
-
 	private List<LatLng> polylineList;
 	private PolylineOptions polylineOptions;
-
 	private AuthProvider authProvider;
 	private RoutesProvider routesProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_route_detail);
+		setContentView(R.layout.ac_maps_route_detail);
 
 		tvOrigin = findViewById(R.id.tv_origin);
 		tvDestination = findViewById(R.id.tv_destination);
@@ -83,29 +78,28 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 		btStartRoute = findViewById(R.id.bt_startRoute);
 		ibBack = findViewById(R.id.ib_back);
 
-		mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 
 		getIntentExtras();
 
-		currentLatLong = new LatLng(currentLat, currentLon);
+		originLatLong = new LatLng(originLat, originLon);
 		destinationLatLong = new LatLng(destinationLat, destinationLon);
 
-		googleAPIProvider = new GoogleAPIProvider(RouteDetail.this);
+		googleAPIProvider = new GoogleAPIProvider(MapsRouteDetail.this);
 
 		authProvider = new AuthProvider();
 		routesProvider = new RoutesProvider();
 
 		btStartRoute.setOnClickListener(v -> createRoute());
-
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	private void getIntentExtras() {
-		currentName = getIntent().getStringExtra("currentName");
+		originName = getIntent().getStringExtra("originName");
 		destinationName = getIntent().getStringExtra("destinationName");
-		currentLat = getIntent().getDoubleExtra("currentLat", 0);
-		currentLon = getIntent().getDoubleExtra("currentLon", 0);
+		originLat = getIntent().getDoubleExtra("originLat", 0);
+		originLon = getIntent().getDoubleExtra("originLon", 0);
 		destinationLat = getIntent().getDoubleExtra("destinationLat", 0);
 		destinationLon = getIntent().getDoubleExtra("destinationLon", 0);
 	}
@@ -116,20 +110,20 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		mMap.getUiSettings().setZoomControlsEnabled(true);
 
-		mMap.addMarker(new MarkerOptions().position(currentLatLong).title("Origin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me)));
+		mMap.addMarker(new MarkerOptions().position(originLatLong).title("Origin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me)));
 		mMap.addMarker(new MarkerOptions().position(destinationLatLong).title("Destination").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)));
 
-		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(currentLatLong).zoom(14f).build()));
+		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(originLatLong).zoom(14f).build()));
 
 		drawRoute();
 	}
 
 	private void drawRoute() {
-		googleAPIProvider.getDirections(currentLatLong, destinationLatLong).enqueue(new Callback<String>() {
+		googleAPIProvider.getDirections(originLatLong, destinationLatLong).enqueue(new Callback<String>() {
 			@Override
 			public void onResponse(Call<String> call, Response<String> response) {
 				try {
-					JSONObject jsonObject = new JSONObject(response.body());
+					JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()));
 
 					JSONArray jsonArrayRoutes = jsonObject.getJSONArray("routes");
 					JSONObject jsonObjectRoute = jsonArrayRoutes.getJSONObject(0);
@@ -168,7 +162,7 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 	}
 
 	private void showInfo() {
-		tvOrigin.setText(currentName);
+		tvOrigin.setText(originName);
 		tvDestination.setText(destinationName);
 		tvDistance.setText(distance);
 		tvDuration.setText(duration);
@@ -179,22 +173,23 @@ public class RouteDetail extends AppCompatActivity implements OnMapReadyCallback
 	private void createRoute() {
 		Route route = new Route();
 		route.setUserId(authProvider.getUserId());
-		route.setOrigin(currentName);
+		route.setOrigin(originName);
 		route.setDestination(destinationName);
 		route.setDistance(distance);
 		route.setDuration(duration);
-		route.setOriginLat(currentLat);
-		route.setOriginLon(currentLon);
+		route.setOriginLat(originLat);
+		route.setOriginLon(originLon);
 		route.setDestinationLat(destinationLat);
 		route.setDestinationLon(destinationLon);
 		route.setPoints(points);
+		route.setCreationDate(new Date().getTime());
 
 		routesProvider.create(route).addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				finish();
-				Toast.makeText(RouteDetail.this, getText(R.string.postCreated), Toast.LENGTH_SHORT).show();
+				Toast.makeText(MapsRouteDetail.this, getText(R.string.routeCreated), Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(RouteDetail.this, getText(R.string.postNoUploaded), Toast.LENGTH_SHORT).show();
+				Toast.makeText(MapsRouteDetail.this, getText(R.string.routeNoUploaded), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

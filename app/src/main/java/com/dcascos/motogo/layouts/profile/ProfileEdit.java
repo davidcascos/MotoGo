@@ -30,11 +30,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditProfile extends AppCompatActivity {
+public class ProfileEdit extends AppCompatActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;
@@ -61,7 +62,7 @@ public class EditProfile extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_edit_profile);
+		setContentView(R.layout.ac_profile_edit);
 
 		progressBar = findViewById(R.id.rl_progress);
 		ivCover = findViewById(R.id.iv_cover);
@@ -107,13 +108,13 @@ public class EditProfile extends AppCompatActivity {
 	private void selectOptionImage(int selectedImage) {
 		builderSelector.setItems(dialogOptions, (dialog, which) -> {
 			if (which == 0) {
-				if (!PermissionUtils.hasPermission(EditProfile.this, Manifest.permission.CAMERA)) {
+				if (!PermissionUtils.hasPermission(ProfileEdit.this, Manifest.permission.CAMERA)) {
 
-					if (PermissionUtils.shouldShowRational(EditProfile.this, Manifest.permission.CAMERA)) {
-						Toast.makeText(EditProfile.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
+					if (PermissionUtils.shouldShowRational(ProfileEdit.this, Manifest.permission.CAMERA)) {
+						Toast.makeText(ProfileEdit.this, getText(R.string.permissionCamera), Toast.LENGTH_LONG).show();
 					}
 
-					PermissionUtils.requestPermissions(EditProfile.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
+					PermissionUtils.requestPermissions(ProfileEdit.this, new String[]{Manifest.permission.CAMERA}, Constants.REQUEST_CODE_PHOTO);
 				} else {
 					if (selectedImage == SELECT_PHOTO_COVER) {
 						takePhoto(Constants.REQUEST_CODE_PHOTO_COVER);
@@ -122,13 +123,13 @@ public class EditProfile extends AppCompatActivity {
 					}
 				}
 			} else if (which == 1) {
-				if (!PermissionUtils.hasPermission(EditProfile.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+				if (!PermissionUtils.hasPermission(ProfileEdit.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-					if (PermissionUtils.shouldShowRational(EditProfile.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-						Toast.makeText(EditProfile.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
+					if (PermissionUtils.shouldShowRational(ProfileEdit.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+						Toast.makeText(ProfileEdit.this, getText(R.string.permissionStorage), Toast.LENGTH_LONG).show();
 					}
 
-					PermissionUtils.requestPermissions(EditProfile.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
+					PermissionUtils.requestPermissions(ProfileEdit.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Constants.REQUEST_CODE_GALLERY);
 				} else {
 					if (selectedImage == SELECT_PHOTO_COVER) {
 						openGallery(Constants.REQUEST_CODE_GALLERY_COVER);
@@ -205,15 +206,22 @@ public class EditProfile extends AppCompatActivity {
 			String fullname = Objects.requireNonNull(tiFullname.getEditText()).getText().toString().trim();
 			String username = Objects.requireNonNull(tiUsername.getEditText()).getText().toString().trim();
 
-			if (imageFileCover != null && imageFileProfile != null) {
-				saveCoverAndProfileImages(imageFileCover, imageFileProfile, fullname, username);
-			} else if (imageFileCover != null) {
-				saveImage(imageFileCover, true, fullname, username);
-			} else if (imageFileProfile != null) {
-				saveImage(imageFileProfile, false, fullname, username);
-			} else {
-				updateProfile(fullname, username, null, null);
-			}
+			usersProvider.checkUsernameExistsAndNotIsMine(username, authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+				if (queryDocumentSnapshots.isEmpty()) {
+					if (imageFileCover != null && imageFileProfile != null) {
+						saveCoverAndProfileImages(imageFileCover, imageFileProfile, fullname, username);
+					} else if (imageFileCover != null) {
+						saveImage(imageFileCover, true, fullname, username);
+					} else if (imageFileProfile != null) {
+						saveImage(imageFileProfile, false, fullname, username);
+					} else {
+						updateProfile(fullname, username, null, null);
+					}
+				} else {
+					hideProgressBar();
+					Toast.makeText(ProfileEdit.this, getText(R.string.alreadyUserWithUsername), Toast.LENGTH_SHORT).show();
+				}
+			});
 		}
 	}
 
@@ -236,7 +244,7 @@ public class EditProfile extends AppCompatActivity {
 				});
 			} else {
 				hideProgressBar();
-				Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEdit.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -251,12 +259,12 @@ public class EditProfile extends AppCompatActivity {
 										updateProfile(fullname, username, uriCover.toString(), uriProfile.toString()));
 							} else {
 								hideProgressBar();
-								Toast.makeText(EditProfile.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
+								Toast.makeText(ProfileEdit.this, getText(R.string.profilePhotoNoUploaded), Toast.LENGTH_SHORT).show();
 							}
 						}));
 			} else {
 				hideProgressBar();
-				Toast.makeText(EditProfile.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEdit.this, getText(R.string.coverPhotoNoUploaded), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -268,15 +276,16 @@ public class EditProfile extends AppCompatActivity {
 		user.setUsername(username);
 		user.setImageCover(urlCover);
 		user.setImageProfile(urlProfile);
+		user.setModificationDate(new Date().getTime());
 
 		usersProvider.update(user).addOnCompleteListener(task1 -> {
 			if (task1.isSuccessful()) {
 				hideProgressBar();
 				finish();
-				Toast.makeText(EditProfile.this, getText(R.string.theUserHasBeenUpdated), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEdit.this, getText(R.string.theUserHasBeenUpdated), Toast.LENGTH_SHORT).show();
 			} else {
 				hideProgressBar();
-				Toast.makeText(EditProfile.this, getText(R.string.userCouldNotBeUpdated), Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEdit.this, getText(R.string.userCouldNotBeUpdated), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

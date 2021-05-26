@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="true"
-	tools:context=".layouts.profile.EditProfile">
+	tools:context=".layouts.profile.ProfileEdit">
 
 	<View
 		android:layout_width="match_parent"
@@ -73,6 +73,7 @@
 			app:counterMaxLength="15"
 			app:endIconMode="clear_text"
 			app:endIconTint="@color/black"
+			app:helperText="@string/formatUsername"
 			app:hintTextColor="@color/black"
 			app:startIconDrawable="@drawable/ic_username"
 			app:startIconTint="@color/black">

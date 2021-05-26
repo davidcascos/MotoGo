@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,18 @@ public class UsersProvider {
 
 	public Task<DocumentSnapshot> getUser(String userId) {
 		return collectionReference.document(userId).get();
+	}
+
+	public Query checkUsernameExistsToGenerateRandom() {
+		return collectionReference.orderBy(Constants.USER_USERNAME);
+	}
+
+	public Query checkUsernameExists(String username) {
+		return collectionReference.whereEqualTo(Constants.USER_USERNAME, username);
+	}
+
+	public Query checkUsernameExistsAndNotIsMine(String username, String userId) {
+		return collectionReference.whereEqualTo(Constants.USER_USERNAME, username).whereNotEqualTo(Constants.USER_ID, userId);
 	}
 
 	public Task<Void> createUser(User user) {
