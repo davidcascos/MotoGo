@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 		recyclerView.setLayoutManager(linearLayoutManager);
 
-		btAddPost.setOnClickListener(v -> goToPost());
+		btAddPost.setOnClickListener(v -> goToCreatePost());
 		return view;
 	}
 
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 		postsAdapter.stopListening();
 	}
 
-	private void goToPost() {
+	private void goToCreatePost() {
 		startActivity(new Intent(getContext(), PostNew.class));
 	}
 }

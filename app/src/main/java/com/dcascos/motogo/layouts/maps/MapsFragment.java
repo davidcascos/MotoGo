@@ -107,11 +107,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					originLatLong = new LatLng(location.getLatitude(), location.getLongitude());
 					checkActiveDrivers();
 
-					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
+					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15f).build()));
 
 					updateLocation();
 
-					btCreateRoute.setVisibility(View.VISIBLE);
 					cvAutocomplete.setVisibility(View.VISIBLE);
 				}
 			}
@@ -205,6 +204,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 			public void onPlaceSelected(@NonNull Place place) {
 				destinationName = place.getAddress();
 				destinationLatLong = place.getLatLng();
+				btCreateRoute.setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -259,8 +259,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void checkLocationPermissions() {
 		if (!PermissionUtils.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
 			if (PermissionUtils.shouldShowRational(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-				new AlertDialog.Builder(view.getContext()).setTitle(R.string.permissionLocationTitle).setMessage(view.getContext().getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
-						PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION)).create().show();
+				new AlertDialog.Builder(view.getContext())
+						.setTitle(R.string.permissionLocationTitle)
+						.setMessage(view.getContext().getText(R.string.permissionLocation))
+						.setPositiveButton("OK", (dialog, which) ->
+						PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION))
+						.create().show();
 			} else {
 				PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
 			}
@@ -293,8 +297,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void showAlertDialogNoGps() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
+		builder.setMessage(R.string.pleaseActiveLocation)
+				.setPositiveButton("Settings", (dialog, which) ->
+				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS))
+				.create().show();
 	}
 
 	@Override

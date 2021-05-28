@@ -113,7 +113,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 		mMap.addMarker(new MarkerOptions().position(originLatLong).title("Origin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me)));
 		mMap.addMarker(new MarkerOptions().position(destinationLatLong).title("Destination").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)));
 
-		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(originLatLong).zoom(14f).build()));
+		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(originLatLong).zoom(12f).build()));
 
 		drawRoute();
 	}

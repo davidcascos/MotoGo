@@ -22,6 +22,10 @@ public class CommentsProvider {
 		return documentReference.set(comment);
 	}
 
+	public Task<Void> delete(String commentId) {
+		return collectionReference.document(commentId).delete();
+	}
+
 	public Query getCommentsByPost(String postId) {
 		return collectionReference.whereEqualTo(Constants.COMMENT_POSTID, postId);
 	}

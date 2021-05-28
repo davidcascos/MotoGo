@@ -69,6 +69,7 @@ public class Constants {
 
 	//Routes
 	public static final String ROUTES = "Routes";
+	public static final String ROUTE_USERID = "userId";
 
 	//Maps
 	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";

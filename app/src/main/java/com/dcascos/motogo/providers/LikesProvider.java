@@ -33,4 +33,5 @@ public class LikesProvider {
 	public Query getLikeByPostAndUser(String postId, String userId) {
 		return collectionReference.whereEqualTo(Constants.LIKE_POSTID, postId).whereEqualTo(Constants.LIKE_USERID, userId);
 	}
+
 }

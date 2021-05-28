@@ -38,9 +38,9 @@
 
 	<Button
 		android:id="@+id/bt_createRoute"
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="bottom"
+		android:layout_gravity="bottom|center"
 		android:layout_marginLeft="60dp"
 		android:layout_marginRight="60dp"
 		android:layout_marginBottom="20dp"

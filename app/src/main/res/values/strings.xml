@@ -62,13 +62,18 @@
 	<string name="takePhoto">Take photo</string>
 	<string name="imageFromGallery">Image from gallery</string>
 	<!--Profile Fragment-->
-	<string name="noPublishedAnything">you haven\'t published anything yet</string>
-	<string name="publications">Publications</string>
+	<string name="noPublishedAnything">You haven\'t published anything yet</string>
 	<string name="edit_profile">Edit Profile</string>
 	<string name="update">Update</string>
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
 	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
 	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<!--Profile Fragment TABS-->
+	<string name="publications">Publications</string>
+	<string name="posts">Posts</string>
+	<string name="routes">Routes</string>
+	<string name="postCouldNotBeDeleted">Post could not be deleted, please try again</string>
+
 	<!--Post Detail-->
 	<string name="see_profile">See Profile</string>
 	<string name="newComment">New Coment</string>
