@@ -104,7 +104,10 @@
 	<!--KEYS-->
 	<string name="prefShowMyLocation">prefShowMyLocation</string>
 	<string name="prefShowOthers">prefShowOthers</string>
-	<string name="prefDistanceRadius">prefDistanceRadius</string>
+	<string name="prefDistanceRadiusOtherDrivers">prefDistanceRadiusOtherDrivers</string>
+	<string name="prefShowRoutes">prefShowRoutes</string>
+	<string name="prefDistanceRadiusRoutes">prefDistanceRadiusRoutes</string>
+
 	<!--Texts-->
 	<string name="showMyLocationTitle">Show my location</string>
 	<string name="showMyLocationSummary">Show my location to other drivers</string>
@@ -113,7 +116,9 @@
 	<string name="distanceRadiusTitle">Distance radius</string>
 	<string name="distanceRadiusSummary">Distance radius to show other drivers</string>
 	<string name="defaultDistanceRadius">5</string>
-
+	<string name="distanceRadiuRoutesSummary">Distance radius to show routes</string>
+	<string name="showRoutesTitle">Show routes</string>
+	<string name="showRoutesSummary">Show routes around</string>
 	<!--values-->
 	<string-array name="distanceRadiusValues">
 		<item>5</item>

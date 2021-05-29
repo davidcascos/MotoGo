@@ -47,31 +47,49 @@ public class Constants {
 	public static final String USER_EMAIL = "email";
 	public static final String USER_IMAGECOVER = "imageCover";
 	public static final String USER_IMAGEPROFILE = "imageProfile";
+	public static final String USER_CREATIONDATE = "creationDate";
+	public static final String USER_MODIFICATIONDATE = "modificationDate";
 
 	//Post variables
 	public static final String POSTS = "Posts";
-	public static final String POST_CREATIONDATE = "creationDate";
+	public static final String POST_ID = "id";
 	public static final String POST_TITLE = "title";
 	public static final String POST_LOCATION = "location";
 	public static final String POST_DESCRIPTION = "description";
 	public static final String POST_IMAGE = "image";
 	public static final String POST_USERID = "userId";
+	public static final String POST_CREATIONDATE = "creationDate";
 
-	//Comments
+	//Comments variables
 	public static final String COMMENTS = "Comments";
-	public static final String COMMENT_CREATIONDATE = "creationDate";
+	public static final String COMMENT_ID = "id";
+	public static final String COMMENT_TEXT = "text";
+	public static final String COMMENT_USERID = "userId";
 	public static final String COMMENT_POSTID = "postId";
+	public static final String COMMENT_CREATIONDATE = "creationDate";
 
-	//Likes
+	//Likes variables
 	public static final String LIKES = "Likes";
 	public static final String LIKE_POSTID = "postId";
 	public static final String LIKE_USERID = "userId";
+	public static final String LIKE_CREATIONDATE = "creationDate";
 
-	//Routes
+	//Routes variables
 	public static final String ROUTES = "Routes";
+	public static final String ROUTE_ID = "id";
 	public static final String ROUTE_USERID = "userId";
+	public static final String ROUTE_ORIGIN = "origin";
+	public static final String ROUTE_DESTINATION = "destination";
+	public static final String ROUTE_DISTANCE = "distance";
+	public static final String ROUTE_DURATION = "duration";
+	public static final String ROUTE_ORIGINLAT = "originLat";
+	public static final String ROUTE_ORIGINLON = "originLon";
+	public static final String ROUTE_DESTINATIONLAT = "destinationLat";
+	public static final String ROUTE_DESTINATIONLON = "destinationLon";
+	public static final String ROUTE_POINTS = "points";
+	public static final String ROUTE_CREATIONDATE = "creationDate";
 
-	//Maps
+	//Maps variables
 	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";
 
 }

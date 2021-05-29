@@ -4,6 +4,7 @@
 	<PreferenceCategory android:title="Me">
 		<SwitchPreference
 			android:defaultValue="false"
+			android:icon="@drawable/ic_moto_me"
 			android:key="@string/prefShowMyLocation"
 			android:summary="@string/showMyLocationSummary"
 			android:title="@string/showMyLocationTitle" />
@@ -12,6 +13,7 @@
 	<PreferenceCategory android:title="Other drivers">
 		<SwitchPreference
 			android:defaultValue="false"
+			android:icon="@drawable/ic_moto_other"
 			android:key="@string/prefShowOthers"
 			android:summary="@string/showOtherDriversSummary"
 			android:title="@string/showOtherDriversTitle" />
@@ -20,8 +22,27 @@
 			android:defaultValue="@string/defaultDistanceRadius"
 			android:entries="@array/distanceRadiusValues"
 			android:entryValues="@array/distanceRadiusValues"
-			android:key="@string/prefDistanceRadius"
+			android:icon="@drawable/ic_radius"
+			android:key="@string/prefDistanceRadiusOtherDrivers"
 			android:summary="@string/distanceRadiusSummary"
+			android:title="@string/distanceRadiusTitle" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Routes">
+		<SwitchPreference
+			android:defaultValue="false"
+			android:icon="@drawable/ic_route"
+			android:key="@string/prefShowRoutes"
+			android:summary="@string/showRoutesSummary"
+			android:title="@string/showRoutesTitle" />
+
+		<ListPreference
+			android:defaultValue="@string/defaultDistanceRadius"
+			android:entries="@array/distanceRadiusValues"
+			android:entryValues="@array/distanceRadiusValues"
+			android:icon="@drawable/ic_radius"
+			android:key="@string/prefDistanceRadiusRoutes"
+			android:summary="@string/distanceRadiuRoutesSummary"
 			android:title="@string/distanceRadiusTitle" />
 	</PreferenceCategory>
 </PreferenceScreen>

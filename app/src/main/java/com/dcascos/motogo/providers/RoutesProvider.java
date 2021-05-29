@@ -7,6 +7,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class RoutesProvider {
 
@@ -24,6 +25,10 @@ public class RoutesProvider {
 
 	public Task<Void> delete(String routeId) {
 		return collectionReference.document(routeId).delete();
+	}
+
+	public Task<QuerySnapshot> getAll() {
+		return collectionReference.get();
 	}
 
 	public Query getRouteByUser(String userId) {
