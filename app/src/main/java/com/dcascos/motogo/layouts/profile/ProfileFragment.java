@@ -72,7 +72,6 @@ public class ProfileFragment extends Fragment {
 		return view;
 	}
 
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -102,34 +101,34 @@ public class ProfileFragment extends Fragment {
 
 	private void getPostsAndRoutesCount() {
 		postsProvider.getPostByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshotsPosts ->
-			routesProvider.getRouteByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshotsRoutes -> {
-			ProfileTabsAdapter = new ProfileTabsAdapter(getActivity(), authProvider.getUserId());
-			viewPager2 = view.findViewById(R.id.pager);
-			viewPager2.setAdapter(ProfileTabsAdapter);
+				routesProvider.getRouteByUser(authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshotsRoutes -> {
+					ProfileTabsAdapter = new ProfileTabsAdapter(getActivity(), authProvider.getUserId());
+					viewPager2 = view.findViewById(R.id.pager);
+					viewPager2.setAdapter(ProfileTabsAdapter);
 
-			TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+					TabLayout tabLayout = view.findViewById(R.id.tab_layout);
 
-			new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-				BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-				switch (position) {
-					case 1:
-						tab.setText(getText(R.string.routes));
-						badgeDrawable.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-						badgeDrawable.setVisible(true);
-						badgeDrawable.setNumber(queryDocumentSnapshotsRoutes.size());
-						badgeDrawable.setMaxCharacterCount(4);
-						break;
-					default:
-						tab.setText(getText(R.string.posts));
-						badgeDrawable.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-						badgeDrawable.setVisible(true);
-						badgeDrawable.setNumber(queryDocumentSnapshotsPosts.size());
-						badgeDrawable.setMaxCharacterCount(4);
-						break;
-				}
-			}).attach();
-			tvPostsNumber.setText(String.valueOf(queryDocumentSnapshotsPosts.size() + queryDocumentSnapshotsRoutes.size()));
-		}));
+					new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+						BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+						switch (position) {
+							case 1:
+								tab.setText(getText(R.string.routes));
+								badgeDrawable.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+								badgeDrawable.setVisible(true);
+								badgeDrawable.setNumber(queryDocumentSnapshotsRoutes.size());
+								badgeDrawable.setMaxCharacterCount(4);
+								break;
+							default:
+								tab.setText(getText(R.string.posts));
+								badgeDrawable.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+								badgeDrawable.setVisible(true);
+								badgeDrawable.setNumber(queryDocumentSnapshotsPosts.size());
+								badgeDrawable.setMaxCharacterCount(4);
+								break;
+						}
+					}).attach();
+					tvPostsNumber.setText(String.valueOf(queryDocumentSnapshotsPosts.size() + queryDocumentSnapshotsRoutes.size()));
+				}));
 	}
 
 }

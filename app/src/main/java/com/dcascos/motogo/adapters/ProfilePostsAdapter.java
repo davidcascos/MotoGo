@@ -182,6 +182,8 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 					}
 				});
 				imageProvider.getStorageFromUrl(imageUrl).delete();
+
+				Toast.makeText(context, R.string.postDeleted, Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(context, R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
 			}

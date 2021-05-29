@@ -88,9 +88,9 @@ public class ProfileRoutesAdapter extends FirestoreRecyclerAdapter<Route, Profil
 	private void deleteRoute(String routeId) {
 		routesProvider.delete(routeId).addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
-				Toast.makeText(context, "todo ok", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.routeDeleted, Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(context, R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, R.string.routeCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

@@ -50,12 +50,14 @@
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.posts.PostDetail"
+			android:parentActivityName=".layouts.home.Home"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.profile.ProfileEdit"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.profile.ProfileFromUser"
+			android:parentActivityName=".layouts.posts.PostDetail"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".utils.MapPreferences"

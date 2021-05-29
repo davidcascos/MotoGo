@@ -1,11 +1,13 @@
 package com.dcascos.motogo.layouts.profile;
 
 import android.os.Bundle;
-import android.widget.ImageButton;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -30,7 +32,6 @@ public class ProfileFromUser extends AppCompatActivity {
 	private TextView tvUsername;
 	private TextView tvEmail;
 	private TextView tvPostsNumber;
-	private ImageButton ibBack;
 
 	private String extraUserId;
 
@@ -52,15 +53,17 @@ public class ProfileFromUser extends AppCompatActivity {
 		tvUsername = findViewById(R.id.tv_username);
 		tvEmail = findViewById(R.id.tv_email);
 		tvPostsNumber = findViewById(R.id.tv_postsNumber);
-		ibBack = findViewById(R.id.ib_back);
+
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		extraUserId = getIntent().getStringExtra("userId");
 
 		usersProvider = new UsersProvider();
 		postsProvider = new PostsProvider();
 		routesProvider = new RoutesProvider();
-
-		ibBack.setOnClickListener(v -> this.onBackPressed());
 
 		getUserData();
 		getPostsAndRoutesCount();
@@ -112,5 +115,13 @@ public class ProfileFromUser extends AppCompatActivity {
 				tvPostsNumber.setText(String.valueOf(queryDocumentSnapshotsPosts.size() + queryDocumentSnapshotsRoutes.size()));
 			});
 		});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			this.onBackPressed();
+		}
+		return true;
 	}
 }

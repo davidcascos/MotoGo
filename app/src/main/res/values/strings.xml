@@ -72,7 +72,10 @@
 	<string name="publications">Publications</string>
 	<string name="posts">Posts</string>
 	<string name="routes">Routes</string>
+	<string name="postDeleted">Post deleted successfully</string>
+	<string name="routeDeleted">Route deleted successfully</string>
 	<string name="postCouldNotBeDeleted">Post could not be deleted, please try again</string>
+	<string name="routeCouldNotBeDeleted">Route could not be deleted, please try again</string>
 
 	<!--Post Detail-->
 	<string name="see_profile">See Profile</string>
