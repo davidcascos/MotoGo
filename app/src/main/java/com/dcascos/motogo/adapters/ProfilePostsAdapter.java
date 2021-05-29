@@ -109,40 +109,6 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 		getNumberCommentsByPost(documentSnapshot.getId(), holder);
 	}
 
-	private void showConfirmDelete(String postId, String imageUrl) {
-		new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_delete)
-				.setTitle("Delete post")
-				.setMessage("Are you sure?")
-				.setPositiveButton("Yes", (dialog, which) -> deletePost(postId, imageUrl))
-				.setNegativeButton("Cancel", null)
-				.show();
-	}
-
-	private void deletePost(String postId, String imageUrl) {
-		postsProvider.delete(postId).addOnCompleteListener(task -> {
-			if (task.isSuccessful()) {
-				likesProvider.getLikeByPost(postId).get().addOnSuccessListener(queryDocumentSnapshots -> {
-					if (!queryDocumentSnapshots.isEmpty()) {
-						for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-							likesProvider.delete(documentSnapshot.getId());
-						}
-					}
-				});
-
-				commentsProvider.getCommentsByPost(postId).get().addOnSuccessListener(queryDocumentSnapshots -> {
-					if (!queryDocumentSnapshots.isEmpty()) {
-						for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-							commentsProvider.delete(documentSnapshot.getId());
-						}
-					}
-				});
-				imageProvider.getStorageFromUrl(imageUrl).delete();
-			} else {
-				Toast.makeText(context, R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
-
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -185,6 +151,40 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 			int comments = Objects.requireNonNull(value).size();
 
 			holder.tvComments.setText(context.getString(R.string.comments, String.valueOf(comments)));
+		});
+	}
+
+	private void showConfirmDelete(String postId, String imageUrl) {
+		new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_delete)
+				.setTitle("Delete post")
+				.setMessage("Are you sure?")
+				.setPositiveButton("Yes", (dialog, which) -> deletePost(postId, imageUrl))
+				.setNegativeButton("Cancel", null)
+				.show();
+	}
+
+	private void deletePost(String postId, String imageUrl) {
+		postsProvider.delete(postId).addOnCompleteListener(task -> {
+			if (task.isSuccessful()) {
+				likesProvider.getLikeByPost(postId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+					if (!queryDocumentSnapshots.isEmpty()) {
+						for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+							likesProvider.delete(documentSnapshot.getId());
+						}
+					}
+				});
+
+				commentsProvider.getCommentsByPost(postId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+					if (!queryDocumentSnapshots.isEmpty()) {
+						for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+							commentsProvider.delete(documentSnapshot.getId());
+						}
+					}
+				});
+				imageProvider.getStorageFromUrl(imageUrl).delete();
+			} else {
+				Toast.makeText(context, R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
+			}
 		});
 	}
 }

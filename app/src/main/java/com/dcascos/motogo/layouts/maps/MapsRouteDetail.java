@@ -22,9 +22,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
@@ -113,7 +113,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 		mMap.addMarker(new MarkerOptions().position(originLatLong).title("Origin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me)));
 		mMap.addMarker(new MarkerOptions().position(destinationLatLong).title("Destination").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)));
 
-		mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(originLatLong).zoom(12f).build()));
+		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds.Builder().include(originLatLong).include(destinationLatLong).build(), 150));
 
 		drawRoute();
 	}
