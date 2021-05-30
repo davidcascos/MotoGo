@@ -89,6 +89,9 @@ public class Constants {
 	public static final String ROUTE_POINTS = "points";
 	public static final String ROUTE_CREATIONDATE = "creationDate";
 
+	//Tokens
+	public static final String TOKENS = "Tokens";
+
 	//Maps variables
 	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";
 

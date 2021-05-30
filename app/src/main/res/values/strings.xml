@@ -76,7 +76,6 @@
 	<string name="routeDeleted">Route deleted successfully</string>
 	<string name="postCouldNotBeDeleted">Post could not be deleted, please try again</string>
 	<string name="routeCouldNotBeDeleted">Route could not be deleted, please try again</string>
-
 	<!--Post Detail-->
 	<string name="see_profile">See Profile</string>
 	<string name="newComment">New Coment</string>
@@ -110,7 +109,6 @@
 	<string name="prefDistanceRadiusOtherDrivers">prefDistanceRadiusOtherDrivers</string>
 	<string name="prefShowRoutes">prefShowRoutes</string>
 	<string name="prefDistanceRadiusRoutes">prefDistanceRadiusRoutes</string>
-
 	<!--Texts-->
 	<string name="showMyLocationTitle">Show my location</string>
 	<string name="showMyLocationSummary">Show my location to other drivers</string>
@@ -130,5 +128,7 @@
 		<item>75</item>
 		<item>100</item>
 	</string-array>
+	<!--Notifications-->
+	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>

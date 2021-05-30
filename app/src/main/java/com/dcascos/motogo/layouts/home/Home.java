@@ -12,19 +12,29 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.maps.MapsFragment;
 import com.dcascos.motogo.layouts.profile.ProfileFragment;
+import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.TokenProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
+
+	TokenProvider tokenProvider;
+	AuthProvider authProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_home);
 
+		tokenProvider = new TokenProvider();
+		authProvider = new AuthProvider();
+
 		BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 		openFragment(new HomeFragment());
+
+		createToken();
 
 		checkLocationPermissions();
 	}
@@ -55,6 +65,9 @@ public class Home extends AppCompatActivity {
 		}
 	};
 
+	private void createToken() {
+		tokenProvider.create(authProvider.getUserId());
+	}
 
 	private void checkLocationPermissions() {
 		if (!PermissionUtils.hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -63,7 +76,7 @@ public class Home extends AppCompatActivity {
 						.setTitle(R.string.permissionLocationTitle)
 						.setMessage(getText(R.string.permissionLocation))
 						.setPositiveButton("OK", (dialog, which) ->
-						PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION))
+								PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION))
 						.create().show();
 			} else {
 				PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
