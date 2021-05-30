@@ -12,10 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.models.Route;
+import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GoogleAPIProvider;
-import com.dcascos.motogo.providers.RoutesProvider;
+import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.utils.DecodePoints;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

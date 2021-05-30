@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.layouts.home.Home;
-import com.dcascos.motogo.models.User;
+import com.dcascos.motogo.models.database.User;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
-import com.dcascos.motogo.providers.UsersProvider;
+import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.material.textfield.TextInputLayout;
 

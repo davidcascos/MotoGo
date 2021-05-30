@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.ProfilePostsAdapter;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.models.Post;
-import com.dcascos.motogo.providers.PostsProvider;
+import com.dcascos.motogo.models.database.Post;
+import com.dcascos.motogo.providers.database.PostsProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 

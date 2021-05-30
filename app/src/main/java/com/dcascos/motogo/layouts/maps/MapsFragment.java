@@ -37,7 +37,7 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
-import com.dcascos.motogo.providers.RoutesProvider;
+import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.utils.MapPreferences;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.firebase.geofire.GeoLocation;
