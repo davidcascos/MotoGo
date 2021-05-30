@@ -39,4 +39,8 @@ public class PostsProvider {
 		return collectionReference.document(postId).get();
 	}
 
+	public Query getPostByTitle(String title) {
+		return collectionReference.orderBy(Constants.POST_TITLE).startAt(title).endAt(title + '\uf8ff');
+	}
+
 }

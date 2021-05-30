@@ -117,7 +117,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					checkActiveDrivers();
 					checkRoutes();
 
-					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15f).build()));
+					mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15f).build()));
 
 					updateLocation();
 

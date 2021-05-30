@@ -23,7 +23,6 @@ public class Home extends AppCompatActivity {
 		setContentView(R.layout.ac_home);
 
 		BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 		openFragment(new HomeFragment());
 
@@ -33,6 +32,7 @@ public class Home extends AppCompatActivity {
 	private void openFragment(Fragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, fragment);
+		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 

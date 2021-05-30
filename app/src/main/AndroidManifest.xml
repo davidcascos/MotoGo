@@ -54,6 +54,7 @@
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.profile.ProfileEdit"
+			android:parentActivityName=".layouts.home.Home"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.profile.ProfileFromUser"

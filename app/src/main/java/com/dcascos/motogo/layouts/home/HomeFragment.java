@@ -18,11 +18,13 @@ import com.dcascos.motogo.providers.PostsProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements MaterialSearchBar.OnSearchActionListener {
 
 	private RecyclerView recyclerView;
 	private PostsAdapter postsAdapter;
+	private PostsAdapter postsAdapterSearch;
 	private PostsProvider postsProvider;
 
 	public HomeFragment() {
@@ -36,6 +38,9 @@ public class HomeFragment extends Fragment {
 		FloatingActionButton btAddPost = view.findViewById(R.id.bt_addPost);
 		recyclerView = view.findViewById(R.id.rv_home);
 
+		MaterialSearchBar materialSearchBar = view.findViewById(R.id.searchBar);
+		materialSearchBar.setOnSearchActionListener(this);
+
 		postsProvider = new PostsProvider();
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -48,20 +53,54 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		Query query = postsProvider.getAll();
-		FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();
-		postsAdapter = new PostsAdapter(options, getContext());
-		recyclerView.setAdapter(postsAdapter);
-		postsAdapter.startListening();
+		getAllPosts();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		postsAdapter.stopListening();
+		if (postsAdapterSearch != null) {
+			postsAdapterSearch.stopListening();
+		}
 	}
 
 	private void goToCreatePost() {
 		startActivity(new Intent(getContext(), PostNew.class));
+	}
+
+	private void getAllPosts() {
+		Query query = postsProvider.getAll();
+		FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();
+		postsAdapter = new PostsAdapter(options, getContext());
+		postsAdapter.notifyDataSetChanged();
+		recyclerView.setAdapter(postsAdapter);
+		postsAdapter.startListening();
+	}
+
+	private void searchByTitle(String title) {
+		Query query = postsProvider.getPostByTitle(title);
+		FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class).build();
+		postsAdapterSearch = new PostsAdapter(options, getContext());
+		postsAdapterSearch.notifyDataSetChanged();
+		recyclerView.setAdapter(postsAdapterSearch);
+		postsAdapterSearch.startListening();
+	}
+
+	@Override
+	public void onSearchStateChanged(boolean enabled) {
+		if (!enabled) {
+			getAllPosts();
+		}
+	}
+
+	@Override
+	public void onSearchConfirmed(CharSequence text) {
+		searchByTitle(text.toString());
+	}
+
+	@Override
+	public void onButtonClicked(int buttonCode) {
+
 	}
 }

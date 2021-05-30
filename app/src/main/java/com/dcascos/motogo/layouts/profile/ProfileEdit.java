@@ -5,17 +5,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
@@ -43,7 +45,6 @@ public class ProfileEdit extends AppCompatActivity {
 	private TextInputLayout tiFullname;
 	private TextInputLayout tiUsername;
 	private TextInputLayout tiEmail;
-	private ImageButton ibBack;
 	private Button btUpdateProfile;
 	private AlertDialog.Builder builderSelector;
 
@@ -70,8 +71,12 @@ public class ProfileEdit extends AppCompatActivity {
 		tiFullname = findViewById(R.id.ti_fullname);
 		tiUsername = findViewById(R.id.ti_username);
 		tiEmail = findViewById(R.id.ti_email);
-		ibBack = findViewById(R.id.ib_back);
 		btUpdateProfile = findViewById(R.id.bt_updateProfile);
+
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		builderSelector = new AlertDialog.Builder(this);
 		builderSelector.setTitle(R.string.selectAnOption);
@@ -82,8 +87,6 @@ public class ProfileEdit extends AppCompatActivity {
 		imageProvider = new ImageProvider();
 
 		getUserData();
-
-		ibBack.setOnClickListener(v -> this.onBackPressed());
 
 		ivCover.setOnClickListener(v -> selectOptionImage(SELECT_PHOTO_COVER));
 		circleImageProfile.setOnClickListener(v -> selectOptionImage(SELECT_PHOTO_PROFILE));
@@ -298,5 +301,13 @@ public class ProfileEdit extends AppCompatActivity {
 	private void hideProgressBar() {
 		progressBar.setVisibility(View.GONE);
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			this.onBackPressed();
+		}
+		return true;
 	}
 }
