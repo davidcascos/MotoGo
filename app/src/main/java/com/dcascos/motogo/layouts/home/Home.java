@@ -23,7 +23,6 @@ public class Home extends AppCompatActivity {
 		setContentView(R.layout.ac_home);
 
 		BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-
 		bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 		openFragment(new HomeFragment());
 
@@ -33,6 +32,7 @@ public class Home extends AppCompatActivity {
 	private void openFragment(Fragment fragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.container, fragment);
+		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
@@ -59,8 +59,12 @@ public class Home extends AppCompatActivity {
 	private void checkLocationPermissions() {
 		if (!PermissionUtils.hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
 			if (PermissionUtils.shouldShowRational(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-				new AlertDialog.Builder(this).setTitle(R.string.permissionLocationTitle).setMessage(getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
-						PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION)).create().show();
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.permissionLocationTitle)
+						.setMessage(getText(R.string.permissionLocation))
+						.setPositiveButton("OK", (dialog, which) ->
+						PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION))
+						.create().show();
 			} else {
 				PermissionUtils.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
 			}

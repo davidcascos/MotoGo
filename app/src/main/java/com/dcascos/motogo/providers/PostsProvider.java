@@ -23,6 +23,10 @@ public class PostsProvider {
 		return documentReference.set(post);
 	}
 
+	public Task<Void> delete(String postId) {
+		return collectionReference.document(postId).delete();
+	}
+
 	public Query getAll() {
 		return collectionReference.orderBy(Constants.POST_CREATIONDATE, Query.Direction.DESCENDING);
 	}
@@ -34,4 +38,9 @@ public class PostsProvider {
 	public Task<DocumentSnapshot> getPostById(String postId) {
 		return collectionReference.document(postId).get();
 	}
+
+	public Query getPostByTitle(String title) {
+		return collectionReference.orderBy(Constants.POST_TITLE).startAt(title).endAt(title + '\uf8ff');
+	}
+
 }

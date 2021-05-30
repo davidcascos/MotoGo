@@ -37,6 +37,7 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
+import com.dcascos.motogo.providers.RoutesProvider;
 import com.dcascos.motogo.utils.MapPreferences;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.firebase.geofire.GeoLocation;
@@ -61,6 +62,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,17 +75,23 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private View view;
 	private CardView cvAutocomplete;
 	private boolean showMyLocation;
-	private boolean showOthers;
-	private double distanceRadius;
+	private boolean showOtherDrivers;
+	private double distanceRadiusOtherDrivers;
+	private boolean showRoutes;
+	private double distanceRadiusRoutes;
 	private GoogleMap mMap;
 	private LocationRequest locationRequest;
 	private FusedLocationProviderClient fusedLocationProviderClient;
 	private LatLng originLatLong;
 	private LatLng destinationLatLong;
+
 	private AuthProvider authProvider;
 	private GeoFireProvider geoFireProvider;
+	private RoutesProvider routesProvider;
+
 	private Marker meMarker;
 	private List<Marker> driversMarkers = new ArrayList<>();
+	private List<Marker> routesMarkers = new ArrayList<>();
 	private String originName;
 	private String destinationName;
 	private Button btCreateRoute;
@@ -106,12 +115,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 					originLatLong = new LatLng(location.getLatitude(), location.getLongitude());
 					checkActiveDrivers();
+					checkRoutes();
 
-					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build()));
+					mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15f).build()));
 
 					updateLocation();
 
-					btCreateRoute.setVisibility(View.VISIBLE);
 					cvAutocomplete.setVisibility(View.VISIBLE);
 				}
 			}
@@ -156,6 +165,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		authProvider = new AuthProvider();
 		geoFireProvider = new GeoFireProvider();
+		routesProvider = new RoutesProvider();
 
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
@@ -184,8 +194,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	public void getPreferences() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		showMyLocation = prefs.getBoolean(getString(R.string.prefShowMyLocation), false);
-		showOthers = prefs.getBoolean(getString(R.string.prefShowOthers), false);
-		distanceRadius = Long.parseLong(prefs.getString(getString(R.string.prefDistanceRadius), getString(R.string.defaultDistanceRadius)));
+		showOtherDrivers = prefs.getBoolean(getString(R.string.prefShowOthers), false);
+		distanceRadiusOtherDrivers = Long.parseLong(prefs.getString(getString(R.string.prefDistanceRadiusOtherDrivers), getString(R.string.defaultDistanceRadius)));
+		showRoutes = prefs.getBoolean(getString(R.string.prefShowRoutes), false);
+		distanceRadiusRoutes = Long.parseLong(prefs.getString(getString(R.string.prefDistanceRadiusRoutes), getString(R.string.defaultDistanceRadius)));
 	}
 
 	private void autocompleteDestination() {
@@ -205,6 +217,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 			public void onPlaceSelected(@NonNull Place place) {
 				destinationName = place.getAddress();
 				destinationLatLong = place.getLatLng();
+				btCreateRoute.setVisibility(View.VISIBLE);
 			}
 
 			@Override
@@ -259,8 +272,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void checkLocationPermissions() {
 		if (!PermissionUtils.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
 			if (PermissionUtils.shouldShowRational(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-				new AlertDialog.Builder(view.getContext()).setTitle(R.string.permissionLocationTitle).setMessage(view.getContext().getText(R.string.permissionLocation)).setPositiveButton("OK", (dialog, which) ->
-						PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION)).create().show();
+				new AlertDialog.Builder(view.getContext())
+						.setTitle(R.string.permissionLocationTitle)
+						.setMessage(view.getContext().getText(R.string.permissionLocation))
+						.setPositiveButton("OK", (dialog, which) ->
+								PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION))
+						.create().show();
 			} else {
 				PermissionUtils.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_CODE_LOCATION);
 			}
@@ -293,8 +310,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void showAlertDialogNoGps() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-		builder.setMessage(R.string.pleaseActiveLocation).setPositiveButton("Settings", (dialog, which) ->
-				startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS)).create().show();
+		builder.setMessage(R.string.pleaseActiveLocation)
+				.setPositiveButton("Settings", (dialog, which) ->
+						startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), Constants.REQUEST_CODE_SETTINGS))
+				.create().show();
 	}
 
 	@Override
@@ -322,9 +341,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void checkActiveDrivers() {
-		if (showOthers && originLatLong != null) {
+		if (showOtherDrivers && originLatLong != null) {
 			getActiveDrivers();
-		} else if (!showOthers) {
+		} else if (!showOtherDrivers) {
 			for (Marker marker : driversMarkers) {
 				if (marker.getTag() != null) {
 					marker.remove();
@@ -335,8 +354,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void getActiveDrivers() {
-		if (showOthers) {
-			geoFireProvider.getActiveDrivers(originLatLong, distanceRadius).addGeoQueryEventListener(new GeoQueryEventListener() {
+		if (showOtherDrivers) {
+			geoFireProvider.getActiveDrivers(originLatLong, distanceRadiusOtherDrivers).addGeoQueryEventListener(new GeoQueryEventListener() {
 				@Override
 				public void onKeyEntered(String key, GeoLocation location) {
 					for (Marker marker : driversMarkers) {
@@ -390,6 +409,45 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		}
 	}
 
+	private void checkRoutes() {
+		if (showRoutes && originLatLong != null) {
+			getRoutes();
+		} else if (!showRoutes) {
+			for (Marker marker : routesMarkers) {
+				marker.remove();
+				routesMarkers.remove(marker);
+			}
+		}
+	}
+
+	private void getRoutes() {
+		if (showRoutes) {
+			routesProvider.getAll().addOnCompleteListener(task -> {
+				if (task.isSuccessful()) {
+					if (!task.getResult().getDocuments().isEmpty()) {
+						for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+
+							if (documentSnapshot.contains(Constants.ROUTE_ORIGINLAT) && documentSnapshot.contains(Constants.ROUTE_ORIGINLON)) {
+								LatLng routeLatLng = new LatLng(documentSnapshot.getDouble(Constants.ROUTE_ORIGINLAT), documentSnapshot.getDouble(Constants.ROUTE_ORIGINLON));
+
+								if (SphericalUtil.computeDistanceBetween(originLatLong, routeLatLng) <= distanceRadiusRoutes * 1000) {
+									Marker routeMarker = mMap.addMarker(new MarkerOptions()
+											.position(routeLatLng)
+											.title(documentSnapshot.getString(Constants.ROUTE_ORIGIN))
+											.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_route)));
+									routesMarkers.add(routeMarker);
+								}
+							}
+						}
+					}
+
+				} else {
+					Toast.makeText(getContext(), R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -397,17 +455,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 		checkShowMyLocation();
 		checkActiveDrivers();
+		checkRoutes();
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onDestroy() {
+		super.onDestroy();
 		stopLocationUpdates();
 	}
 
 	private void checkShowMyLocation() {
 		if (!showMyLocation) {
-			stopLocationUpdates();
 			geoFireProvider.deleteLocation(authProvider.getUserId());
 		} else {
 			if (mMap != null) {

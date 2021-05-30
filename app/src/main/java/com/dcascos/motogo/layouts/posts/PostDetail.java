@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +49,6 @@ public class PostDetail extends AppCompatActivity {
 	private TextView tvDescription;
 	private Button btShowProfile;
 	private FloatingActionButton btAddComment;
-	private ImageButton ibBack;
 	private RecyclerView rvComments;
 
 	private String userId = "";
@@ -76,8 +75,12 @@ public class PostDetail extends AppCompatActivity {
 		tvDescription = findViewById(R.id.tv_description);
 		btShowProfile = findViewById(R.id.bt_showProfile);
 		btAddComment = findViewById(R.id.bt_addComment);
-		ibBack = findViewById(R.id.ib_back);
 		rvComments = findViewById(R.id.rv_comments);
+
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		extraPostId = getIntent().getStringExtra("documentId");
 
@@ -93,7 +96,6 @@ public class PostDetail extends AppCompatActivity {
 
 		btAddComment.setOnClickListener(v -> showDialogComment());
 		btShowProfile.setOnClickListener(v -> goToShowProfile());
-		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	@Override

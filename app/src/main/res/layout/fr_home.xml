@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_marginBottom="50dp"
 	tools:context=".layouts.home.HomeFragment">
 
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@color/app_color">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal">
+
+			<ImageView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:src="@drawable/motogologo" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="20dp"
+				android:fontFamily="@font/bungee_shade"
+				android:text="@string/appTitle"
+				android:textSize="20dp" />
+		</LinearLayout>
+	</androidx.appcompat.widget.Toolbar>
+
+	<com.mancj.materialsearchbar.MaterialSearchBar
+		android:id="@+id/searchBar"
+		style="@style/MaterialSearchBarLight"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="55dp"
+		android:elevation="1dp"
+		app:mt_hint="Title to search"
+		app:mt_maxSuggestionsCount="10"
+		app:mt_placeholder="Search by title"
+		app:mt_placeholderColor="@color/black"
+		app:mt_searchBarColor="@color/app_color"
+		app:mt_searchIconTint="@color/black" />
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:layout_marginTop="105dp"
 		android:orientation="vertical"
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp">
@@ -16,9 +59,7 @@
 		<androidx.recyclerview.widget.RecyclerView
 			android:id="@+id/rv_home"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
-
-		</androidx.recyclerview.widget.RecyclerView>
+			android:layout_height="match_parent" />
 	</LinearLayout>
 
 	<com.google.android.material.floatingactionbutton.FloatingActionButton

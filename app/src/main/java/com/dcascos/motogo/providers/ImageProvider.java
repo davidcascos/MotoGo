@@ -18,6 +18,12 @@ public class ImageProvider {
 		return storageReference;
 	}
 
+	public StorageReference getStorageFromUrl(String imageUrl) {
+		StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+		this.storageReference = storageReference;
+		return storageReference;
+	}
+
 	public UploadTask saveFromBytes(byte[] byteFile, String folder) {
 		StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(Constants.FOLDER_IMAGES + "/" + folder + "/" + Generators.photoNameFormater() + ".jpeg");
 		this.storageReference = storageReference;
