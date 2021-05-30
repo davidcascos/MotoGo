@@ -91,6 +91,7 @@ public class Constants {
 
 	//Tokens
 	public static final String TOKENS = "Tokens";
+	public static final String TOKENS_TOKEN = "token";
 
 	//Maps variables
 	public static final String MAPS_ACTIVEDRIVERS = "ActiveDrivers";

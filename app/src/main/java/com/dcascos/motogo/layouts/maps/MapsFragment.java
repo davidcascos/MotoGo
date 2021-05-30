@@ -440,7 +440,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 							}
 						}
 					}
-
 				} else {
 					Toast.makeText(getContext(), R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
 				}

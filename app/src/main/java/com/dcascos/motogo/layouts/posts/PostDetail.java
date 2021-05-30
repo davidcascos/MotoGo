@@ -29,6 +29,7 @@ import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.CommentsProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
+import com.dcascos.motogo.utils.PostUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,7 +52,7 @@ public class PostDetail extends AppCompatActivity {
 	private FloatingActionButton btAddComment;
 	private RecyclerView rvComments;
 
-	private String userId = "";
+	private String postUserId = "";
 	private String extraPostId;
 
 	private AuthProvider authProvider;
@@ -115,8 +116,8 @@ public class PostDetail extends AppCompatActivity {
 	}
 
 	private void goToShowProfile() {
-		if (!userId.equals(getString(R.string.empty))) {
-			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userId", userId));
+		if (!postUserId.equals(getString(R.string.empty))) {
+			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userId", postUserId));
 		}
 	}
 
@@ -141,8 +142,8 @@ public class PostDetail extends AppCompatActivity {
 				}
 
 				if (documentSnapshot.contains(Constants.POST_USERID)) {
-					userId = documentSnapshot.getString(Constants.POST_USERID);
-					getUserInfo(userId);
+					postUserId = documentSnapshot.getString(Constants.POST_USERID);
+					getUserInfo(postUserId);
 				}
 			}
 		});
@@ -209,6 +210,7 @@ public class PostDetail extends AppCompatActivity {
 			if (task.isSuccessful()) {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();
+				PostUtils.sendNotification(this, authProvider.getUserId(), postUserId, Constants.COMMENTS);
 			} else {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCouldNotBeCreated), Toast.LENGTH_SHORT).show();

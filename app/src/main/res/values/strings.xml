@@ -130,5 +130,8 @@
 	</string-array>
 	<!--Notifications-->
 	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+	<string name="notificationLikes">%1s liked your post</string>
+	<string name="notificationComments">%1s has commented on your post</string>
+
 
 </resources>
