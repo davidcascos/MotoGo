@@ -1,19 +1,22 @@
-package com.dcascos.motogo.models;
+package com.dcascos.motogo.models.database;
 
-public class Like {
+public class Comment {
+
 	private String id;
-	private String postId;
+	private String text;
 	private String userId;
+	private String postId;
 	private long creationDate;
 
-	public Like() {
+	public Comment() {
 
 	}
 
-	public Like(String id, String postId, String userId, long creationDate) {
+	public Comment(String id, String text, String userId, String postId, long creationDate) {
 		this.id = id;
-		this.postId = postId;
+		this.text = text;
 		this.userId = userId;
+		this.postId = postId;
 		this.creationDate = creationDate;
 	}
 
@@ -25,12 +28,12 @@ public class Like {
 		this.id = id;
 	}
 
-	public String getPostId() {
-		return postId;
+	public String getText() {
+		return text;
 	}
 
-	public void setPostId(String postId) {
-		this.postId = postId;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getUserId() {
@@ -39,6 +42,14 @@ public class Like {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getPostId() {
+		return postId;
+	}
+
+	public void setPostId(String postId) {
+		this.postId = postId;
 	}
 
 	public long getCreationDate() {

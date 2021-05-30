@@ -1,4 +1,4 @@
-package com.dcascos.motogo.models;
+package com.dcascos.motogo.models.database;
 
 public class User {
 
