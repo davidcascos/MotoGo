@@ -48,6 +48,7 @@ dependencies {
 	implementation 'com.google.firebase:firebase-firestore'
 	implementation 'com.google.firebase:firebase-storage'
 	implementation 'com.google.firebase:firebase-database'
+	implementation 'com.google.firebase:firebase-messaging'
 	//Android-Google
 	implementation 'androidx.appcompat:appcompat:1.3.0'
 	implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

@@ -37,7 +37,7 @@ import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
-import com.dcascos.motogo.providers.RoutesProvider;
+import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.utils.MapPreferences;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.firebase.geofire.GeoLocation;
@@ -440,7 +440,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 							}
 						}
 					}
-
 				} else {
 					Toast.makeText(getContext(), R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
 				}

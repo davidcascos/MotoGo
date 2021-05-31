@@ -20,10 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.models.Post;
+import com.dcascos.motogo.models.database.Post;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.ImageProvider;
-import com.dcascos.motogo.providers.PostsProvider;
+import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.google.android.libraries.places.api.Places;

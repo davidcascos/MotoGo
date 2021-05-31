@@ -13,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.models.Route;
+import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
-import com.dcascos.motogo.providers.RoutesProvider;
+import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

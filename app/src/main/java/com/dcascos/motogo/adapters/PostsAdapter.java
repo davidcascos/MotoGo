@@ -15,13 +15,14 @@ import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.posts.PostDetail;
-import com.dcascos.motogo.models.Like;
-import com.dcascos.motogo.models.Post;
+import com.dcascos.motogo.models.database.Like;
+import com.dcascos.motogo.models.database.Post;
 import com.dcascos.motogo.providers.AuthProvider;
-import com.dcascos.motogo.providers.CommentsProvider;
-import com.dcascos.motogo.providers.LikesProvider;
-import com.dcascos.motogo.providers.UsersProvider;
+import com.dcascos.motogo.providers.database.CommentsProvider;
+import com.dcascos.motogo.providers.database.LikesProvider;
+import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
+import com.dcascos.motogo.utils.PostUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -88,7 +89,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 			like.setPostId(documentSnapshot.getId());
 			like.setUserId(authProvider.getUserId());
 			like.setCreationDate(new Date().getTime());
-			createLike(like, holder);
+			createLike(like, holder, post.getUserId());
 		});
 
 		getUserInfo(post.getUserId(), holder);
@@ -124,7 +125,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 		});
 	}
 
-	private void createLike(Like like, ViewHolder holder) {
+	private void createLike(Like like, ViewHolder holder, String postUserId) {
 		likesProvider.getLikeByPostAndUser(like.getPostId(), authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
 			if (!queryDocumentSnapshots.isEmpty()) {
 				likesProvider.delete(queryDocumentSnapshots.getDocuments().get(0).getId());
@@ -132,6 +133,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 			} else {
 				likesProvider.create(like);
 				holder.ivLikes.setImageResource(R.drawable.ic_like);
+				PostUtils.sendNotification(context, authProvider.getUserId(), postUserId, Constants.LIKES);
 			}
 		});
 	}

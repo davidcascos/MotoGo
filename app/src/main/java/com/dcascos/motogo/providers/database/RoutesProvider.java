@@ -1,7 +1,7 @@
-package com.dcascos.motogo.providers;
+package com.dcascos.motogo.providers.database;
 
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.models.Route;
+import com.dcascos.motogo.models.database.Route;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

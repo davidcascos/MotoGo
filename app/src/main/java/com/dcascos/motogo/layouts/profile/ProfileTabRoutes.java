@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.ProfileRoutesAdapter;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.models.Route;
-import com.dcascos.motogo.providers.RoutesProvider;
+import com.dcascos.motogo.models.database.Route;
+import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
