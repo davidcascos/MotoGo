@@ -68,6 +68,8 @@
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
 	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
 	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<string name="logout">logout</string>
+	<string name="youSureLogOut">Are you sure you want to log out?</string>
 	<!--Profile Fragment TABS-->
 	<string name="publications">Publications</string>
 	<string name="posts">Posts</string>
@@ -76,6 +78,8 @@
 	<string name="routeDeleted">Route deleted successfully</string>
 	<string name="postCouldNotBeDeleted">Post could not be deleted, please try again</string>
 	<string name="routeCouldNotBeDeleted">Route could not be deleted, please try again</string>
+	<string name="youSureDeletePost">Are you sure you want to delete the post?</string>
+	<string name="youSureDeleteRoute">Are you sure you want to delete the route?</string>
 	<!--Post Detail-->
 	<string name="see_profile">See Profile</string>
 	<string name="newComment">New Coment</string>
@@ -132,6 +136,5 @@
 	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 	<string name="notificationLikes">%1s liked your post</string>
 	<string name="notificationComments">%1s has commented on your post</string>
-
 
 </resources>

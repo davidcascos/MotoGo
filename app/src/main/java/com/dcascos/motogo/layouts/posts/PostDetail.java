@@ -3,6 +3,7 @@ package com.dcascos.motogo.layouts.posts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -97,6 +99,15 @@ public class PostDetail extends AppCompatActivity {
 
 		btAddComment.setOnClickListener(v -> showDialogComment());
 		btShowProfile.setOnClickListener(v -> goToShowProfile());
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
+			onBackPressed();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

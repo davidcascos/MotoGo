@@ -79,7 +79,7 @@ public class ProfileRoutesAdapter extends FirestoreRecyclerAdapter<Route, Profil
 	private void showConfirmDelete(String routeId) {
 		new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_delete)
 				.setTitle("Delete route")
-				.setMessage("Are you sure?")
+				.setMessage(R.string.youSureDeleteRoute)
 				.setPositiveButton("Yes", (dialog, which) -> deleteRoute(routeId))
 				.setNegativeButton("Cancel", null)
 				.show();

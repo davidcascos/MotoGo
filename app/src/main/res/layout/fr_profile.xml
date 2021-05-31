@@ -7,9 +7,31 @@
 	android:layout_marginBottom="50dp"
 	tools:context=".layouts.profile.ProfileFragment">
 
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:background="@color/app_color">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/bungee"
+				android:text="@string/profile"
+				android:textSize="20dp" />
+		</LinearLayout>
+	</androidx.appcompat.widget.Toolbar>
+
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="300dp"
+		android:layout_marginTop="60dp"
 		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 		<com.google.android.material.appbar.CollapsingToolbarLayout

@@ -160,7 +160,7 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 	private void showConfirmDelete(String postId, String imageUrl) {
 		new AlertDialog.Builder(context).setIcon(android.R.drawable.ic_delete)
 				.setTitle("Delete post")
-				.setMessage("Are you sure?")
+				.setMessage(R.string.youSureDeletePost)
 				.setPositiveButton("Yes", (dialog, which) -> deletePost(postId, imageUrl))
 				.setNegativeButton("Cancel", null)
 				.show();
