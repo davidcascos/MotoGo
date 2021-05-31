@@ -410,38 +410,50 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void checkRoutes() {
-		if (showRoutes && originLatLong != null) {
-			getRoutes();
-		} else if (!showRoutes) {
-			for (Marker marker : routesMarkers) {
+		for (Marker marker : routesMarkers) {
+			if (marker.getTag() != null) {
 				marker.remove();
 				routesMarkers.remove(marker);
 			}
+		}
+
+		if (showRoutes && originLatLong != null) {
+			getRoutes();
 		}
 	}
 
 	private void getRoutes() {
 		if (showRoutes) {
 			routesProvider.getAll().addOnCompleteListener(task -> {
-				if (task.isSuccessful()) {
-					if (!task.getResult().getDocuments().isEmpty()) {
-						for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+				if (task.isSuccessful() && !task.getResult().getDocuments().isEmpty()) {
+					for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+						String key;
+						if (documentSnapshot.contains(Constants.ROUTE_ID)) {
+							key = documentSnapshot.getString(Constants.ROUTE_ID);
+						} else {
+							return;
+						}
 
-							if (documentSnapshot.contains(Constants.ROUTE_ORIGINLAT) && documentSnapshot.contains(Constants.ROUTE_ORIGINLON)) {
-								LatLng routeLatLng = new LatLng(documentSnapshot.getDouble(Constants.ROUTE_ORIGINLAT), documentSnapshot.getDouble(Constants.ROUTE_ORIGINLON));
+						for (Marker marker : routesMarkers) {
+							if (marker.getTag() != null && (marker.getTag().equals(key))) {
+								return;
+							}
+						}
 
-								if (SphericalUtil.computeDistanceBetween(originLatLong, routeLatLng) <= distanceRadiusRoutes * 1000) {
-									Marker routeMarker = mMap.addMarker(new MarkerOptions()
-											.position(routeLatLng)
-											.title(documentSnapshot.getString(Constants.ROUTE_ORIGIN))
-											.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_route)));
-									routesMarkers.add(routeMarker);
-								}
+						if (documentSnapshot.contains(Constants.ROUTE_ORIGINLAT) && documentSnapshot.contains(Constants.ROUTE_ORIGINLON)) {
+							LatLng routeLatLng = new LatLng(documentSnapshot.getDouble(Constants.ROUTE_ORIGINLAT), documentSnapshot.getDouble(Constants.ROUTE_ORIGINLON));
+
+							if (SphericalUtil.computeDistanceBetween(originLatLong, routeLatLng) <= distanceRadiusRoutes * 1000) {
+								Marker routeMarker = mMap.addMarker(new MarkerOptions()
+										.position(routeLatLng)
+										.title("FROM: " + documentSnapshot.getString(Constants.ROUTE_ORIGIN))
+										.snippet("TO: " + documentSnapshot.getString(Constants.ROUTE_DESTINATION))
+										.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_route)));
+								routeMarker.setTag(key);
+								routesMarkers.add(routeMarker);
 							}
 						}
 					}
-				} else {
-					Toast.makeText(getContext(), R.string.postCouldNotBeDeleted, Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
@@ -451,10 +463,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	public void onResume() {
 		super.onResume();
 		getPreferences();
-
 		checkShowMyLocation();
-		checkActiveDrivers();
-		checkRoutes();
 	}
 
 	@Override
