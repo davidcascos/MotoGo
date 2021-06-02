@@ -26,6 +26,7 @@ import com.dcascos.motogo.adapters.ProfileTabsAdapter;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.login.LoginSignIn;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.TokenProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
@@ -50,6 +51,7 @@ public class ProfileFragment extends Fragment {
 	private UsersProvider usersProvider;
 	private PostsProvider postsProvider;
 	private RoutesProvider routesProvider;
+	private TokenProvider tokenProvider;
 
 	private ViewPager2 viewPager2;
 	private ProfileTabsAdapter profileTabsAdapter;
@@ -79,6 +81,7 @@ public class ProfileFragment extends Fragment {
 		usersProvider = new UsersProvider();
 		postsProvider = new PostsProvider();
 		routesProvider = new RoutesProvider();
+		tokenProvider = new TokenProvider();
 
 		llEditProfile.setOnClickListener(v -> goToEditProfile());
 
@@ -104,6 +107,7 @@ public class ProfileFragment extends Fragment {
 				.setTitle("Log Out")
 				.setMessage(R.string.youSureLogOut)
 				.setPositiveButton("Yes", (dialog, which) -> {
+					tokenProvider.delete(authProvider.getUserId());
 					authProvider.signOut();
 					startActivity(new Intent(getContext(), LoginSignIn.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 				})

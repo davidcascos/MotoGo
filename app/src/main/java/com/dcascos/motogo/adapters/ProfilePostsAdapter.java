@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
-import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.posts.PostDetail;
 import com.dcascos.motogo.models.database.Like;
 import com.dcascos.motogo.models.database.Post;
@@ -25,7 +24,6 @@ import com.dcascos.motogo.providers.database.CommentsProvider;
 import com.dcascos.motogo.providers.database.LikesProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.utils.Generators;
-import com.dcascos.motogo.utils.PostUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -94,7 +92,7 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 			like.setPostId(documentSnapshot.getId());
 			like.setUserId(authProvider.getUserId());
 			like.setCreationDate(new Date().getTime());
-			createLike(like, holder, post.getUserId());
+			createLike(like, holder);
 		});
 
 		if (post.getUserId().equals(authProvider.getUserId())) {
@@ -128,7 +126,7 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 		});
 	}
 
-	private void createLike(Like like, ViewHolder holder, String postUserId) {
+	private void createLike(Like like, ViewHolder holder) {
 		likesProvider.getLikeByPostAndUser(like.getPostId(), authProvider.getUserId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
 			if (!queryDocumentSnapshots.isEmpty()) {
 				likesProvider.delete(queryDocumentSnapshots.getDocuments().get(0).getId());
@@ -136,7 +134,6 @@ public class ProfilePostsAdapter extends FirestoreRecyclerAdapter<Post, ProfileP
 			} else {
 				likesProvider.create(like);
 				holder.ivLikes.setImageResource(R.drawable.ic_like);
-				PostUtils.sendNotification(context, authProvider.getUserId(), postUserId, Constants.LIKES);
 			}
 		});
 	}
