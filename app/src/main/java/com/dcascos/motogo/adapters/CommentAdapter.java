@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.models.Comment;
-import com.dcascos.motogo.providers.UsersProvider;
+import com.dcascos.motogo.models.database.Comment;
+import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -32,25 +32,25 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		private final CircleImageView cvProfile;
+		private final CircleImageView civProfile;
 		private final TextView tvUsername;
-		private final TextView tvCommentDescription;
-		private final TextView tvDate;
+		private final TextView tvText;
+		private final TextView tvCreationDate;
 
 		public ViewHolder(View view) {
 			super(view);
-			cvProfile = view.findViewById(R.id.cv_profile);
+			civProfile = view.findViewById(R.id.civ_profile);
 			tvUsername = view.findViewById(R.id.tv_username);
-			tvCommentDescription = view.findViewById(R.id.tv_commentDescription);
-			tvDate = view.findViewById(R.id.tv_date);
+			tvText = view.findViewById(R.id.tv_text);
+			tvCreationDate = view.findViewById(R.id.tv_creationDate);
 		}
 	}
 
 	@Override
 	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Comment comment) {
-		holder.tvCommentDescription.setText(comment.getCommentText());
+		holder.tvText.setText(comment.getText());
 
-		holder.tvDate.setText(Generators.dateFormater(comment.getCreationDate()));
+		holder.tvCreationDate.setText(Generators.dateFormater(comment.getCreationDate()));
 		getUserInfo(comment.getUserId(), holder);
 	}
 
@@ -68,7 +68,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 					String imageProfile = documentSnapshot.getString(Constants.USER_IMAGEPROFILE);
 
 					if (imageProfile != null && !imageProfile.isEmpty()) {
-						Glide.with(context).load(imageProfile).circleCrop().into(holder.cvProfile);
+						Glide.with(context).load(imageProfile).circleCrop().into(holder.civProfile);
 					}
 				}
 				if (documentSnapshot.contains(Constants.USER_USERNAME)) {

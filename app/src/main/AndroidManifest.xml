@@ -16,6 +16,11 @@
 		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
+		<receiver android:name=".utils.NetworkChangeReceiver">
+			<intent-filter>
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+			</intent-filter>
+		</receiver>
 
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
@@ -31,34 +36,39 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".layouts.signInSignUp.SignIn"
+			android:name=".layouts.login.LoginSignIn"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.signInSignUp.SignUp"
+			android:name=".layouts.login.LoginSignUp"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.signInSignUp.ResetPassword"
+			android:name=".layouts.login.LoginPasswordReset"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.signInSignUp.ResetPasswordSent"
+			android:name=".layouts.login.LoginPasswordResetSent"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.Home"
+			android:name=".layouts.home.Home"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.posts.NewPost"
+			android:name=".layouts.posts.PostNew"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".layouts.posts.PostDetail"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.profile.EditProfile"
+			android:name=".layouts.profile.ProfileEdit"
+			android:parentActivityName=".layouts.home.Home"
 			android:screenOrientation="portrait" />
 		<activity
-			android:name=".layouts.profile.UserProfile"
+			android:name=".layouts.profile.ProfileFromUser"
+			android:parentActivityName=".layouts.posts.PostDetail"
 			android:screenOrientation="portrait" />
 		<activity
 			android:name=".utils.MapPreferences"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name=".layouts.maps.MapsRouteDetail"
 			android:screenOrientation="portrait" />
 
 		<meta-data

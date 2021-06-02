@@ -63,4 +63,10 @@ public class AuthProvider {
 		}
 	}
 
+	public void signOut() {
+		if (firebaseAuth != null) {
+			firebaseAuth.signOut();
+		}
+	}
+
 }

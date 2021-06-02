@@ -3,32 +3,34 @@ package com.dcascos.motogo.layouts.posts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
-import com.dcascos.motogo.layouts.profile.UserProfile;
-import com.dcascos.motogo.models.Comment;
+import com.dcascos.motogo.layouts.profile.ProfileFromUser;
+import com.dcascos.motogo.models.database.Comment;
 import com.dcascos.motogo.providers.AuthProvider;
-import com.dcascos.motogo.providers.CommentProvider;
-import com.dcascos.motogo.providers.PostProvider;
-import com.dcascos.motogo.providers.UsersProvider;
+import com.dcascos.motogo.providers.database.CommentsProvider;
+import com.dcascos.motogo.providers.database.PostsProvider;
+import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.Validations;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +40,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostDetail extends AppCompatActivity {
+public class PostDetail extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;
@@ -49,16 +51,15 @@ public class PostDetail extends AppCompatActivity {
 	private TextView tvDescription;
 	private Button btShowProfile;
 	private FloatingActionButton btAddComment;
-	private ImageButton ibBack;
 	private RecyclerView rvComments;
 
-	private String userId = "";
+	private String postUserId = "";
 	private String extraPostId;
 
 	private AuthProvider authProvider;
 	private UsersProvider usersProvider;
-	private PostProvider postProvider;
-	private CommentProvider commentProvider;
+	private PostsProvider postsProvider;
+	private CommentsProvider commentsProvider;
 
 	private CommentAdapter commentAdapter;
 
@@ -69,22 +70,26 @@ public class PostDetail extends AppCompatActivity {
 
 		progressBar = findViewById(R.id.rl_progress);
 		ivCover = findViewById(R.id.iv_cover);
-		cvProfile = findViewById(R.id.cv_profile);
+		cvProfile = findViewById(R.id.civ_profile);
 		tvUsername = findViewById(R.id.tv_username);
 		tvTitle = findViewById(R.id.tv_title);
 		tvLocation = findViewById(R.id.tv_location);
 		tvDescription = findViewById(R.id.tv_description);
 		btShowProfile = findViewById(R.id.bt_showProfile);
 		btAddComment = findViewById(R.id.bt_addComment);
-		ibBack = findViewById(R.id.ib_back);
 		rvComments = findViewById(R.id.rv_comments);
+
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		extraPostId = getIntent().getStringExtra("documentId");
 
 		authProvider = new AuthProvider();
 		usersProvider = new UsersProvider();
-		postProvider = new PostProvider();
-		commentProvider = new CommentProvider();
+		postsProvider = new PostsProvider();
+		commentsProvider = new CommentsProvider();
 
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetail.this);
 		rvComments.setLayoutManager(linearLayoutManager);
@@ -92,16 +97,22 @@ public class PostDetail extends AppCompatActivity {
 		getPost();
 
 		btAddComment.setOnClickListener(v -> showDialogComment());
-
 		btShowProfile.setOnClickListener(v -> goToShowProfile());
+	}
 
-		ibBack.setOnClickListener(v -> this.onBackPressed());
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
+			onBackPressed();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		Query query = commentProvider.getCommentsByPost(extraPostId);
+		Query query = commentsProvider.getCommentsByPost(extraPostId).orderBy(Constants.COMMENT_CREATIONDATE, Query.Direction.ASCENDING);
 		FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>().setQuery(query, Comment.class).build();
 		commentAdapter = new CommentAdapter(options, PostDetail.this);
 		rvComments.setAdapter(commentAdapter);
@@ -115,13 +126,13 @@ public class PostDetail extends AppCompatActivity {
 	}
 
 	private void goToShowProfile() {
-		if (!userId.equals(getString(R.string.empty))) {
-			startActivity(new Intent(PostDetail.this, UserProfile.class).putExtra("userId", userId));
+		if (!postUserId.equals(getString(R.string.empty))) {
+			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userId", postUserId));
 		}
 	}
 
 	private void getPost() {
-		postProvider.getPostById(extraPostId).addOnSuccessListener(documentSnapshot -> {
+		postsProvider.getPostById(extraPostId).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				if (documentSnapshot.contains(Constants.POST_IMAGE)) {
 					Glide.with(getApplicationContext()).load(documentSnapshot.getString(Constants.POST_IMAGE)).into(ivCover);
@@ -141,8 +152,8 @@ public class PostDetail extends AppCompatActivity {
 				}
 
 				if (documentSnapshot.contains(Constants.POST_USERID)) {
-					userId = documentSnapshot.getString(Constants.POST_USERID);
-					getUserInfo(userId);
+					postUserId = documentSnapshot.getString(Constants.POST_USERID);
+					getUserInfo(postUserId);
 				}
 			}
 		});
@@ -201,11 +212,11 @@ public class PostDetail extends AppCompatActivity {
 
 	private void createComment(String commentText) {
 		Comment comment = new Comment();
-		comment.setCommentText(commentText);
+		comment.setText(commentText);
 		comment.setPostId(extraPostId);
 		comment.setUserId(authProvider.getUserId());
 		comment.setCreationDate(new Date().getTime());
-		commentProvider.create(comment).addOnCompleteListener(task -> {
+		commentsProvider.create(comment).addOnCompleteListener(task -> {
 			if (task.isSuccessful()) {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();

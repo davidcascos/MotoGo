@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "motogo-dc",
+  "private_key_id": "0df4b5a8b051b2de8138f4ef3ad5529317624e4b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCx8L/YwRbEMWMb\nuTYlrw146+7d4OCzyWkpC9UIDnJe6UnSAX231nPLEafr/ZUd6tvwKAPwhs+FwMQh\nJsHePH1c6gOaE+yjvXCYcPBj8N5cg1P0f9nUcBg56x/siZ97/VkIr7eM8DUND7IP\ne/FtmVr1SfgmAHif9eVvAQ961O1o83IiESezDjHdkkQyl+U33x41hIwfoxLI+8at\n8QsqE+xpTdvTkCAeo2R2JZIXseYRjoEnZMG5HX6vB3pce5vI66FxFtya/AubsMEX\nEXYWeIVZEjv10NUWYSklqq40kEsJPryQg3QxWqz+A510Aq5kddxuHfr0voM1C+Ls\nXTTMc4SZAgMBAAECggEABZxGCkUtTPaTLce5VLcYJUbIH2wUnaqVM599Qi2lbsdr\nhdD4+CvNdxrJiQPz+I9kC6aRWDtB7hFRxctRa8rLt5sjza8A5DlIBHB0LeyFcFSO\nODxzP3Lg2qumlChTNF88uEzFDG8y9wRWjI0vg7GFCAyi47zaUM3Zo/Y8ORbfXPKZ\ng369vzvED4E7XQw8kRHp1zjiUTv6Xg8A1HSobrzslUGNbW2yt7TngXiCo+8zy4nP\nVH071SsLs0e4Q0EK8tFnDo2p81VPL2h3EVuL/jtLP8sIdWT+8OnFqWVNwEubF9h7\nxqSMYErcqVYwIEavGAmE38N87fgyELP8PXjaJnK0sQKBgQDz6mry8UoP0ObsrCXd\nAMG0MLYE9J0mnOi3ASr+bRphOTk27H4xUEy0ThiKmTT+Z2KNViNqqKk1ETDK5JU9\ncs2OsA+glMNB172Q4it13prZiSwfAkM2DhiIbVkdS+6R1WL8c5nTDPTIzhAOB38k\nZqC6lHcAFQWPuHAbpAH1cLLOiQKBgQC6wZFFGQtBSEUWmpyC+1Ng7Vk3Wo9JaL/W\nZaXOX4y24fPCj47rDgCPL8bFUEQayQ2pmiXf2WqYFyqRbbvxTQO/OkmnV9EPbP4b\n5TlVlt5HCJbe6GC/XO9fVSJ8WLDp4Zo6t0S3UoxFgg/HzC3i4pQeBWbn3L/Gsrnc\nAh2g+e4BkQKBgQCibUZPBbMmGRzOGk0UgL59ObrcTfCgl/i4dUSmLQ1WFP8uvgnC\n2RBbOW5KTX/msf4E1Im9KxeSySHO2q0vQFX2YPPnIWltXTdVVedPFK/VkO0asS0E\nwBpCL18ajUgPQSQrrOeQjZ4sYlx6my9llBoQZXFhUp5jeJTfMzZCtYu80QKBgQCi\nvgdvpVFPhEDgX78/zO9tqadzOzFeETALDu0cF9uxitk2lI9AeiU2obWfQED47nc/\ncprKpNXkz1tC+9MphalcPNjuQPJndN1DRc9erGfqkquWd/3HBJ97/d5daZRRW01h\nGU+CSSb/c0V5II5kBnp4ZtC0AIQGDL014YocO2+SYQKBgQDAtGHVPBtW5DcC2WTY\nO5XMqEGy0g2FbJ3HqUvcCB0KRKisVNQNqqCpe1OxM1QR1G7fXVEGXw1avO89l5Gz\nRwafGk3BMj2nO0jXQXPX1Aaq+dBDu8N7hCVnUNvKFUw8ISeTtLpMXxpoLJcnxvSK\nhGO/z0NmEtC6WG0bdVzPqp/7Yg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "motogo-dc@appspot.gserviceaccount.com",
+  "client_id": "105559674242407204092",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/motogo-dc%40appspot.gserviceaccount.com"
+}

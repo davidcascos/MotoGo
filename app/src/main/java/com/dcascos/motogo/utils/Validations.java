@@ -49,7 +49,7 @@ public class Validations {
 			textInputLayout.setError(context.getString(R.string.usernameToLarge));
 			return false;
 		} else if (!value.matches(Constants.USERNAMEFORMAT)) {
-			textInputLayout.setError(context.getString(R.string.invalidFormat, context.getString(R.string.username)));
+			textInputLayout.setError(context.getString(R.string.invalidFormat, context.getString(R.string.username)) + " " + context.getString(R.string.formatUsername));
 			return false;
 		} else {
 			textInputLayout.setError(null);
@@ -81,7 +81,7 @@ public class Validations {
 			textInputLayout.setError(context.getString(R.string.fieldCanNotEmpty));
 			return false;
 		} else if (!value.matches(Constants.PASSWORDFORMAT)) {
-			textInputLayout.setError(context.getString(R.string.invalidFormat, context.getString(R.string.password)));
+			textInputLayout.setError(context.getString(R.string.invalidFormat, context.getString(R.string.password)) + " " + context.getString(R.string.formatPassword));
 			return false;
 		} else {
 			textInputLayout.setError(null);

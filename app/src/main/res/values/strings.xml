@@ -31,12 +31,14 @@
 	<string name="singUpToStart">SingUp to start your new journey</string>
 	<string name="fullName">Full Name</string>
 	<string name="email">Email</string>
+	<string name="formatUsername">Alphanumeric characters, underscores and hyphens allowed, must not be the first or last character and must not appear consecutively</string>
 	<string name="formatPassword">It must contain at least 1 digit, 1 lower case, 1 upper case, and a length of at least 6 characters</string>
 	<string name="alreadyHaveAccount">Already have an account? Sign In</string>
 	<string name="fieldCanNotEmpty">Field can not be empty</string>
 	<string name="usernameToLarge">Username is too large!</string>
 	<string name="invalidFormat">Invalid %1s format!</string>
 	<string name="alreadyUserWithMail">There is already a user with this email</string>
+	<string name="alreadyUserWithUsername">There is already a user with this username</string>
 	<string name="userCouldNotBeCreated">The user could not be created, please try again later</string>
 	<!--ForgetPassword-->
 	<string name="forgetPasswordTitle">Forget Password</string>
@@ -60,24 +62,45 @@
 	<string name="takePhoto">Take photo</string>
 	<string name="imageFromGallery">Image from gallery</string>
 	<!--Profile Fragment-->
-	<string name="noPublishedAnything">you haven\'t published anything yet</string>
-	<string name="publications">Publications</string>
+	<string name="noPublishedAnything">You haven\'t published anything yet</string>
 	<string name="edit_profile">Edit Profile</string>
 	<string name="update">Update</string>
 	<string name="userCouldNotBeUpdated">User could not be updated</string>
 	<string name="profilePhotoNoUploaded">Profile photo could not be uploaded</string>
 	<string name="theUserHasBeenUpdated">The user has been updated</string>
+	<string name="logout">logout</string>
+	<string name="youSureLogOut">Are you sure you want to log out?</string>
+	<!--Profile Fragment TABS-->
+	<string name="publications">Publications</string>
+	<string name="posts">Posts</string>
+	<string name="routes">Routes</string>
+	<string name="postDeleted">Post deleted successfully</string>
+	<string name="routeDeleted">Route deleted successfully</string>
+	<string name="postCouldNotBeDeleted">Post could not be deleted, please try again</string>
+	<string name="routeCouldNotBeDeleted">Route could not be deleted, please try again</string>
+	<string name="youSureDeletePost">Are you sure you want to delete the post?</string>
+	<string name="youSureDeleteRoute">Are you sure you want to delete the route?</string>
 	<!--Post Detail-->
 	<string name="see_profile">See Profile</string>
 	<string name="newComment">New Coment</string>
 	<string name="addYourComment">Add your comment</string>
 	<string name="commentCreated">Comment created</string>
 	<string name="commentCouldNotBeCreated">Comment could not be created</string>
-	<string name="Comments">Comments</string>
+	<string name="commentsTitle">Comments</string>
+	<string name="comments">%1s Comments</string>
 	<string name="likes">%1s Likes</string>
 	<!--Maps-->
 	<string name="pleaseActiveLocation">Please activate your location to continue</string>
 	<string name="destination">Destination</string>
+	<string name="createRoute">Create Route</string>
+	<string name="selectDestination">You must select a destination</string>
+	<string name="originRoute">Origin: </string>
+	<string name="destinationRoute">Destination: </string>
+	<string name="timeRoute">Duration: </string>
+	<string name="distanceRoute">Distance: </string>
+	<string name="startRoute">(SAVE) Start Route</string>
+	<string name="routeNoUploaded">Route could not be uploaded</string>
+	<string name="routeCreated">Route Created</string>
 	<!--Menus-->
 	<string name="settings">Settings</string>
 	<string name="home">Home</string>
@@ -87,7 +110,10 @@
 	<!--KEYS-->
 	<string name="prefShowMyLocation">prefShowMyLocation</string>
 	<string name="prefShowOthers">prefShowOthers</string>
-	<string name="prefDistanceRadius">prefDistanceRadius</string>
+	<string name="prefDistanceRadiusOtherDrivers">prefDistanceRadiusOtherDrivers</string>
+	<string name="prefShowRoutes">prefShowRoutes</string>
+	<string name="prefDistanceRadiusRoutes">prefDistanceRadiusRoutes</string>
+	<string name="prefNetwork">prefNetwork</string>
 	<!--Texts-->
 	<string name="showMyLocationTitle">Show my location</string>
 	<string name="showMyLocationSummary">Show my location to other drivers</string>
@@ -96,6 +122,11 @@
 	<string name="distanceRadiusTitle">Distance radius</string>
 	<string name="distanceRadiusSummary">Distance radius to show other drivers</string>
 	<string name="defaultDistanceRadius">5</string>
+	<string name="distanceRadiuRoutesSummary">Distance radius to show routes</string>
+	<string name="showRoutesTitle">Show routes</string>
+	<string name="showRoutesSummary">Show routes around</string>
+	<string name="networkTitle">Use only Wi-Fi</string>
+	<string name="networkSummary">Network connectivity use only Wi-Fi</string>
 	<!--values-->
 	<string-array name="distanceRadiusValues">
 		<item>5</item>
@@ -104,6 +135,10 @@
 		<item>75</item>
 		<item>100</item>
 	</string-array>
-
+	<!--Network-->
+	<string name="lost_connection">Lost connection</string>
+	<string name="connection_error">Unable to load content. Check your network connection.</string>
+	<string name="retry">Retry</string>
+	<string name="oops">OOPS!</string>
 
 </resources>

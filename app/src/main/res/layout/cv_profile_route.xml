@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="10dp"
+	app:cardBackgroundColor="@color/softGray"
+	app:cardCornerRadius="10dp">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<ImageView
+			android:id="@+id/iv_delete"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:layout_margin="5dp"
+			android:elevation="1dp"
+			android:src="@drawable/ic_delete" />
+
+		<TextView
+			android:id="@+id/tv_routeOrigin"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="10dp"
+			android:ellipsize="marquee"
+			android:focusable="true"
+			android:focusableInTouchMode="true"
+			android:fontFamily="@font/muli_black"
+			android:marqueeRepeatLimit="marquee_forever"
+			android:paddingTop="5dp"
+			android:scrollHorizontally="true"
+			android:singleLine="true"
+			android:text="@string/originRoute"
+			android:textColor="@color/black"
+			android:textSize="16sp" />
+
+		<TextView
+			android:id="@+id/tv_routeDestination"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="10dp"
+			android:ellipsize="marquee"
+			android:focusable="true"
+			android:focusableInTouchMode="true"
+			android:fontFamily="@font/muli"
+			android:marqueeRepeatLimit="marquee_forever"
+			android:scrollHorizontally="true"
+			android:singleLine="true"
+			android:text="@string/destination" />
+
+		<TextView
+			android:id="@+id/tv_creationDate"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="10dp"
+			android:fontFamily="@font/muli"
+			android:gravity="end"
+			android:textColor="@color/black"
+			android:textSize="10sp" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginRight="15dp"
+			android:layout_marginBottom="5dp"
+			android:background="@color/app_colorDark" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="15dp"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="5dp"
+			android:orientation="horizontal">
+			<!--Rating-->
+			<!--			<ImageView-->
+			<!--				android:id="@+id/iv_like"-->
+			<!--				android:layout_width="wrap_content"-->
+			<!--				android:layout_height="wrap_content"-->
+			<!--				android:src="@drawable/ic_like_no" />-->
+
+			<!--			<TextView-->
+			<!--				android:id="@+id/tv_likes"-->
+			<!--				android:layout_width="wrap_content"-->
+			<!--				android:layout_height="match_parent"-->
+			<!--				android:layout_marginStart="5dp"-->
+			<!--				android:gravity="center"-->
+			<!--				android:text="@string/likes" />-->
+		</LinearLayout>
+	</LinearLayout>
+
+</androidx.cardview.widget.CardView>
