@@ -24,7 +24,7 @@
 				android:layout_height="wrap_content"
 				android:fontFamily="@font/bungee"
 				android:text="@string/profile"
-				android:textSize="20dp" />
+				android:textSize="20sp" />
 		</LinearLayout>
 	</androidx.appcompat.widget.Toolbar>
 
@@ -105,7 +105,7 @@
 						android:fontFamily="@font/muli_black"
 						android:text="@string/publications"
 						android:textColor="@color/black"
-						android:textSize="15dp" />
+						android:textSize="15sp" />
 
 					<TextView
 						android:id="@+id/tv_postsNumber"
@@ -113,7 +113,7 @@
 						android:layout_height="wrap_content"
 						android:fontFamily="@font/muli"
 						android:textColor="@color/black"
-						android:textSize="13dp" />
+						android:textSize="13sp" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -132,7 +132,7 @@
 						android:fontFamily="@font/muli_black"
 						android:text="@string/username"
 						android:textColor="@color/black"
-						android:textSize="15dp" />
+						android:textSize="15sp" />
 
 					<TextView
 						android:id="@+id/tv_username"
@@ -140,7 +140,7 @@
 						android:layout_height="wrap_content"
 						android:fontFamily="@font/muli"
 						android:textColor="@color/black"
-						android:textSize="13dp" />
+						android:textSize="13sp" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -158,7 +158,7 @@
 						android:layout_height="wrap_content"
 						android:fontFamily="@font/bungee"
 						android:textColor="@color/black"
-						android:textSize="20dp" />
+						android:textSize="20sp" />
 
 					<TextView
 						android:id="@+id/tv_email"
@@ -168,7 +168,7 @@
 						android:layout_marginBottom="10dp"
 						android:fontFamily="@font/muli_black"
 						android:textColor="@color/black"
-						android:textSize="15dp" />
+						android:textSize="15sp" />
 				</LinearLayout>
 			</FrameLayout>
 		</com.google.android.material.appbar.CollapsingToolbarLayout>

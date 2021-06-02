@@ -16,6 +16,11 @@
 		android:roundIcon="@mipmap/ic_motogo_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.MotoGo">
+		<receiver android:name=".utils.NetworkChangeReceiver">
+			<intent-filter>
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+			</intent-filter>
+		</receiver>
 
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
@@ -69,26 +74,6 @@
 		<meta-data
 			android:name="preloaded_fonts"
 			android:resource="@array/preloaded_fonts" />
-
-		<service
-			android:name=".service.MessagingClient"
-			android:exported="false">
-			<intent-filter>
-				<action android:name="com.google.firebase.MESSAGING_EVENT" />
-			</intent-filter>
-		</service>
-
-		<meta-data
-			android:name="com.google.firebase.messaging.default_notification_channel_id"
-			android:value="@string/default_notification_channel_id" />
-
-		<meta-data
-			android:name="com.google.firebase.messaging.default_notification_icon"
-			android:resource="@drawable/motogologo" />
-
-		<meta-data
-			android:name="com.google.firebase.messaging.default_notification_color"
-			android:resource="@color/white" />
 	</application>
 
 </manifest>

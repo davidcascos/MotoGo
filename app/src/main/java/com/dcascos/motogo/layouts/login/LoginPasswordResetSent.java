@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 
-public class LoginPasswordResetSent extends AppCompatActivity {
+public class LoginPasswordResetSent extends MainActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

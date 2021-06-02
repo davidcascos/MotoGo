@@ -13,8 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.home.Home;
@@ -39,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class LoginSignIn extends AppCompatActivity {
+public class LoginSignIn extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivLogo;

@@ -4,7 +4,6 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.Token;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -27,7 +26,8 @@ public class TokenProvider {
 		});
 	}
 
-	public Task<DocumentSnapshot> getToken(String userId) {
-		return collectionReference.document(userId).get();
+	public Task<Void> delete(String userId) {
+		return collectionReference.document(userId).delete();
 	}
+
 }

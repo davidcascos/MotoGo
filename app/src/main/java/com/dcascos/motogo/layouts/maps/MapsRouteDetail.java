@@ -9,8 +9,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
@@ -40,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback {
 
 	private TextView tvOrigin;
 	private TextView tvDestination;
@@ -105,7 +106,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 	}
 
 	@Override
-	public void onMapReady(GoogleMap googleMap) {
+	public void onMapReady(@NonNull GoogleMap googleMap) {
 		mMap = googleMap;
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -121,7 +122,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 	private void drawRoute() {
 		googleAPIProvider.getDirections(originLatLong, destinationLatLong).enqueue(new Callback<String>() {
 			@Override
-			public void onResponse(Call<String> call, Response<String> response) {
+			public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
 				try {
 					JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()));
 
@@ -156,7 +157,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 			}
 
 			@Override
-			public void onFailure(Call<String> call, Throwable t) {
+			public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
 			}
 		});
 	}

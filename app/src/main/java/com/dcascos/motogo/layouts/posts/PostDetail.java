@@ -16,12 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
@@ -31,7 +31,6 @@ import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.CommentsProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
-import com.dcascos.motogo.utils.PostUtils;
 import com.dcascos.motogo.utils.Validations;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +40,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostDetail extends AppCompatActivity {
+public class PostDetail extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;
@@ -221,7 +220,6 @@ public class PostDetail extends AppCompatActivity {
 			if (task.isSuccessful()) {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCreated), Toast.LENGTH_SHORT).show();
-				PostUtils.sendNotification(this, authProvider.getUserId(), postUserId, Constants.COMMENTS);
 			} else {
 				hideProgressBar();
 				Toast.makeText(PostDetail.this, getText(R.string.commentCouldNotBeCreated), Toast.LENGTH_SHORT).show();

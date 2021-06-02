@@ -113,6 +113,7 @@
 	<string name="prefDistanceRadiusOtherDrivers">prefDistanceRadiusOtherDrivers</string>
 	<string name="prefShowRoutes">prefShowRoutes</string>
 	<string name="prefDistanceRadiusRoutes">prefDistanceRadiusRoutes</string>
+	<string name="prefNetwork">prefNetwork</string>
 	<!--Texts-->
 	<string name="showMyLocationTitle">Show my location</string>
 	<string name="showMyLocationSummary">Show my location to other drivers</string>
@@ -124,6 +125,8 @@
 	<string name="distanceRadiuRoutesSummary">Distance radius to show routes</string>
 	<string name="showRoutesTitle">Show routes</string>
 	<string name="showRoutesSummary">Show routes around</string>
+	<string name="networkTitle">Use only Wi-Fi</string>
+	<string name="networkSummary">Network connectivity use only Wi-Fi</string>
 	<!--values-->
 	<string-array name="distanceRadiusValues">
 		<item>5</item>
@@ -132,9 +135,10 @@
 		<item>75</item>
 		<item>100</item>
 	</string-array>
-	<!--Notifications-->
-	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-	<string name="notificationLikes">%1s liked your post</string>
-	<string name="notificationComments">%1s has commented on your post</string>
+	<!--Network-->
+	<string name="lost_connection">Lost connection</string>
+	<string name="connection_error">Unable to load content. Check your network connection.</string>
+	<string name="retry">Retry</string>
+	<string name="oops">OOPS!</string>
 
 </resources>

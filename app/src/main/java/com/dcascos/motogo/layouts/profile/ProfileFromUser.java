@@ -6,12 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.ProfileTabsAdapter;
 import com.dcascos.motogo.constants.Constants;
@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFromUser extends AppCompatActivity {
+public class ProfileFromUser extends MainActivity {
 
 	private ImageView ivCover;
 	private CircleImageView circleImageProfile;
