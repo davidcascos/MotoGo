@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<PreferenceCategory android:title="Me">
 		<SwitchPreference
@@ -44,5 +45,16 @@
 			android:key="@string/prefDistanceRadiusRoutes"
 			android:summary="@string/distanceRadiuRoutesSummary"
 			android:title="@string/distanceRadiusTitle" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Network">
+		<ListPreference
+			app:icon="@drawable/ic_dummy"
+			android:defaultValue="@string/defaultNetwork"
+			android:entries="@array/networkValues"
+			android:entryValues="@array/networkValues"
+			android:key="@string/prefNetwork"
+			android:summary="@string/networkSummary"
+			android:title="@string/networkTitle" />
 	</PreferenceCategory>
 </PreferenceScreen>
