@@ -24,25 +24,19 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		registerNetworkBroadcastReceiver();
-	}
-
-
-	protected void registerNetworkBroadcastReceiver() {
 		registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 	}
+
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		unregisterNetwork();
-	}
 
-	protected void unregisterNetwork() {
 		try {
 			unregisterReceiver(broadcastReceiver);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}
+
 }
