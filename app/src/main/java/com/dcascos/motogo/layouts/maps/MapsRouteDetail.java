@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dcascos.motogo.R;
@@ -105,7 +106,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 	}
 
 	@Override
-	public void onMapReady(GoogleMap googleMap) {
+	public void onMapReady(@NonNull GoogleMap googleMap) {
 		mMap = googleMap;
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -121,7 +122,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 	private void drawRoute() {
 		googleAPIProvider.getDirections(originLatLong, destinationLatLong).enqueue(new Callback<String>() {
 			@Override
-			public void onResponse(Call<String> call, Response<String> response) {
+			public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
 				try {
 					JSONObject jsonObject = new JSONObject(Objects.requireNonNull(response.body()));
 
@@ -156,7 +157,7 @@ public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCall
 			}
 
 			@Override
-			public void onFailure(Call<String> call, Throwable t) {
+			public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
 			}
 		});
 	}
