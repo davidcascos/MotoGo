@@ -3,7 +3,7 @@ package com.dcascos.motogo.constants;
 public class Constants {
 
 	//Text formats
-	public static final String NAMEFORMAT = "^[a-zA-Z ]*$";
+	public static final String NAMEFORMAT = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+(\\s*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]*)*[a-zA-ZÀ-ÿ\\u00f1\\u00d1]+$";
 
 	/*	Username consists of alphanumeric characters (a-zA-Z0-9), lowercase, or uppercase.
 		Username allowed of the dot (.), underscore (_), and hyphen (-).

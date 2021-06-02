@@ -116,7 +116,7 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 		mMap.addMarker(new MarkerOptions().position(originLatLong).title("Origin").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_me)));
 		mMap.addMarker(new MarkerOptions().position(destinationLatLong).title("Destination").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)));
 
-		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds.Builder().include(originLatLong).include(destinationLatLong).build(), 150));
+		mMap.setOnMapLoadedCallback(() -> mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds.Builder().include(originLatLong).include(destinationLatLong).build(), 150)));
 
 		drawRoute();
 	}

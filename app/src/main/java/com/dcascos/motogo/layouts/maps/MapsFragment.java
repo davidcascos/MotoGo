@@ -38,6 +38,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
+import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.MapPreferences;
 import com.dcascos.motogo.utils.PermissionUtils;
 import com.firebase.geofire.GeoLocation;
@@ -88,6 +89,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private AuthProvider authProvider;
 	private GeoFireProvider geoFireProvider;
 	private RoutesProvider routesProvider;
+	private UsersProvider usersProvider;
 
 	private Marker meMarker;
 	private List<Marker> driversMarkers = new ArrayList<>();
@@ -166,6 +168,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		authProvider = new AuthProvider();
 		geoFireProvider = new GeoFireProvider();
 		routesProvider = new RoutesProvider();
+		usersProvider = new UsersProvider();
 
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
@@ -342,15 +345,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	}
 
 	private void checkActiveDrivers() {
+		for (Marker marker : driversMarkers) {
+			if (marker.getTag() != null) {
+				marker.remove();
+				driversMarkers.remove(marker);
+			}
+		}
+
 		if (showOtherDrivers && originLatLong != null) {
 			getActiveDrivers();
-		} else if (!showOtherDrivers) {
-			for (Marker marker : driversMarkers) {
-				if (marker.getTag() != null) {
-					marker.remove();
-					driversMarkers.remove(marker);
-				}
-			}
 		}
 	}
 
@@ -366,13 +369,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 					}
 
 					if (!key.equals(authProvider.getUserId())) {
-						LatLng driverLatLong = new LatLng(location.latitude, location.longitude);
-						Marker otherDriverMarker = mMap.addMarker(new MarkerOptions()
-								.position(driverLatLong)
-								.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_other)));
+						usersProvider.getUser(key).addOnSuccessListener(documentSnapshot -> {
+							String username = "";
+							if (documentSnapshot.exists() && documentSnapshot.contains(Constants.USER_USERNAME)) {
+								username = documentSnapshot.getString(Constants.USER_USERNAME);
+							}
+							LatLng driverLatLong = new LatLng(location.latitude, location.longitude);
+							Marker otherDriverMarker = mMap.addMarker(new MarkerOptions()
+									.position(driverLatLong)
+									.title(username)
+									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_moto_other)));
 
-						otherDriverMarker.setTag(key);
-						driversMarkers.add(otherDriverMarker);
+							otherDriverMarker.setTag(key);
+							driversMarkers.add(otherDriverMarker);
+						});
 					}
 				}
 
