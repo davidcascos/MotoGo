@@ -2,6 +2,7 @@ package com.dcascos.motogo.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.layouts.maps.MapsRouteDetail;
 import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
@@ -35,19 +37,22 @@ public class ProfileRoutesAdapter extends FirestoreRecyclerAdapter<Route, Profil
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		private final TextView tvPostTitle;
+		private final TextView tvRouteOrigin;
+		private final TextView tvRouteDestination;
 		private final TextView tvCreationDate;
-		private final TextView tvDescription;
 		private final View viewHolder;
 		private final ImageView ivDelete;
 
 		public ViewHolder(View view) {
 			super(view);
-			tvPostTitle = view.findViewById(R.id.tv_postTitle);
+			tvRouteOrigin = view.findViewById(R.id.tv_routeOrigin);
+			tvRouteDestination = view.findViewById(R.id.tv_routeDestination);
 			tvCreationDate = view.findViewById(R.id.tv_creationDate);
-			tvDescription = view.findViewById(R.id.tv_description);
 			ivDelete = view.findViewById(R.id.iv_delete);
 			viewHolder = view;
+
+			tvRouteOrigin.setSelected(true);
+			tvRouteDestination.setSelected(true);
 		}
 	}
 
@@ -55,10 +60,17 @@ public class ProfileRoutesAdapter extends FirestoreRecyclerAdapter<Route, Profil
 	protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Route route) {
 		DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
 
-		holder.tvPostTitle.setText(route.getOrigin());
+		holder.tvRouteOrigin.setText(route.getOrigin());
 		holder.tvCreationDate.setText(Generators.dateFormater(route.getCreationDate()));
-		holder.tvDescription.setText(route.getDestination());
-		//holder.viewHolder.setOnClickListener(v -> context.startActivity(new Intent(context, PostDetail.class).putExtra("documentId", documentSnapshot.getId())));
+		holder.tvRouteDestination.setText(route.getDestination());
+		holder.viewHolder.setOnClickListener(v -> context.startActivity(new Intent(context, MapsRouteDetail.class)
+				.putExtra("from", "detail")
+				.putExtra("originName", route.getOrigin())
+				.putExtra("destinationName", route.getDestination())
+				.putExtra("originLat", route.getOriginLat())
+				.putExtra("originLon", route.getOriginLon())
+				.putExtra("destinationLat", route.getDestinationLat())
+				.putExtra("destinationLon", route.getDestinationLon())));
 
 		if (route.getUserId().equals(authProvider.getUserId())) {
 			holder.ivDelete.setVisibility(View.VISIBLE);

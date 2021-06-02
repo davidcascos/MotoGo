@@ -50,6 +50,7 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 	private Button btStartRoute;
 	private ImageButton ibBack;
 	private GoogleMap mMap;
+	private String from;
 	private String originName;
 	private String destinationName;
 	private double originLat;
@@ -97,6 +98,7 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 	}
 
 	private void getIntentExtras() {
+		from = getIntent().getStringExtra("from");
 		originName = getIntent().getStringExtra("originName");
 		destinationName = getIntent().getStringExtra("destinationName");
 		originLat = getIntent().getDoubleExtra("originLat", 0);
@@ -168,7 +170,11 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 		tvDistance.setText(distance);
 		tvDuration.setText(duration);
 
-		btStartRoute.setVisibility(View.VISIBLE);
+		if (from.equalsIgnoreCase("create")) {
+			btStartRoute.setVisibility(View.VISIBLE);
+		} else {
+			btStartRoute.setVisibility(View.GONE);
+		}
 	}
 
 	private void createRoute() {

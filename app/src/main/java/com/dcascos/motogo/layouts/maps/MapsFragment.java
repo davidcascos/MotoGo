@@ -229,6 +229,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	private void createRoute() {
 		if (originLatLong != null && destinationLatLong != null) {
 			Intent intent = new Intent(getContext(), MapsRouteDetail.class);
+			intent.putExtra("from", "create");
 			intent.putExtra("originName", originName);
 			intent.putExtra("destinationName", destinationName);
 			intent.putExtra("originLat", originLatLong.latitude);
