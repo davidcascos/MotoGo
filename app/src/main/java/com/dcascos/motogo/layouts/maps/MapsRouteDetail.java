@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsRouteDetail extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback {
 
 	private TextView tvOrigin;
 	private TextView tvDestination;

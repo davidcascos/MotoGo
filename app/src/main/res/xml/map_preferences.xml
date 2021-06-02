@@ -48,13 +48,12 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="Network">
-		<ListPreference
-			app:icon="@drawable/ic_dummy"
-			android:defaultValue="@string/defaultNetwork"
-			android:entries="@array/networkValues"
-			android:entryValues="@array/networkValues"
+		<SwitchPreference
+			android:defaultValue="false"
 			android:key="@string/prefNetwork"
 			android:summary="@string/networkSummary"
-			android:title="@string/networkTitle" />
+			android:title="@string/networkTitle"
+			app:icon="@drawable/ic_wifi" />
+
 	</PreferenceCategory>
 </PreferenceScreen>

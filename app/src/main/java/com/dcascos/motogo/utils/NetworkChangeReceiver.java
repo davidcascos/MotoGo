@@ -19,9 +19,6 @@ import com.dcascos.motogo.R;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
-	public static final String WIFI = "Wi-Fi";
-	public static final String ANY = "Any";
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		try {
@@ -29,19 +26,17 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 			Network network = connectivityManager.getActiveNetwork();
 
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-			String actualNetwork = prefs.getString(context.getString(R.string.prefNetwork), context.getString(R.string.defaultNetwork));
+			boolean onlyWifi = prefs.getBoolean(context.getString(R.string.prefNetwork), false);
+
 
 			if (network != null) {
 				NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
 				if (networkCapabilities == null) {
 					showDialog(context, intent);
 					Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
-				} else if (WIFI.equals(actualNetwork)
+				} else if (onlyWifi
 						&& !(networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))) {
 					showDialog(context, intent);
-				} else if(WIFI.equals(actualNetwork)
-						&& (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))){
-					Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
 				}
 			} else {
 				showDialog(context, intent);

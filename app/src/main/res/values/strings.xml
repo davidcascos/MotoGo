@@ -125,9 +125,8 @@
 	<string name="distanceRadiuRoutesSummary">Distance radius to show routes</string>
 	<string name="showRoutesTitle">Show routes</string>
 	<string name="showRoutesSummary">Show routes around</string>
-	<string name="networkSummary">Network connectivity required to download the feed.</string>
-	<string name="networkTitle">Download Feed</string>
-	<string name="defaultNetwork">Wi-Fi</string>
+	<string name="networkTitle">Use only Wi-Fi</string>
+	<string name="networkSummary">Network connectivity use only Wi-Fi</string>
 	<!--values-->
 	<string-array name="distanceRadiusValues">
 		<item>5</item>
@@ -136,13 +135,8 @@
 		<item>75</item>
 		<item>100</item>
 	</string-array>
-	<string-array name="networkValues">
-		<item>Wi-Fi</item>
-		<item>Any</item>
-	</string-array>
 	<!--Network-->
 	<string name="lost_connection">Lost connection</string>
-	<string name="wifi_connected">Wi-Fi connected</string>
 	<string name="connection_error">Unable to load content. Check your network connection.</string>
 	<string name="retry">Retry</string>
 	<string name="oops">OOPS!</string>

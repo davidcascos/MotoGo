@@ -8,8 +8,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.layouts.home.Home;
 import com.dcascos.motogo.models.database.User;
@@ -22,7 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Date;
 import java.util.Objects;
 
-public class LoginSignUp extends AppCompatActivity {
+public class LoginSignUp extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private TextInputLayout tiFullname;

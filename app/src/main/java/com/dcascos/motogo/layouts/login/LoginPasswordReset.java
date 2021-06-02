@@ -9,8 +9,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.utils.Validations;
@@ -18,7 +17,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-public class LoginPasswordReset extends AppCompatActivity {
+public class LoginPasswordReset extends MainActivity {
 
 	private ImageButton ibBack;
 	private Button btResetPassword;

@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.database.Post;
@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class PostNew extends AppCompatActivity {
+public class PostNew extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;

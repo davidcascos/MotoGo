@@ -16,12 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
@@ -40,7 +40,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostDetail extends AppCompatActivity {
+public class PostDetail extends MainActivity {
 
 	private RelativeLayout progressBar;
 	private ImageView ivCover;
