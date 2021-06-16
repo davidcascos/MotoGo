@@ -89,6 +89,10 @@ public class Constants {
 	public static final String ROUTE_POINTS = "points";
 	public static final String ROUTE_CREATIONDATE = "creationDate";
 
+	//Chats variables
+	public static final String CHATS = "Chats";
+	public static final String CHAT_USERS = "Users";
+
 	//Tokens
 	public static final String TOKENS = "Tokens";
 	public static final String TOKENS_TOKEN = "token";
