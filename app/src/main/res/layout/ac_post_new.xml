@@ -162,7 +162,6 @@
 		android:layout_height="wrap_content"
 		android:background="@color/transparent"
 		android:padding="15dp"
-		android:src="@drawable/ic_back"
-		app:tint="@color/black" />
+		android:src="@drawable/ic_back" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

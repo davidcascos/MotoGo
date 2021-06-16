@@ -4,6 +4,7 @@
 
 	<color name="app_color">#FFFECE2F</color>
 	<color name="app_colorDark">#FFC400</color>
+	<color name="app_colorLight">#DCFECE2F</color>
 
 	<color name="teal_200">#FF03DAC5</color>
 	<color name="teal_700">#FF018786</color>
