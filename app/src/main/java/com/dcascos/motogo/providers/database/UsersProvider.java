@@ -51,6 +51,8 @@ public class UsersProvider {
 			map.put(Constants.USER_IMAGEPROFILE, user.getImageProfile());
 		}
 
+		map.put(Constants.USER_MODIFICATIONDATE, user.getModificationDate());
+
 		return collectionReference.document(user.getId()).update(map);
 	}
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context=".layouts.chat.ChatConversation">
+
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:background="@color/app_color">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:orientation="horizontal">
+
+			<ImageButton
+				android:id="@+id/ib_back"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@color/transparent"
+				android:src="@drawable/ic_back" />
+
+			<de.hdodenhof.circleimageview.CircleImageView
+				android:id="@+id/civ_profile"
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_marginStart="10dp"
+				android:layout_marginEnd="10dp"
+				app:civ_border_color="@color/black"
+				app:civ_border_width="2dp"
+				app:civ_circle_background_color="@color/white" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<TextView
+					android:id="@+id/tv_username"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/muli_black"
+					android:maxLines="1"
+					android:textColor="@color/black"
+					android:textSize="18sp" />
+
+				<TextView
+					android:id="@+id/tv_dateLastChat"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/muli"
+					android:maxLines="1"
+					android:textColor="@color/black"
+					android:textSize="12sp" />
+			</LinearLayout>
+		</LinearLayout>
+	</androidx.appcompat.widget.Toolbar>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="60dp"
+		android:layout_marginBottom="65dp"
+		android:orientation="vertical">
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/rv_messages"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:layout_margin="10dp"
+		android:orientation="horizontal">
+
+		<EditText
+			android:id="@+id/et_message"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:background="@drawable/shape_edittext_chat"
+			android:inputType="textMultiLine"
+			android:padding="10dp"
+			android:textColor="@color/black" />
+
+		<ImageButton
+			android:id="@+id/ib_send"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="10dp"
+			android:background="@color/transparent"
+			android:src="@mipmap/ic_send" />
+
+	</LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

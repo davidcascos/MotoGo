@@ -55,7 +55,7 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
 		holder.tvCreationDate.setText(Generators.dateFormater(comment.getCreationDate()));
 		getUserInfo(comment.getUserId(), holder);
 
-		holder.civProfile.setOnClickListener(v -> context.startActivity(new Intent(context, ProfileFromUser.class).putExtra("userId", comment.getUserId())));
+		holder.civProfile.setOnClickListener(v -> context.startActivity(new Intent(context, ProfileFromUser.class).putExtra("userToViewId", comment.getUserId())));
 	}
 
 	@NonNull

@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.CommentAdapter;
 import com.dcascos.motogo.constants.Constants;
@@ -31,6 +30,7 @@ import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.CommentsProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
+import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.utils.Validations;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +53,7 @@ public class PostDetail extends MainActivity {
 	private FloatingActionButton btAddComment;
 	private RecyclerView rvComments;
 
-	private String postUserId = "";
+	private String userToViewId;
 	private String extraPostId;
 
 	private AuthProvider authProvider;
@@ -112,6 +112,10 @@ public class PostDetail extends MainActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		getComments();
+	}
+
+	private void getComments() {
 		Query query = commentsProvider.getCommentsByPost(extraPostId).orderBy(Constants.COMMENT_CREATIONDATE, Query.Direction.ASCENDING);
 		FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>().setQuery(query, Comment.class).build();
 		commentAdapter = new CommentAdapter(options, PostDetail.this);
@@ -126,8 +130,8 @@ public class PostDetail extends MainActivity {
 	}
 
 	private void goToShowProfile() {
-		if (!postUserId.equals(getString(R.string.empty))) {
-			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userId", postUserId));
+		if (!userToViewId.isEmpty()) {
+			startActivity(new Intent(PostDetail.this, ProfileFromUser.class).putExtra("userToViewId", userToViewId));
 		}
 	}
 
@@ -152,8 +156,8 @@ public class PostDetail extends MainActivity {
 				}
 
 				if (documentSnapshot.contains(Constants.POST_USERID)) {
-					postUserId = documentSnapshot.getString(Constants.POST_USERID);
-					getUserInfo(postUserId);
+					userToViewId = documentSnapshot.getString(Constants.POST_USERID);
+					getUserInfo(userToViewId);
 				}
 			}
 		});

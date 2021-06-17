@@ -91,7 +91,23 @@ public class Constants {
 
 	//Chats variables
 	public static final String CHATS = "Chats";
-	public static final String CHAT_USERS = "Users";
+	public static final String CHAT_ID = "id";
+	public static final String CHAT_USERID1 = "userId1";
+	public static final String CHAT_USERID2 = "userId2";
+	public static final String CHAT_ISWRITING = "isWriting";
+	public static final String CHAT_LISTUSERSIDS = "listUsersIds";
+	public static final String CHAT_CREATIONDATE = "creationDate";
+	public static final String CHAT_MODIFICATIONDATE = "modificationDate";
+
+	//Messages variables
+	public static final String MESSAGES = "Messages";
+	public static final String MESSAGE_ID = "id";
+	public static final String MESSAGE_USERID_SENDER = "userIdSender";
+	public static final String MESSAGE_USERID_RECEIVER = "userIdReciver";
+	public static final String MESSAGE_CHATID = "chatId";
+	public static final String MESSAGE_TEXT = "messageText";
+	public static final String MESSAGE_VIEWED = "messageViewed";
+	public static final String MESSAGE_CREATIONDATE = "creationDate";
 
 	//Tokens
 	public static final String TOKENS = "Tokens";

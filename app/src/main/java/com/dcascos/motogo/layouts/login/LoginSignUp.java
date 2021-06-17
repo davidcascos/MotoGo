@@ -76,8 +76,15 @@ public class LoginSignUp extends MainActivity {
 							imageProvider.saveCoverWithoutImage().getDownloadUrl().addOnSuccessListener(uriCover ->
 									imageProvider.saveProfileWithoutImage().getDownloadUrl().addOnSuccessListener(uriProfile -> {
 										String userId = authProvider.getUserId();
-										User user = new User(userId, fullname, username, email, uriCover.toString(), uriProfile.toString(), new Date().getTime(), new Date().getTime());
-
+										User user = new User();
+										user.setId(userId);
+										user.setFullName(fullname);
+										user.setUsername(username);
+										user.setEmail(email);
+										user.setImageCover(uriCover.toString());
+										user.setImageProfile(uriProfile.toString());
+										user.setCreationDate(new Date().getTime());
+										user.setModificationDate(user.getCreationDate());
 										usersProvider.createUser(user).addOnCompleteListener(task1 -> {
 											if (task1.isSuccessful()) {
 												startActivity(new Intent(LoginSignUp.this, Home.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));

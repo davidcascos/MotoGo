@@ -58,7 +58,7 @@ public class ChatFragment extends Fragment {
 	}
 
 	private void getChats() {
-		Query query = chatsProvider.getAll(authProvider.getUserId());
+		Query query = chatsProvider.getChatsByUserId(authProvider.getUserId());
 		FirestoreRecyclerOptions<Chat> options = new FirestoreRecyclerOptions.Builder<Chat>().setQuery(query, Chat.class).build();
 		chatAdapter = new ChatAdapter(options, getContext());
 		recyclerView.setAdapter(chatAdapter);
