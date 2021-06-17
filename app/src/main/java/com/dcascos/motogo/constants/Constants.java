@@ -49,6 +49,8 @@ public class Constants {
 	public static final String USER_IMAGEPROFILE = "imageProfile";
 	public static final String USER_CREATIONDATE = "creationDate";
 	public static final String USER_MODIFICATIONDATE = "modificationDate";
+	public static final String USER_ONLINE = "online";
+	public static final String USER_ONLINELASTDATE = "onlineLastDate";
 
 	//Post variables
 	public static final String POSTS = "Posts";

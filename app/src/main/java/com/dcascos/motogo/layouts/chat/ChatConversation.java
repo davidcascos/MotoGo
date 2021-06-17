@@ -5,7 +5,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +18,8 @@ import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.ChatsProvider;
 import com.dcascos.motogo.providers.database.MessagesProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
+import com.dcascos.motogo.utils.Generators;
+import com.dcascos.motogo.utils.MainActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -28,7 +29,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChatConversation extends AppCompatActivity {
+public class ChatConversation extends MainActivity {
 
 	private ImageButton ibBack;
 	private CircleImageView circleImageProfile;
@@ -113,7 +114,6 @@ public class ChatConversation extends AppCompatActivity {
 			userIdReciver = userId1;
 		}
 
-
 		usersProvider.getUser(userIdReciver).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				if (documentSnapshot.contains(Constants.USER_IMAGEPROFILE)) {
@@ -125,6 +125,21 @@ public class ChatConversation extends AppCompatActivity {
 				}
 				if (documentSnapshot.contains(Constants.USER_USERNAME)) {
 					tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
+				}
+			}
+		});
+
+		usersProvider.getUserIsOnline(userIdReciver).addSnapshotListener((value, error) -> {
+			if (value.exists() && value.contains(Constants.USER_ONLINE)) {
+				boolean isOnline = value.getBoolean(Constants.USER_ONLINE);
+				if (isOnline) {
+					tvdateLastChat.setText(R.string.online);
+				} else {
+					if (value.contains(Constants.USER_ONLINELASTDATE)) {
+						tvdateLastChat.setText(Generators.dateFormater(value.getLong(Constants.USER_ONLINELASTDATE)));
+					} else {
+						tvdateLastChat.setText(R.string.notOnline);
+					}
 				}
 			}
 		});

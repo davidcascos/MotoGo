@@ -107,6 +107,9 @@
 	<string name="map">Map</string>
 	<string name="chat">Chat</string>
 	<string name="profile">Profile</string>
+	<!--Chats-->
+	<string name="online">Online</string>
+	<string name="notOnline">Not Online</string>
 	<!--MapPreferences-->
 	<!--KEYS-->
 	<string name="prefShowMyLocation">prefShowMyLocation</string>
