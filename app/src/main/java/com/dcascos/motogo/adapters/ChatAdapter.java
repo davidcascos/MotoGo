@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.layouts.chat.ChatConversation;
 import com.dcascos.motogo.models.database.Chat;
 import com.dcascos.motogo.providers.AuthProvider;
+import com.dcascos.motogo.providers.database.MessagesProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
 import com.dcascos.motogo.utils.Generators;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -28,12 +30,14 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.View
 	private final Context context;
 	private final UsersProvider usersProvider;
 	private final AuthProvider authProvider;
+	private final MessagesProvider messagesProvider;
 
 	public ChatAdapter(FirestoreRecyclerOptions<Chat> options, Context context) {
 		super(options);
 		this.context = context;
 		usersProvider = new UsersProvider();
 		authProvider = new AuthProvider();
+		messagesProvider = new MessagesProvider();
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,7 +45,9 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.View
 		private final TextView tvUsername;
 		private final TextView tvLastMessage;
 		private final TextView tvModificationDate;
+		private final TextView tvCountMessagesNoReaded;
 		private final View viewHolder;
+		private FrameLayout flCountMessagesNoReaded;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -49,6 +55,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.View
 			tvUsername = view.findViewById(R.id.tv_username);
 			tvLastMessage = view.findViewById(R.id.tv_lastMessage);
 			tvModificationDate = view.findViewById(R.id.tv_modificationDate);
+			tvCountMessagesNoReaded = view.findViewById(R.id.tv_countMessagesNoReaded);
+			flCountMessagesNoReaded = view.findViewById(R.id.fl_countMessagesNoReaded);
 			viewHolder = view;
 		}
 	}
@@ -61,9 +69,34 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.View
 			getUserInfo(chat.getUserId1(), holder);
 		}
 
+		getLastMessage(chat.getId(), holder.tvLastMessage);
+
+		String userIdReciver = authProvider.getUserId().equals(chat.getUserId1()) ? chat.getUserId2() : chat.getUserId1();
+		getMessgagesNoReaded(chat.getId(), userIdReciver, holder.tvCountMessagesNoReaded, holder.flCountMessagesNoReaded);
+
 		holder.tvModificationDate.setText(Generators.dateFormater(chat.getModificationDate()));
 
 		holder.viewHolder.setOnClickListener(v -> goToChatConversation(chat.getUserId1(), chat.getUserId2()));
+	}
+
+	private void getLastMessage(String chatId, TextView tvLastMessage) {
+		messagesProvider.getLastMessageByChatId(chatId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+			if (queryDocumentSnapshots.size() > 0) {
+				String message = queryDocumentSnapshots.getDocuments().get(0).getString(Constants.MESSAGE_TEXT);
+				tvLastMessage.setText(message);
+			}
+		});
+	}
+
+	private void getMessgagesNoReaded(String chatId, String userIdReciver, TextView tvCountMessagesNoReaded, FrameLayout flCountMessagesNoReaded) {
+		messagesProvider.getMessagesByChatIdAndUserIdReceiverHasSent(chatId, userIdReciver).get().addOnSuccessListener(queryDocumentSnapshots -> {
+			if (queryDocumentSnapshots.size() > 0) {
+				flCountMessagesNoReaded.setVisibility(View.VISIBLE);
+				tvCountMessagesNoReaded.setText(String.valueOf(queryDocumentSnapshots.size()));
+			} else {
+				flCountMessagesNoReaded.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	@NonNull

@@ -33,6 +33,10 @@ public class MessagesProvider {
 		return collectionReference.whereEqualTo(Constants.MESSAGE_CHATID, chatId).whereEqualTo(Constants.MESSAGE_USERID_SENDER, userIdSender).whereEqualTo(Constants.MESSAGE_VIEWED, false);
 	}
 
+	public Query getLastMessageByChatId(String chatId) {
+		return collectionReference.whereEqualTo(Constants.MESSAGE_CHATID, chatId).orderBy(Constants.MESSAGE_CREATIONDATE, Query.Direction.DESCENDING).limit(1);
+	}
+
 	public Task<Void> update(String messageId, boolean messageViewed) {
 		Map<String, Object> map = new HashMap<>();
 		map.put(Constants.MESSAGE_VIEWED, messageViewed);
