@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
 				.setMessage(R.string.youSureLogOut)
 				.setPositiveButton("Yes", (dialog, which) -> {
 					tokenProvider.delete(authProvider.getUserId());
-					authProvider.signOut();
+					authProvider.signOut(getActivity());
 					startActivity(new Intent(getContext(), LoginSignIn.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 				})
 				.setNegativeButton("Cancell", null)

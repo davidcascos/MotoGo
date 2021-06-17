@@ -1,6 +1,11 @@
 package com.dcascos.motogo.providers;
 
+import android.app.Activity;
+
+import com.dcascos.motogo.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -63,9 +68,14 @@ public class AuthProvider {
 		}
 	}
 
-	public void signOut() {
+	public void signOut(Activity activity) {
 		if (firebaseAuth != null) {
 			firebaseAuth.signOut();
+			// Google sign out
+			GoogleSignIn.getClient(activity, new GoogleSignInOptions
+					.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+					.requestIdToken(activity.getString(R.string.default_web_client_id))
+					.requestEmail().build()).signOut();
 		}
 	}
 

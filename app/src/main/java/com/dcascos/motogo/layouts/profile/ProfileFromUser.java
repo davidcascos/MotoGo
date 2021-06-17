@@ -1,7 +1,9 @@
 package com.dcascos.motogo.layouts.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,14 +13,17 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.ProfileTabsAdapter;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.layouts.chat.ChatConversation;
+import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.database.PostsProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.providers.database.UsersProvider;
+import com.dcascos.motogo.utils.MainActivity;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -33,14 +38,17 @@ public class ProfileFromUser extends MainActivity {
 	private TextView tvEmail;
 	private TextView tvPostsNumber;
 
-	private String extraUserId;
+	private String userToViewId;
 
 	private UsersProvider usersProvider;
 	private PostsProvider postsProvider;
 	private RoutesProvider routesProvider;
+	private AuthProvider authProvider;
 
 	private ViewPager2 viewPager2;
 	private ProfileTabsAdapter ProfileTabsAdapter;
+
+	private FloatingActionButton btCreateChat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +61,31 @@ public class ProfileFromUser extends MainActivity {
 		tvUsername = findViewById(R.id.tv_username);
 		tvEmail = findViewById(R.id.tv_email);
 		tvPostsNumber = findViewById(R.id.tv_postsNumber);
+		btCreateChat = findViewById(R.id.bt_createChat);
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		extraUserId = getIntent().getStringExtra("userId");
+		userToViewId = getIntent().getStringExtra("userToViewId");
 
 		usersProvider = new UsersProvider();
 		postsProvider = new PostsProvider();
 		routesProvider = new RoutesProvider();
+		authProvider = new AuthProvider();
 
 		getUserData();
 		getPostsAndRoutesCount();
+
+		if (authProvider.getUserId().equals(userToViewId)) {
+			btCreateChat.setVisibility(View.GONE);
+		}
+		btCreateChat.setOnClickListener(v -> goToChatConversation());
 	}
 
 	private void getUserData() {
-		usersProvider.getUser(extraUserId).addOnSuccessListener(documentSnapshot -> {
+		usersProvider.getUser(userToViewId).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				tvFullName.setText(documentSnapshot.getString(Constants.USER_FULLNAME));
 				tvUsername.setText(documentSnapshot.getString(Constants.USER_USERNAME));
@@ -85,36 +100,35 @@ public class ProfileFromUser extends MainActivity {
 	}
 
 	private void getPostsAndRoutesCount() {
-		postsProvider.getPostByUser(extraUserId).get().addOnSuccessListener(queryDocumentSnapshotsPosts -> {
-			routesProvider.getRouteByUser(extraUserId).get().addOnSuccessListener(queryDocumentSnapshotsRoutes -> {
-				ProfileTabsAdapter = new ProfileTabsAdapter(this, extraUserId);
-				viewPager2 = findViewById(R.id.pager);
-				viewPager2.setAdapter(ProfileTabsAdapter);
+		postsProvider.getPostByUser(userToViewId).get().addOnSuccessListener(queryDocumentSnapshotsPosts ->
+				routesProvider.getRouteByUser(userToViewId).get().addOnSuccessListener(queryDocumentSnapshotsRoutes -> {
+					ProfileTabsAdapter = new ProfileTabsAdapter(this, userToViewId);
+					viewPager2 = findViewById(R.id.pager);
+					viewPager2.setAdapter(ProfileTabsAdapter);
 
-				TabLayout tabLayout = findViewById(R.id.tab_layout);
+					TabLayout tabLayout = findViewById(R.id.tab_layout);
 
-				new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-					BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-					switch (position) {
-						case 1:
-							tab.setText(getText(R.string.routes));
-							badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-							badgeDrawable.setVisible(true);
-							badgeDrawable.setNumber(queryDocumentSnapshotsRoutes.size());
-							badgeDrawable.setMaxCharacterCount(4);
-							break;
-						default:
-							tab.setText(getText(R.string.posts));
-							badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-							badgeDrawable.setVisible(true);
-							badgeDrawable.setNumber(queryDocumentSnapshotsPosts.size());
-							badgeDrawable.setMaxCharacterCount(4);
-							break;
-					}
-				}).attach();
-				tvPostsNumber.setText(String.valueOf(queryDocumentSnapshotsPosts.size() + queryDocumentSnapshotsRoutes.size()));
-			});
-		});
+					new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+						BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+						switch (position) {
+							case 1:
+								tab.setText(getText(R.string.routes));
+								badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
+								badgeDrawable.setVisible(true);
+								badgeDrawable.setNumber(queryDocumentSnapshotsRoutes.size());
+								badgeDrawable.setMaxCharacterCount(4);
+								break;
+							default:
+								tab.setText(getText(R.string.posts));
+								badgeDrawable.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
+								badgeDrawable.setVisible(true);
+								badgeDrawable.setNumber(queryDocumentSnapshotsPosts.size());
+								badgeDrawable.setMaxCharacterCount(4);
+								break;
+						}
+					}).attach();
+					tvPostsNumber.setText(String.valueOf(queryDocumentSnapshotsPosts.size() + queryDocumentSnapshotsRoutes.size()));
+				}));
 	}
 
 	@Override
@@ -123,5 +137,9 @@ public class ProfileFromUser extends MainActivity {
 			this.onBackPressed();
 		}
 		return true;
+	}
+
+	private void goToChatConversation() {
+		startActivity(new Intent(ProfileFromUser.this, ChatConversation.class).putExtra("userId1", authProvider.getUserId()).putExtra("userId2", userToViewId));
 	}
 }

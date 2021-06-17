@@ -10,12 +10,14 @@ public class User {
 	private String imageProfile;
 	private long creationDate;
 	private long modificationDate;
+	private boolean online;
+	private long onlineLastDate;
 
 	public User() {
 
 	}
 
-	public User(String id, String fullName, String username, String email, String imageCover, String imageProfile, long creationDate, long modificationDate) {
+	public User(String id, String fullName, String username, String email, String imageCover, String imageProfile, long creationDate, long modificationDate, boolean online, long onlineLastDate) {
 		this.id = id;
 		this.fullName = fullName;
 		this.username = username;
@@ -24,6 +26,8 @@ public class User {
 		this.imageProfile = imageProfile;
 		this.creationDate = creationDate;
 		this.modificationDate = modificationDate;
+		this.online = online;
+		this.onlineLastDate = onlineLastDate;
 	}
 
 	public String getId() {
@@ -88,5 +92,21 @@ public class User {
 
 	public void setModificationDate(long modificationDate) {
 		this.modificationDate = modificationDate;
+	}
+
+	public boolean isOnline() {
+		return online;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
+	public long getOnlineLastDate() {
+		return onlineLastDate;
+	}
+
+	public void setOnlineLastDate(long onlineLastDate) {
+		this.onlineLastDate = onlineLastDate;
 	}
 }

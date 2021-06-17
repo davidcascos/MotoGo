@@ -50,10 +50,9 @@
 	<PreferenceCategory android:title="Network">
 		<SwitchPreference
 			android:defaultValue="false"
+			android:icon="@drawable/ic_wifi"
 			android:key="@string/prefNetwork"
 			android:summary="@string/networkSummary"
-			android:title="@string/networkTitle"
-			app:icon="@drawable/ic_wifi" />
-
+			android:title="@string/networkTitle" />
 	</PreferenceCategory>
 </PreferenceScreen>

@@ -154,4 +154,15 @@
 			android:layout_height="0dp"
 			android:layout_weight="1" />
 	</LinearLayout>
+
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:id="@+id/bt_createChat"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|end"
+		android:layout_marginEnd="15dp"
+		android:layout_marginBottom="20dp"
+		android:backgroundTint="@color/app_colorDark"
+		android:src="@drawable/ic_chat" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

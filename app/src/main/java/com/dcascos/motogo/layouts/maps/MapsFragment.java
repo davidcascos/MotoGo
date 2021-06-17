@@ -348,9 +348,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		for (Marker marker : driversMarkers) {
 			if (marker.getTag() != null) {
 				marker.remove();
-				driversMarkers.remove(marker);
 			}
 		}
+		driversMarkers = new ArrayList<>();
 
 		if (showOtherDrivers && originLatLong != null) {
 			getActiveDrivers();
@@ -424,9 +424,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		for (Marker marker : routesMarkers) {
 			if (marker.getTag() != null) {
 				marker.remove();
-				routesMarkers.remove(marker);
 			}
 		}
+		routesMarkers = new ArrayList<>();
 
 		if (showRoutes && originLatLong != null) {
 			getRoutes();
@@ -474,6 +474,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 	public void onResume() {
 		super.onResume();
 		getPreferences();
+		checkActiveDrivers();
+		checkRoutes();
 		checkShowMyLocation();
 	}
 

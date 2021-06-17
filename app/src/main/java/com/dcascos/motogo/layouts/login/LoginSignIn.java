@@ -160,8 +160,8 @@ public class LoginSignIn extends MainActivity {
 	private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 		authProvider.googleSignIn(account).addOnCompleteListener(this, task -> {
 			if (task.isSuccessful()) {
-				String idUser = authProvider.getUserId();
-				checkUserExist(idUser);
+				String userId = authProvider.getUserId();
+				checkUserExist(userId);
 			} else {
 				hideProgressBar();
 				Toast.makeText(LoginSignIn.this, getText(R.string.couldNotLoginWithGoogle), Toast.LENGTH_LONG).show();
@@ -169,8 +169,8 @@ public class LoginSignIn extends MainActivity {
 		});
 	}
 
-	private void checkUserExist(String idUser) {
-		usersProvider.getUser(idUser).addOnSuccessListener(documentSnapshot -> {
+	private void checkUserExist(String userId) {
+		usersProvider.getUser(userId).addOnSuccessListener(documentSnapshot -> {
 			if (documentSnapshot.exists()) {
 				goHome();
 			} else {
@@ -192,7 +192,15 @@ public class LoginSignIn extends MainActivity {
 										username = Generators.genRandomUsername();
 									} while (usernames.contains(username));
 
-									User user = new User(idUser, fullname, username, email, uriCover.toString(), uriProfile.toString(), new Date().getTime(), new Date().getTime());
+									User user = new User();
+									user.setId(userId);
+									user.setFullName(fullname);
+									user.setUsername(username);
+									user.setEmail(email);
+									user.setImageCover(uriCover.toString());
+									user.setImageProfile(uriProfile.toString());
+									user.setCreationDate(new Date().getTime());
+									user.setModificationDate(user.getCreationDate());
 									usersProvider.createUser(user).addOnCompleteListener(task1 -> {
 										if (task1.isSuccessful()) {
 											goHome();

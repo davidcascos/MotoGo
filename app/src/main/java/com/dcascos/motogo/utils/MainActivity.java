@@ -25,13 +25,19 @@ public class MainActivity extends AppCompatActivity {
 	protected void onStart() {
 		super.onStart();
 		registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+		isUserOnlineHelper.updateOnline(true, MainActivity.this);
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		isUserOnlineHelper.updateOnline(false, MainActivity.this);
+	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-
 		try {
 			unregisterReceiver(broadcastReceiver);
 		} catch (IllegalArgumentException e) {

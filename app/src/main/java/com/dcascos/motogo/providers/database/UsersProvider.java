@@ -4,10 +4,12 @@ import com.dcascos.motogo.constants.Constants;
 import com.dcascos.motogo.models.database.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,20 @@ public class UsersProvider {
 			map.put(Constants.USER_IMAGEPROFILE, user.getImageProfile());
 		}
 
+		map.put(Constants.USER_MODIFICATIONDATE, user.getModificationDate());
+
 		return collectionReference.document(user.getId()).update(map);
+	}
+
+	public DocumentReference getUserIsOnline(String userId) {
+		return collectionReference.document(userId);
+	}
+
+	public Task<Void> updateOnline(String userId, boolean isOnline) {
+		Map<String, Object> map = new HashMap<>();
+		map.put(Constants.USER_ONLINE, isOnline);
+		map.put(Constants.USER_ONLINELASTDATE, new Date().getTime());
+
+		return collectionReference.document(userId).update(map);
 	}
 }

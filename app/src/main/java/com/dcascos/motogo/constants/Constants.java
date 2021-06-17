@@ -49,6 +49,8 @@ public class Constants {
 	public static final String USER_IMAGEPROFILE = "imageProfile";
 	public static final String USER_CREATIONDATE = "creationDate";
 	public static final String USER_MODIFICATIONDATE = "modificationDate";
+	public static final String USER_ONLINE = "online";
+	public static final String USER_ONLINELASTDATE = "onlineLastDate";
 
 	//Post variables
 	public static final String POSTS = "Posts";
@@ -88,6 +90,26 @@ public class Constants {
 	public static final String ROUTE_DESTINATIONLON = "destinationLon";
 	public static final String ROUTE_POINTS = "points";
 	public static final String ROUTE_CREATIONDATE = "creationDate";
+
+	//Chats variables
+	public static final String CHATS = "Chats";
+	public static final String CHAT_ID = "id";
+	public static final String CHAT_USERID1 = "userId1";
+	public static final String CHAT_USERID2 = "userId2";
+	public static final String CHAT_ISWRITING = "isWriting";
+	public static final String CHAT_LISTUSERSIDS = "listUsersIds";
+	public static final String CHAT_CREATIONDATE = "creationDate";
+	public static final String CHAT_MODIFICATIONDATE = "modificationDate";
+
+	//Messages variables
+	public static final String MESSAGES = "Messages";
+	public static final String MESSAGE_ID = "id";
+	public static final String MESSAGE_USERID_SENDER = "userIdSender";
+	public static final String MESSAGE_USERID_RECEIVER = "userIdReciver";
+	public static final String MESSAGE_CHATID = "chatId";
+	public static final String MESSAGE_TEXT = "messageText";
+	public static final String MESSAGE_VIEWED = "messageViewed";
+	public static final String MESSAGE_CREATIONDATE = "creationDate";
 
 	//Tokens
 	public static final String TOKENS = "Tokens";

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.layouts.chat.ChatFragment;
 import com.dcascos.motogo.layouts.maps.MapsFragment;
 import com.dcascos.motogo.layouts.profile.ProfileFragment;
 import com.dcascos.motogo.providers.AuthProvider;
@@ -53,9 +54,9 @@ public class Home extends MainActivity {
 			case R.id.itemMap:
 				openFragment(new MapsFragment());
 				return true;
-//			case R.id.itemItem3:
-//				openFragment(new HomeFragment());
-//				return true;
+			case R.id.itemChat:
+				openFragment(new ChatFragment());
+				return true;
 			case R.id.itemProfile:
 				openFragment(new ProfileFragment());
 				return true;
