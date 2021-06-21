@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.layouts.profile.ProfileFromUser;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GeoFireProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
@@ -71,7 +72,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
 	private View view;
 	private CardView cvAutocomplete;
@@ -251,6 +252,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 		mMap = googleMap;
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		mMap.getUiSettings().setZoomControlsEnabled(true);
+		mMap.setOnInfoWindowClickListener(this);
 
 		locationRequest = LocationRequest.create()
 				.setInterval(1000)
@@ -259,6 +261,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 				.setSmallestDisplacement(5);
 
 		checkVersionToStartLocation();
+	}
+
+	@Override
+	public void onInfoWindowClick(Marker marker) {
+		if (driversMarkers.contains(marker)) {
+			startActivity(new Intent(getContext(), ProfileFromUser.class).putExtra("userToViewId", marker.getTag().toString()));
+		}
 	}
 
 	private void checkVersionToStartLocation() {
