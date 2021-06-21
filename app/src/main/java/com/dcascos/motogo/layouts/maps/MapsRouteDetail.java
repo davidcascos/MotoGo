@@ -6,18 +6,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.dcascos.motogo.utils.MainActivity;
 import com.dcascos.motogo.R;
+import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.models.database.Score;
 import com.dcascos.motogo.models.database.Route;
 import com.dcascos.motogo.providers.AuthProvider;
 import com.dcascos.motogo.providers.GoogleAPIProvider;
+import com.dcascos.motogo.providers.database.ScoresProvider;
 import com.dcascos.motogo.providers.database.RoutesProvider;
 import com.dcascos.motogo.utils.DecodePoints;
+import com.dcascos.motogo.utils.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,9 +51,14 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 	private TextView tvDestination;
 	private TextView tvDistance;
 	private TextView tvDuration;
+	private TextView tvScore;
 	private Button btStartRoute;
+	private RatingBar rbRouteScore;
 	private ImageButton ibBack;
+
 	private GoogleMap mMap;
+
+	private String routeId;
 	private String from;
 	private String originName;
 	private String destinationName;
@@ -62,11 +71,15 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 	private String points;
 	private LatLng originLatLong;
 	private LatLng destinationLatLong;
+	private float scoreNum;
+
 	private GoogleAPIProvider googleAPIProvider;
 	private List<LatLng> polylineList;
 	private PolylineOptions polylineOptions;
+
 	private AuthProvider authProvider;
 	private RoutesProvider routesProvider;
+	private ScoresProvider scoresProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +90,9 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 		tvDestination = findViewById(R.id.tv_destination);
 		tvDistance = findViewById(R.id.tv_distance);
 		tvDuration = findViewById(R.id.tv_duration);
+		tvScore = findViewById(R.id.tv_score);
 		btStartRoute = findViewById(R.id.bt_startRoute);
+		rbRouteScore = findViewById(R.id.rb_routeScore);
 		ibBack = findViewById(R.id.ib_back);
 
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -92,13 +107,19 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 
 		authProvider = new AuthProvider();
 		routesProvider = new RoutesProvider();
+		scoresProvider = new ScoresProvider();
 
 		btStartRoute.setOnClickListener(v -> createRoute());
+		rbRouteScore.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+			scoreNum = rating;
+			calificateRoute();
+		});
 		ibBack.setOnClickListener(v -> this.onBackPressed());
 	}
 
 	private void getIntentExtras() {
 		from = getIntent().getStringExtra("from");
+		routeId = getIntent().getStringExtra("routeId");
 		originName = getIntent().getStringExtra("originName");
 		destinationName = getIntent().getStringExtra("destinationName");
 		originLat = getIntent().getDoubleExtra("originLat", 0);
@@ -172,8 +193,11 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 
 		if (from.equalsIgnoreCase("create")) {
 			btStartRoute.setVisibility(View.VISIBLE);
+			rbRouteScore.setVisibility(View.GONE);
 		} else {
 			btStartRoute.setVisibility(View.GONE);
+			rbRouteScore.setVisibility(View.VISIBLE);
+			getScore();
 		}
 	}
 
@@ -197,6 +221,34 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 				Toast.makeText(MapsRouteDetail.this, getText(R.string.routeCreated), Toast.LENGTH_SHORT).show();
 			} else {
 				Toast.makeText(MapsRouteDetail.this, getText(R.string.routeNoUploaded), Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	private void calificateRoute() {
+		String userId = authProvider.getUserId();
+		scoresProvider.getScoreByRouteAndUser(routeId, userId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+			if (queryDocumentSnapshots.isEmpty()) {
+				Score score = new Score();
+				score.setRouteId(routeId);
+				score.setUserId(userId);
+				score.setScoreNumber(scoreNum);
+				score.setCreationDate(new Date().getTime());
+				scoresProvider.create(score);
+			} else {
+				scoresProvider.update(queryDocumentSnapshots.getDocuments().get(0).getId(), scoreNum, new Date().getTime());
+			}
+		});
+		tvScore.setText(getString(R.string.scores, String.valueOf(scoreNum)));
+	}
+
+	private void getScore() {
+		String userId = authProvider.getUserId();
+		scoresProvider.getScoreByRouteAndUser(routeId, userId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+			if (!queryDocumentSnapshots.isEmpty()) {
+				scoreNum = queryDocumentSnapshots.getDocuments().get(0).getDouble(Constants.SCORE_NUMBER).floatValue();
+				rbRouteScore.setRating(scoreNum);
+				tvScore.setText(getString(R.string.scores, String.valueOf(scoreNum)));
 			}
 		});
 	}

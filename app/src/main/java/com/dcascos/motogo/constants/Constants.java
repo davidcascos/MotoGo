@@ -76,6 +76,13 @@ public class Constants {
 	public static final String LIKE_USERID = "userId";
 	public static final String LIKE_CREATIONDATE = "creationDate";
 
+	//Scores variables
+	public static final String SCORES = "Scores";
+	public static final String SCORE_ROUTEID = "routeId";
+	public static final String SCORE_USERID = "userId";
+	public static final String SCORE_NUMBER = "scoreNumber";
+	public static final String SCORE_CREATIONDATE = "creationDate";
+
 	//Routes variables
 	public static final String ROUTES = "Routes";
 	public static final String ROUTE_ID = "id";

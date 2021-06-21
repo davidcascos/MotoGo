@@ -101,6 +101,7 @@
 	<string name="startRoute">(SAVE) Start Route</string>
 	<string name="routeNoUploaded">Route could not be uploaded</string>
 	<string name="routeCreated">Route Created</string>
+	<string name="scores">%1s/5.0</string>
 	<!--Menus-->
 	<string name="settings">Settings</string>
 	<string name="home">Home</string>

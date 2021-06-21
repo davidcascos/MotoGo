@@ -75,26 +75,28 @@
 			android:background="@color/app_colorDark" />
 
 		<LinearLayout
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_gravity="end"
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="5dp"
 			android:orientation="horizontal">
-			<!--Rating-->
-			<!--			<ImageView-->
-			<!--				android:id="@+id/iv_like"-->
-			<!--				android:layout_width="wrap_content"-->
-			<!--				android:layout_height="wrap_content"-->
-			<!--				android:src="@drawable/ic_like_no" />-->
 
-			<!--			<TextView-->
-			<!--				android:id="@+id/tv_likes"-->
-			<!--				android:layout_width="wrap_content"-->
-			<!--				android:layout_height="match_parent"-->
-			<!--				android:layout_marginStart="5dp"-->
-			<!--				android:gravity="center"-->
-			<!--				android:text="@string/likes" />-->
+			<RatingBar
+				android:id="@+id/rb_routeScore"
+				style="?android:attr/ratingBarStyleSmall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:isIndicator="true" />
+
+			<TextView
+				android:id="@+id/tv_score"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_marginStart="5dp"
+				android:gravity="center"
+				android:text="@string/scores" />
 		</LinearLayout>
 	</LinearLayout>
 

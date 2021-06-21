@@ -136,7 +136,6 @@
 					android:layout_height="wrap_content"
 					android:fontFamily="@font/muli" />
 			</LinearLayout>
-
 		</LinearLayout>
 
 		<Button
@@ -147,8 +146,30 @@
 			android:layout_margin="20dp"
 			android:background="@drawable/shape_buttons"
 			android:text="@string/startRoute"
-			android:visibility="invisible" />
+			android:visibility="gone" />
 
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|center"
+			android:layout_margin="10dp"
+			android:orientation="horizontal">
+
+			<RatingBar
+				android:id="@+id/rb_routeScore"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|center" />
+
+			<TextView
+				android:id="@+id/tv_score"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_marginStart="5dp"
+				android:gravity="center"
+				android:text="@string/scores" />
+		</LinearLayout>
 	</LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
