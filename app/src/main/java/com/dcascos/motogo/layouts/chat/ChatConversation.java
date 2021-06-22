@@ -1,8 +1,10 @@
 package com.dcascos.motogo.layouts.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.dcascos.motogo.R;
 import com.dcascos.motogo.adapters.MessagesAdapter;
 import com.dcascos.motogo.constants.Constants;
+import com.dcascos.motogo.layouts.profile.ProfileFromUser;
 import com.dcascos.motogo.models.database.Chat;
 import com.dcascos.motogo.models.database.Message;
 import com.dcascos.motogo.providers.AuthProvider;
@@ -37,6 +40,7 @@ public class ChatConversation extends MainActivity {
 	private TextView tvdateLastChat;
 	private ImageButton ibSend;
 	private EditText etMessage;
+	private LinearLayout llToolbarChat;
 
 	private String userId1;
 	private String userId2;
@@ -65,6 +69,7 @@ public class ChatConversation extends MainActivity {
 		tvdateLastChat = findViewById(R.id.tv_dateLastChat);
 		ibSend = findViewById(R.id.ib_send);
 		etMessage = findViewById(R.id.et_message);
+		llToolbarChat = findViewById(R.id.ll_toolbarChat);
 
 		rvMessages = findViewById(R.id.rv_messages);
 
@@ -80,6 +85,8 @@ public class ChatConversation extends MainActivity {
 
 		getChatInfo();
 		checkIfChatExist();
+
+		llToolbarChat.setOnClickListener(v -> startActivity(new Intent(ChatConversation.this, ProfileFromUser.class).putExtra("userToViewId", userIdReciver)));
 
 		linearLayoutManager = new LinearLayoutManager(ChatConversation.this);
 		linearLayoutManager.setStackFromEnd(true);

@@ -14,6 +14,7 @@
 		android:background="@color/app_color">
 
 		<LinearLayout
+			android:id="@+id/ll_toolbarChat"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
