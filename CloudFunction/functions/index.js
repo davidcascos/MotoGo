@@ -18,7 +18,7 @@ exports.sendLikeNotification = functions.firestore.document('Likes/{id}')
 
       const tokenToNotificate = await admin.firestore().collection('Tokens').doc(post.data().userId).get();
       await admin.messaging().sendToDevice(tokenToNotificate.data().token, payload);
-      console.log(`Notifications have been sent from: ${userWhoLikes.data().username} to: ${tokenToNotificate.id}`);
+      console.log(`Like Notifications have been sent from: ${userWhoLikes.data().username} to: ${tokenToNotificate.id}`);
     }
   });
 
@@ -38,6 +38,24 @@ exports.sendCommentNotification = functions.firestore.document('Comments/{id}')
 
       const tokenToNotificate = await admin.firestore().collection('Tokens').doc(post.data().userId).get();
       await admin.messaging().sendToDevice(tokenToNotificate.data().token, payload);
-      console.log(`Notifications have been sent from: ${userWhoComments.data().username} to: ${tokenToNotificate.id}`);
+      console.log(`Comment Notifications have been sent from: ${userWhoComments.data().username} to: ${tokenToNotificate.id}`);
     }
+  });
+
+  exports.sendMessageNotification = functions.firestore.document('Messages/{id}')
+  .onCreate(async (snapshot) => {
+    const userSender = await admin.firestore().collection('Users').doc(snapshot.data().userIdSender).get();
+    const userReciver = await admin.firestore().collection('Users').doc(snapshot.data().userIdReciver).get();
+
+      const payload = {
+        notification: {
+          title: `${userSender.data().username} has sended a message`,
+          body: `${snapshot.data().messageText}`,
+        }
+      };
+
+      const tokenToNotificate = await admin.firestore().collection('Tokens').doc(userReciver.data().id).get();
+      await admin.messaging().sendToDevice(tokenToNotificate.data().token, payload);
+      console.log(`Message Notifications have been sent from: ${userSender.data().username} to: ${userReciver.data().username}`);
+    
   });
