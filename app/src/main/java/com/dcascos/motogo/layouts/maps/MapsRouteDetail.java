@@ -249,6 +249,8 @@ public class MapsRouteDetail extends MainActivity implements OnMapReadyCallback 
 				scoreNum = queryDocumentSnapshots.getDocuments().get(0).getDouble(Constants.SCORE_NUMBER).floatValue();
 				rbRouteScore.setRating(scoreNum);
 				tvScore.setText(getString(R.string.scores, String.valueOf(scoreNum)));
+			} else {
+				tvScore.setText(getString(R.string.scores, "0.0"));
 			}
 		});
 	}

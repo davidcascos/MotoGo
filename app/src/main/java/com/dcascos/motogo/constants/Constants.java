@@ -103,7 +103,6 @@ public class Constants {
 	public static final String CHAT_ID = "id";
 	public static final String CHAT_USERID1 = "userId1";
 	public static final String CHAT_USERID2 = "userId2";
-	public static final String CHAT_ISWRITING = "isWriting";
 	public static final String CHAT_LISTUSERSIDS = "listUsersIds";
 	public static final String CHAT_CREATIONDATE = "creationDate";
 	public static final String CHAT_MODIFICATIONDATE = "modificationDate";

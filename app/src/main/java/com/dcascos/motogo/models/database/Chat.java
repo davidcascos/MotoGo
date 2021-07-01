@@ -7,7 +7,6 @@ public class Chat {
 	private String id;
 	private String userId1;
 	private String userId2;
-	private boolean isWriting;
 	private ArrayList<String> listUsersIds;
 	private long creationDate;
 	private long modificationDate;
@@ -21,11 +20,10 @@ public class Chat {
 		this.modificationDate = modificationDate;
 	}
 
-	public Chat(String id, String userId1, String userId2, boolean isWriting, ArrayList<String> ids, long creationDate, long modificationDate) {
+	public Chat(String id, String userId1, String userId2, ArrayList<String> ids, long creationDate, long modificationDate) {
 		this.id = id;
 		this.userId1 = userId1;
 		this.userId2 = userId2;
-		this.isWriting = isWriting;
 		this.listUsersIds = ids;
 		this.creationDate = creationDate;
 		this.modificationDate = modificationDate;
@@ -53,14 +51,6 @@ public class Chat {
 
 	public void setUserId2(String userId2) {
 		this.userId2 = userId2;
-	}
-
-	public boolean isWriting() {
-		return isWriting;
-	}
-
-	public void setWriting(boolean writing) {
-		isWriting = writing;
 	}
 
 	public ArrayList<String> getListUsersIds() {

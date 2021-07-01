@@ -169,7 +169,6 @@ public class ChatConversation extends MainActivity {
 		chat.setId(chatId);
 		chat.setUserId1(userId1);
 		chat.setUserId2(userId2);
-		chat.setWriting(false);
 
 		ArrayList<String> listUsersIds = new ArrayList<>();
 		listUsersIds.add(userId1);
